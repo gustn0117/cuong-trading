@@ -4,269 +4,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuong Trading</title>
-    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="stylesheet" href="style.css?v=9">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="header-inner">
+        <div class="container header-inner">
             <a href="#" class="logo">
-                <span class="logo-icon">C</span>
-                <span class="logo-text">CUONG <span class="logo-light">TRADING</span></span>
+                <span class="logo-mark">CUONG</span> TRADING
             </a>
             <nav class="nav">
-                <a href="#intro" class="nav-link active">소개</a>
-                <a href="#referral" class="nav-link">거래소</a>
+                <a href="#intro" class="nav-link active">홈</a>
+                <a href="#referral" class="nav-link">소개</a>
                 <a href="#challenge" class="nav-link">챌린지</a>
                 <a href="#event" class="nav-link">이벤트</a>
+                <a href="https://t.me/" target="_blank" class="nav-link nav-highlight">텔레그램</a>
+                <a href="https://t.me/" target="_blank" class="nav-link">문의하기</a>
             </nav>
-            <div class="header-right">
-                <a href="https://t.me/" target="_blank" class="btn-header-cta">
-                    <i class="fab fa-telegram"></i> 텔레그램
-                </a>
-            </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="hero" id="intro">
-        <div class="hero-inner">
-            <div class="hero-overline">VERIFIED TRADER</div>
-            <h1 class="hero-title">
-                검증된 트레이더,<br>
-                <span class="hero-accent">CUONG</span>
-            </h1>
-            <p class="hero-desc">
-                유튜브 라이브로 모든 트레이딩을 증명합니다.<br>
-                좋은 손익비와 극강의 리스크 관리로 <strong>낮은 레버리지로도 강력한 수익</strong>을 만들어냅니다.
-            </p>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <span class="hero-stat-num">7+</span>
-                    <span class="hero-stat-label">Years</span>
+        <div class="container hero-inner">
+            <div class="hero-content">
+                <h1 class="hero-title">검증된 트레이더, <span>CUONG</span></h1>
+                <p class="hero-desc">유튜브 라이브로 모든 트레이딩을 증명합니다. 좋은 손익비와 극강의 리스크 관리로 <strong>낮은 레버리지로도 강력한 수익</strong>을 만들어냅니다.</p>
+                <div class="hero-actions">
+                    <a href="https://t.me/" target="_blank" class="btn-primary"><i class="fab fa-telegram"></i> 텔레그램 입장하기</a>
+                    <a href="#challenge" class="btn-ghost">챌린지 보기 <i class="fas fa-arrow-down"></i></a>
                 </div>
-                <div class="hero-stat-dot"></div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num">50+</span>
-                    <span class="hero-stat-label">1st Place</span>
+            </div>
+            <div class="hero-stats-row">
+                <div class="hero-stat-card">
+                    <span class="stat-value">7+</span>
+                    <span class="stat-desc">트레이딩 경력 (년)</span>
                 </div>
-                <div class="hero-stat-dot"></div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num">$560K+</span>
-                    <span class="hero-stat-label">Profit</span>
+                <div class="hero-stat-card">
+                    <span class="stat-value">50+</span>
+                    <span class="stat-desc">대회 1위 달성</span>
+                </div>
+                <div class="hero-stat-card">
+                    <span class="stat-value">4년</span>
+                    <span class="stat-desc">TradingView Top Author</span>
+                </div>
+                <div class="hero-stat-card accent">
+                    <span class="stat-value">$560K+</span>
+                    <span class="stat-desc">챌린지 총 수익</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Trust Bar -->
-    <div class="trust-bar">
-        <div class="trust-inner">
-            <div class="trust-item"><i class="fas fa-chart-line"></i> TradingView Top Author 4년 연속</div>
-            <div class="trust-item"><i class="fas fa-trophy"></i> Bybit 세계 1위 2회 달성</div>
-            <div class="trust-item"><i class="fas fa-medal"></i> 거래소 대회 50회+ 우승</div>
-        </div>
-    </div>
-
-    <!-- Video Section -->
-    <section class="video-section">
-        <div class="video-section-inner">
-            <div class="video-placeholder">
-                <div class="play-btn">
-                    <i class="fas fa-play"></i>
+    <!-- Video -->
+    <section class="section-video">
+        <div class="container">
+            <div class="video-wrap">
+                <div class="video-placeholder">
+                    <div class="play-circle"><i class="fas fa-play"></i></div>
+                    <p>소개 영상</p>
                 </div>
-                <p>소개 영상</p>
             </div>
         </div>
     </section>
 
-    <main class="main-wrap">
-        <!-- Exchange Section -->
+    <main class="container main-content">
+        <!-- Exchange Table -->
         <section class="section" id="referral">
-            <div class="section-label">EXCHANGES</div>
-            <h2 class="section-title">거래소 레퍼럴</h2>
-            <p class="section-desc">아래 링크를 통해 가입하시면 수수료 할인 혜택을 받으실 수 있습니다.</p>
-
-            <div class="exchange-list">
-                <a href="https://www.deepcoin.com/turbo/en/login?status=reg&inviteCode=9275707" target="_blank" class="exchange-row">
-                    <div class="exchange-left">
-                        <div class="exchange-icon">DC</div>
-                        <div class="exchange-info">
-                            <span class="exchange-name">Deepcoin <span class="exchange-name-kr">딥코인</span></span>
-                            <span class="exchange-meta">빗썸 입출금 · 코인원 입출금</span>
-                        </div>
-                    </div>
-                    <div class="exchange-right">
-                        <span class="exchange-type">CEX</span>
-                        <span class="exchange-btn">가입하기 <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </a>
-                <a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="exchange-row">
-                    <div class="exchange-left">
-                        <div class="exchange-icon">BG</div>
-                        <div class="exchange-info">
-                            <span class="exchange-name">Bitget <span class="exchange-name-kr">비트겟</span></span>
-                            <span class="exchange-meta">업비트 입출금 · 빗썸 입출금</span>
-                        </div>
-                    </div>
-                    <div class="exchange-right">
-                        <span class="exchange-type">CEX</span>
-                        <span class="exchange-btn">가입하기 <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </a>
-                <a href="https://www.okx.com/join/99769053" target="_blank" class="exchange-row">
-                    <div class="exchange-left">
-                        <div class="exchange-icon">OKX</div>
-                        <div class="exchange-info">
-                            <span class="exchange-name">OKX <span class="exchange-name-kr"></span></span>
-                            <span class="exchange-meta">업비트 입출금 · 빗썸 입출금</span>
-                        </div>
-                    </div>
-                    <div class="exchange-right">
-                        <span class="exchange-type">CEX</span>
-                        <span class="exchange-btn">가입하기 <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </a>
+            <div class="table-card">
+                <table class="ex-table">
+                    <thead>
+                        <tr>
+                            <th>거래소명</th>
+                            <th>종류</th>
+                            <th>입출금</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="ex-name-cell">
+                                    <div class="ex-logo deepcoin"><i class="fas fa-coins"></i></div>
+                                    <div>
+                                        <strong>Deepcoin</strong>
+                                        <span>딥코인</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="ex-type">CEX</span></td>
+                            <td><span class="ex-tag">빗썸 입출금</span><span class="ex-tag">코인원 입출금</span></td>
+                            <td class="ex-actions"><a href="https://www.deepcoin.com/turbo/en/login?status=reg&inviteCode=9275707" target="_blank" class="btn-table">가입하기</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="ex-name-cell">
+                                    <div class="ex-logo bitget"><i class="fas fa-bolt"></i></div>
+                                    <div>
+                                        <strong>Bitget</strong>
+                                        <span>비트겟</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="ex-type">CEX</span></td>
+                            <td><span class="ex-tag">업비트 입출금</span><span class="ex-tag">빗썸 입출금</span></td>
+                            <td class="ex-actions"><a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="btn-table">가입하기</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="ex-name-cell">
+                                    <div class="ex-logo okx"><i class="fas fa-circle-nodes"></i></div>
+                                    <div>
+                                        <strong>OKX</strong>
+                                        <span>OKX Global</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="ex-type">CEX</span></td>
+                            <td><span class="ex-tag">업비트 입출금</span><span class="ex-tag">빗썸 입출금</span></td>
+                            <td class="ex-actions"><a href="https://www.okx.com/join/99769053" target="_blank" class="btn-table">가입하기</a></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
-        <!-- Challenge Section -->
+        <!-- Info Banner -->
+        <section class="info-banner">
+            <div class="info-banner-left">
+                <p class="info-banner-title">Cuong의 커리어</p>
+                <p class="info-banner-desc">2017년~현재 트레이딩 | TradingView Top Author 4년 연속 | Bybit 세계 1위 2회 | 거래소 대회 50회+ 1위</p>
+            </div>
+            <a href="#challenge" class="info-banner-btn">챌린지 보기 <i class="fas fa-arrow-right"></i></a>
+        </section>
+
+        <!-- Challenge -->
         <section class="section" id="challenge">
-            <div class="section-label">CHALLENGE</div>
-            <h2 class="section-title">유튜브 라이브 검증 챌린지</h2>
-            <p class="section-desc">2024년 9월 채널 개설 이후, 모든 트레이딩을 라이브로 공개 증명하고 있습니다.</p>
+            <h2 class="sec-heading">유튜브 라이브 검증 챌린지</h2>
+            <p class="sec-sub">유튜브 채널 개설: 2024년 9월 | 모든 트레이딩을 라이브로 공개 증명</p>
 
             <div class="challenge-grid">
                 <div class="ch-card">
-                    <div class="ch-header">
-                        <span class="ch-num">01</span>
-                        <span class="ch-badge done">완료</span>
+                    <div class="ch-thumb">
+                        <span class="ch-label">1차 챌린지</span>
                     </div>
-                    <p class="ch-title">1차 챌린지</p>
-                    <p class="ch-subtitle">저레버리지(5배) 스캘핑</p>
-                    <div class="ch-amount">
-                        <span class="ch-from">$2,000</span>
-                        <i class="fas fa-arrow-right"></i>
-                        <span class="ch-to">$140,000</span>
-                    </div>
-                    <div class="ch-footer">
-                        <span class="ch-date">2024.09 ~ 2024.11</span>
-                        <span class="ch-result">$110,000 출금</span>
+                    <div class="ch-body">
+                        <p class="ch-type">저레버리지(5배) 스캘핑</p>
+                        <p class="ch-amt"><span class="ch-from">$2,000</span> <i class="fas fa-arrow-right"></i> <span class="ch-to">$140,000</span></p>
+                        <p class="ch-period">2024.09 ~ 2024.11</p>
+                        <div class="ch-status done"><i class="fas fa-check-circle"></i> $110,000 출금 완료</div>
                     </div>
                 </div>
-
                 <div class="ch-card">
-                    <div class="ch-header">
-                        <span class="ch-num">02</span>
-                        <span class="ch-badge done">완료</span>
+                    <div class="ch-thumb">
+                        <span class="ch-label">2차 챌린지</span>
                     </div>
-                    <p class="ch-title">2차 챌린지</p>
-                    <p class="ch-subtitle">저레버리지(5배) 스캘핑</p>
-                    <div class="ch-amount">
-                        <span class="ch-from">$30,000</span>
-                        <i class="fas fa-arrow-right"></i>
-                        <span class="ch-to">$160,000</span>
-                    </div>
-                    <div class="ch-footer">
-                        <span class="ch-date">2024.12 ~ 2025.02</span>
-                        <span class="ch-result">$150,000 출금</span>
+                    <div class="ch-body">
+                        <p class="ch-type">저레버리지(5배) 스캘핑</p>
+                        <p class="ch-amt"><span class="ch-from">$30,000</span> <i class="fas fa-arrow-right"></i> <span class="ch-to">$160,000</span></p>
+                        <p class="ch-period">2024.12 ~ 2025.02</p>
+                        <div class="ch-status done"><i class="fas fa-check-circle"></i> $150,000 출금 완료</div>
                     </div>
                 </div>
-
                 <div class="ch-card">
-                    <div class="ch-header">
-                        <span class="ch-num">03</span>
-                        <span class="ch-badge done">완료</span>
+                    <div class="ch-thumb">
+                        <span class="ch-label">3차 챌린지</span>
                     </div>
-                    <p class="ch-title">3차 챌린지</p>
-                    <p class="ch-subtitle">저레버리지 스캘핑</p>
-                    <div class="ch-amount">
-                        <span class="ch-from">$10,000</span>
-                        <i class="fas fa-arrow-right"></i>
-                        <span class="ch-to">$110,000</span>
-                    </div>
-                    <div class="ch-footer">
-                        <span class="ch-date">2025.03 ~ 2025.07</span>
-                        <span class="ch-result">챌린지 성공</span>
+                    <div class="ch-body">
+                        <p class="ch-type">저레버리지 스캘핑</p>
+                        <p class="ch-amt"><span class="ch-from">$10,000</span> <i class="fas fa-arrow-right"></i> <span class="ch-to">$110,000</span></p>
+                        <p class="ch-period">2025.03 ~ 2025.07</p>
+                        <div class="ch-status done"><i class="fas fa-check-circle"></i> 챌린지 성공</div>
                     </div>
                 </div>
-
-                <div class="ch-card ch-featured">
-                    <div class="ch-header">
-                        <span class="ch-num ch-fire"><i class="fas fa-bolt"></i></span>
-                        <span class="ch-badge live">진행중</span>
+                <div class="ch-card featured">
+                    <div class="ch-thumb fire">
+                        <span class="ch-label">고배 챌린지</span>
                     </div>
-                    <p class="ch-title">고배 챌린지</p>
-                    <p class="ch-subtitle">2025년 7월 29일 시작</p>
-                    <div class="ch-amount">
-                        <span class="ch-from">$916</span>
-                        <i class="fas fa-arrow-right"></i>
-                        <span class="ch-to">$10,000</span>
-                    </div>
-                    <div class="ch-detail-row">
-                        <span>18시간</span>
-                        <span>승률 92%</span>
-                        <span>+1,200%</span>
-                    </div>
-                    <div class="ch-footer">
-                        <span class="ch-target">목표: $300,000</span>
+                    <div class="ch-body">
+                        <p class="ch-type">2025년 7월 29일 시작</p>
+                        <p class="ch-amt"><span class="ch-from">$916</span> <i class="fas fa-arrow-right"></i> <span class="ch-to">$10,000</span></p>
+                        <p class="ch-period">18시간 · 승률 92% · +1,200%</p>
+                        <div class="ch-status live"><i class="fas fa-rocket"></i> 진행중: $300,000 목표</div>
                     </div>
                 </div>
             </div>
 
-            <div class="notice-box">
-                <p>소액이면 고배를 쳐야한다는 분들이 많아, 낮은 레버리지로 직접 모든 트레이딩 과정과 수익은 유튜브 라이브를 통해 증명했습니다. 좋은 손익비와 극강의 리스크 관리를 동반한다면 낮은 레버리지로도 강력한 수익을 볼 수 있다는 걸 증명한 챌린지입니다.</p>
+            <div class="notice-bar">
+                <i class="fas fa-info-circle"></i>
+                <p>소액이면 고배를 쳐야한다는 분들이 많아, 낮은 레버리지로 직접 모든 트레이딩 과정과 수익은 유튜브 라이브를 통해 증명했습니다.</p>
             </div>
         </section>
 
-        <!-- Event Section -->
+        <!-- Event -->
         <section class="section" id="event">
-            <div class="section-label">EVENT</div>
-            <h2 class="section-title">이벤트</h2>
-            <div class="empty-state">
-                <p class="empty-title">진행중인 이벤트가 없습니다</p>
-                <p class="empty-sub">새로운 이벤트가 곧 업데이트됩니다.</p>
+            <h2 class="sec-heading">이벤트에 참여해보세요!</h2>
+            <div class="empty-card">
+                <i class="fas fa-calendar-alt"></i>
+                <p>진행중인 이벤트가 없습니다.</p>
+                <span>새로운 이벤트가 곧 업데이트됩니다.</span>
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <div class="cta-main">
-                <div class="cta-content">
-                    <h3>텔레그램 커뮤니티</h3>
-                    <p>실시간 차트 관점 및 트레이딩 정보를 공유합니다. 고래 입출금, 체결내역, 차트 관점까지 확인해보세요.</p>
-                    <a href="https://t.me/" target="_blank" class="cta-btn"><i class="fab fa-telegram"></i> 텔레그램 입장하기</a>
-                </div>
+        <!-- CTA -->
+        <section class="cta-row">
+            <div class="cta-card cta-tg">
+                <h3>거래소 가입을 완료하셨나요?</h3>
+                <p>텔레그램 방에서는 고래입출금과 체결내역 그리고 정보 및 차트 관점을 공유하고 있어요</p>
+                <a href="https://t.me/" target="_blank" class="btn-cta">텔레그램 입장하기</a>
             </div>
-            <div class="cta-sub">
-                <h3>문의하기</h3>
-                <p>텔레그램을 통해 실시간 문의가 가능합니다.</p>
-                <a href="https://t.me/" target="_blank" class="cta-btn-outline"><i class="fas fa-arrow-right"></i> 1:1 문의</a>
+            <div class="cta-card cta-ask">
+                <h3>궁금한점이 있으신가요?</h3>
+                <p>텔레그램을 통해 실시간 문의가 가능합니다<br>몇 분 내 연결이 되니 조금만 기다려주세요!</p>
+                <a href="https://t.me/" target="_blank" class="btn-cta-outline">고객센터 문의하기</a>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-top">
-                <span class="footer-brand">CUONG TRADING</span>
-                <div class="footer-nav">
-                    <a href="#intro">소개</a>
-                    <a href="#referral">거래소</a>
-                    <a href="#challenge">챌린지</a>
-                    <a href="#event">이벤트</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>본 사이트는 투자를 권유하지 않습니다. 모든 투자의 책임은 본인에게 있습니다.</p>
-                <p>&copy; 2025 Cuong Trading. All rights reserved.</p>
-            </div>
+        <div class="container">
+            <p>&copy; 2025 Cuong Trading. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=9"></script>
 </body>
 </html>

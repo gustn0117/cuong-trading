@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Scroll spy
     const sections = document.querySelectorAll('section[id]');
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY + 100;
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Scroll animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -37,28 +35,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.ch-card, .cta-main, .cta-sub, .exchange-list, .notice-box, .empty-state').forEach((el, i) => {
+    document.querySelectorAll('.ch-card, .cta-card, .table-card, .notice-bar, .empty-card, .info-banner').forEach((el, i) => {
         el.classList.add('animate-ready');
         el.style.transitionDelay = (i * 0.05) + 's';
         observer.observe(el);
     });
 
-    // Hero stats animation
-    const statNums = document.querySelectorAll('.hero-stat-num');
-    const statsObserver = new IntersectionObserver((entries) => {
+    const statCards = document.querySelectorAll('.hero-stat-card');
+    const statsObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
-                statsObserver.unobserve(entry.target);
+                statsObs.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.3 });
 
-    statNums.forEach((el, i) => {
+    statCards.forEach((el, i) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(8px)';
-        el.style.transition = `opacity 0.4s ease ${i * 0.1}s, transform 0.4s ease ${i * 0.1}s`;
-        statsObserver.observe(el);
+        el.style.transform = 'translateY(10px)';
+        el.style.transition = `opacity 0.4s ease ${i * 0.08}s, transform 0.4s ease ${i * 0.08}s`;
+        statsObs.observe(el);
     });
 });
