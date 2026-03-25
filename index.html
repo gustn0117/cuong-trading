@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuong Trading</title>
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -96,76 +96,52 @@
                     <p class="section-sub">아래 링크를 통해 가입하시면 수수료 할인 혜택을 받으실 수 있습니다.</p>
                 </div>
             </div>
-            <div class="exchange-table-wrap">
-                <table class="exchange-table">
-                    <thead>
-                        <tr>
-                            <th>거래소명</th>
-                            <th>종류</th>
-                            <th>입출금</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="exchange-name">
-                                    <div class="exchange-icon deepcoin">DC</div>
-                                    <div>
-                                        <span class="exchange-main-name">딥코인</span>
-                                        <span class="exchange-sub-name">Deepcoin</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="type-badge">CEX</span></td>
-                            <td>
-                                <span class="tag-pill">빗썸</span>
-                                <span class="tag-pill">코인원</span>
-                            </td>
-                            <td>
-                                <a href="https://www.deepcoin.com/turbo/en/login?status=reg&inviteCode=9275707" target="_blank" class="btn-signup">가입하기 <i class="fas fa-arrow-right"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="exchange-name">
-                                    <div class="exchange-icon bitget">BG</div>
-                                    <div>
-                                        <span class="exchange-main-name">비트겟</span>
-                                        <span class="exchange-sub-name">Bitget</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="type-badge">CEX</span></td>
-                            <td>
-                                <span class="tag-pill">업비트</span>
-                                <span class="tag-pill">빗썸</span>
-                            </td>
-                            <td>
-                                <a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="btn-signup">가입하기 <i class="fas fa-arrow-right"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="exchange-name">
-                                    <div class="exchange-icon okx">OKX</div>
-                                    <div>
-                                        <span class="exchange-main-name">OKX</span>
-                                        <span class="exchange-sub-name">OKX Global</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="type-badge">CEX</span></td>
-                            <td>
-                                <span class="tag-pill">업비트</span>
-                                <span class="tag-pill">빗썸</span>
-                            </td>
-                            <td>
-                                <a href="https://www.okx.com/join/99769053" target="_blank" class="btn-signup">가입하기 <i class="fas fa-arrow-right"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="exchange-grid">
+                <div class="exchange-card">
+                    <div class="exchange-card-top">
+                        <div class="exchange-icon deepcoin">DC</div>
+                        <div class="exchange-info">
+                            <span class="exchange-main-name">딥코인</span>
+                            <span class="exchange-sub-name">Deepcoin</span>
+                        </div>
+                        <span class="type-badge">CEX</span>
+                    </div>
+                    <div class="exchange-card-tags">
+                        <span class="tag-pill">빗썸 입출금</span>
+                        <span class="tag-pill">코인원 입출금</span>
+                    </div>
+                    <a href="https://www.deepcoin.com/turbo/en/login?status=reg&inviteCode=9275707" target="_blank" class="btn-signup">가입하기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="exchange-card">
+                    <div class="exchange-card-top">
+                        <div class="exchange-icon bitget">BG</div>
+                        <div class="exchange-info">
+                            <span class="exchange-main-name">비트겟</span>
+                            <span class="exchange-sub-name">Bitget</span>
+                        </div>
+                        <span class="type-badge">CEX</span>
+                    </div>
+                    <div class="exchange-card-tags">
+                        <span class="tag-pill">업비트 입출금</span>
+                        <span class="tag-pill">빗썸 입출금</span>
+                    </div>
+                    <a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="btn-signup">가입하기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="exchange-card">
+                    <div class="exchange-card-top">
+                        <div class="exchange-icon okx">OKX</div>
+                        <div class="exchange-info">
+                            <span class="exchange-main-name">OKX</span>
+                            <span class="exchange-sub-name">OKX Global</span>
+                        </div>
+                        <span class="type-badge">CEX</span>
+                    </div>
+                    <div class="exchange-card-tags">
+                        <span class="tag-pill">업비트 입출금</span>
+                        <span class="tag-pill">빗썸 입출금</span>
+                    </div>
+                    <a href="https://www.okx.com/join/99769053" target="_blank" class="btn-signup">가입하기 <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </section>
 
@@ -312,6 +288,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=6"></script>
+    <script src="script.js?v=7"></script>
 </body>
 </html>

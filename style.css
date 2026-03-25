@@ -337,62 +337,43 @@ a {
     color: #aaa;
 }
 
-/* ==================== EXCHANGE TABLE ==================== */
-.exchange-table-wrap {
+/* ==================== EXCHANGE CARDS ==================== */
+.exchange-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.exchange-card {
     background: #fff;
-    border-radius: 12px;
     border: 1px solid #eee;
-    overflow: hidden;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
 }
 
-.exchange-table {
-    width: 100%;
-    border-collapse: collapse;
+.exchange-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
 }
 
-.exchange-table thead {
-    background: #fafbfc;
-}
-
-.exchange-table th {
-    padding: 12px 24px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #aaa;
-    text-align: left;
-    border-bottom: 1px solid #f0f1f3;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.exchange-table td {
-    padding: 16px 24px;
-    border-bottom: 1px solid #f5f6f7;
-    vertical-align: middle;
-}
-
-.exchange-table tbody tr {
-    transition: background 0.15s ease;
-}
-
-.exchange-table tr:last-child td {
-    border-bottom: none;
-}
-
-.exchange-table tbody tr:hover {
-    background: #fafbfc;
-}
-
-.exchange-name {
+.exchange-card-top {
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-bottom: 14px;
+}
+
+.exchange-info {
+    flex: 1;
 }
 
 .exchange-main-name {
     display: block;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 15px;
     color: #1a1a2e;
 }
 
@@ -442,32 +423,40 @@ a {
     letter-spacing: 0.3px;
 }
 
+.exchange-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
 .tag-pill {
     display: inline-block;
-    padding: 3px 10px;
-    background: #fef7ed;
-    color: #b45309;
+    padding: 4px 10px;
+    background: #f8f9fb;
+    color: #888;
     border-radius: 5px;
     font-size: 11.5px;
     font-weight: 600;
-    margin-right: 4px;
 }
 
 .btn-signup {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    padding: 9px 20px;
+    padding: 10px 20px;
     background: #f7931a;
     color: #fff;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 700;
     border-radius: 8px;
+    width: 100%;
+    text-align: center;
 }
 
 .btn-signup:hover {
     background: #e8850f;
-    transform: translateY(-1px);
 }
 
 .btn-signup i {
@@ -969,12 +958,8 @@ a {
         grid-template-columns: 1fr;
     }
 
-    .exchange-table-wrap {
-        overflow-x: auto;
-    }
-
-    .exchange-table {
-        min-width: 520px;
+    .exchange-grid {
+        grid-template-columns: 1fr;
     }
 
     .cta-card {

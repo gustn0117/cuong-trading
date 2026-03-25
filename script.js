@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.challenge-card, .cta-card, .exchange-table-wrap, .disclaimer, .event-empty').forEach((el, i) => {
+    document.querySelectorAll('.challenge-card, .cta-card, .exchange-card, .disclaimer, .event-empty').forEach((el, i) => {
         el.classList.add('animate-ready');
         el.style.transitionDelay = (i * 0.06) + 's';
         observer.observe(el);
