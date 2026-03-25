@@ -6,27 +6,27 @@
 }
 
 :root {
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #12121a;
-    --bg-card: #1a1a26;
-    --bg-card-hover: #222233;
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0b8;
-    --text-muted: #6b6b80;
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #eef1f6;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f4ff;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555570;
+    --text-muted: #8888a0;
     --accent: #f7931a;
-    --accent-hover: #ffaa3b;
-    --accent-glow: rgba(247, 147, 26, 0.15);
-    --success: #00d26a;
-    --success-bg: rgba(0, 210, 106, 0.1);
-    --danger: #ff4d4d;
-    --border: #2a2a3a;
-    --border-light: #3a3a4e;
+    --accent-hover: #e8850f;
+    --accent-glow: rgba(247, 147, 26, 0.1);
+    --success: #00b85e;
+    --success-bg: rgba(0, 184, 94, 0.08);
+    --danger: #e63946;
+    --border: #e0e4ec;
+    --border-light: #d0d5e0;
     --telegram: #0088cc;
     --radius: 16px;
     --radius-sm: 10px;
     --radius-xs: 6px;
-    --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.1);
 }
 
 html {
@@ -55,7 +55,7 @@ a {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(10, 10, 15, 0.92);
+    background: rgba(245, 247, 250, 0.92);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
 }
@@ -176,7 +176,7 @@ a {
     font-size: 72px;
     font-weight: 900;
     letter-spacing: 6px;
-    background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #3a3a5e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -340,7 +340,7 @@ a {
 }
 
 .exchange-logo.okx {
-    background: linear-gradient(135deg, #000, #333);
+    background: linear-gradient(135deg, #222, #555);
     border: 1px solid var(--border-light);
 }
 
@@ -489,7 +489,7 @@ a {
 }
 
 .challenge-badge.fire {
-    background: linear-gradient(135deg, #ff4d00, #ff8c00);
+    background: linear-gradient(135deg, #ff6b1a, #ffa033);
     border: none;
     color: #fff;
 }
@@ -890,16 +890,16 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--border-light);
+    background: var(--border);
     border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+    background: var(--border-light);
 }
 
 /* Responsive */
