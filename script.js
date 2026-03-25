@@ -37,14 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.challenge-card, .cta-card, .exchange-card, .disclaimer, .event-empty').forEach((el, i) => {
+    document.querySelectorAll('.ch-card, .cta-main, .cta-sub, .exchange-list, .notice-box, .empty-state').forEach((el, i) => {
         el.classList.add('animate-ready');
-        el.style.transitionDelay = (i * 0.06) + 's';
+        el.style.transitionDelay = (i * 0.05) + 's';
         observer.observe(el);
     });
 
-    // Counter animation for stats
-    const statNumbers = document.querySelectorAll('.stat-number');
+    // Hero stats animation
+    const statNums = document.querySelectorAll('.hero-stat-num');
     const statsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.5 });
 
-    statNumbers.forEach((el, i) => {
+    statNums.forEach((el, i) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(10px)';
-        el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+        el.style.transform = 'translateY(8px)';
+        el.style.transition = `opacity 0.4s ease ${i * 0.1}s, transform 0.4s ease ${i * 0.1}s`;
         statsObserver.observe(el);
     });
 });
