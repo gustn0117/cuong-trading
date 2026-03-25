@@ -37,9 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.challenge-card, .cta-card, .info-banner').forEach((el, i) => {
+    document.querySelectorAll('.challenge-card, .cta-card, .exchange-table-wrap, .disclaimer, .event-empty').forEach((el, i) => {
         el.classList.add('animate-ready');
-        el.style.transitionDelay = (i * 0.05) + 's';
+        el.style.transitionDelay = (i * 0.06) + 's';
         observer.observe(el);
+    });
+
+    // Counter animation for stats
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+        statsObserver.observe(el);
     });
 });
