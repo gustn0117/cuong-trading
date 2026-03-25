@@ -114,21 +114,22 @@ a {
 .hero-bg {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(247, 147, 26, 0.03) 0%, rgba(247, 147, 26, 0.08) 100%);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(247, 147, 26, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
 .hero-inner {
     max-width: 1140px;
     margin: 0 auto;
-    padding: 64px 32px 56px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
+    padding: 80px 32px 64px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
     position: relative;
     z-index: 1;
 }
@@ -185,6 +186,7 @@ a {
     margin-top: 28px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -206,13 +208,23 @@ a {
     font-size: 12px;
 }
 
-/* Video */
+/* Video Section */
+.video-section {
+    background: #f4f6f9;
+    padding: 48px 32px;
+}
+
+.video-section-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .video-placeholder {
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: linear-gradient(135deg, #f7f8fa, #eef0f4);
+    background: #fff;
     border: 2px dashed #d8dce4;
-    border-radius: 16px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -220,6 +232,7 @@ a {
     gap: 16px;
     color: #aaa;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 .video-placeholder:hover {
@@ -906,8 +919,6 @@ a {
     }
 
     .hero-inner {
-        grid-template-columns: 1fr;
-        gap: 36px;
         padding: 48px 32px;
     }
 
@@ -930,7 +941,7 @@ a {
     }
 
     .hero-inner {
-        padding: 32px 16px;
+        padding: 40px 16px;
     }
 
     .hero-title {
@@ -939,6 +950,10 @@ a {
 
     .hero-bg {
         display: none;
+    }
+
+    .video-section {
+        padding: 32px 16px;
     }
 
     .stats-inner {
