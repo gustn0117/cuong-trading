@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuong Trading</title>
-    <link rel="stylesheet" href="style.css?v=9">
+    <link rel="stylesheet" href="style.css?v=10">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -16,13 +16,19 @@
                 <span class="logo-mark">CUONG</span> TRADING
             </a>
             <nav class="nav">
-                <a href="#intro" class="nav-link active">홈</a>
-                <a href="#referral" class="nav-link">소개</a>
-                <a href="#challenge" class="nav-link">챌린지</a>
-                <a href="#event" class="nav-link">이벤트</a>
-                <a href="https://t.me/" target="_blank" class="nav-link nav-highlight">텔레그램</a>
-                <a href="https://t.me/" target="_blank" class="nav-link">문의하기</a>
+                <a href="#intro" class="nav-link active">소개</a>
+                <a href="#referral" class="nav-link">레퍼럴변경</a>
+                <a href="#indicator" class="nav-link">지표등록</a>
+                <a href="#" class="nav-link">관점방</a>
+                <a href="#" class="nav-link">교육방</a>
+                <a href="#" class="nav-link">전자책</a>
+                <a href="https://t.me/cuongmanager" target="_blank" class="nav-link">문의하기</a>
             </nav>
+            <div class="header-right">
+                <a href="https://t.me/cuongmanager" target="_blank" class="btn-header-cta">
+                    <i class="fab fa-telegram"></i> 텔레그램
+                </a>
+            </div>
         </div>
     </header>
 
@@ -33,7 +39,7 @@
                 <h1 class="hero-title">검증된 트레이더, <span>CUONG</span></h1>
                 <p class="hero-desc">유튜브 라이브로 모든 트레이딩을 증명합니다. 좋은 손익비와 극강의 리스크 관리로 <strong>낮은 레버리지로도 강력한 수익</strong>을 만들어냅니다.</p>
                 <div class="hero-actions">
-                    <a href="https://t.me/" target="_blank" class="btn-primary"><i class="fab fa-telegram"></i> 텔레그램 입장하기</a>
+                    <a href="https://t.me/cuongmanager" target="_blank" class="btn-primary"><i class="fab fa-telegram"></i> 텔레그램 입장하기</a>
                     <a href="#challenge" class="btn-ghost">챌린지 보기 <i class="fas fa-arrow-down"></i></a>
                 </div>
             </div>
@@ -53,18 +59,6 @@
                 <div class="hero-stat-card accent">
                     <span class="stat-value">$560K+</span>
                     <span class="stat-desc">챌린지 총 수익</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video -->
-    <section class="section-video">
-        <div class="container">
-            <div class="video-wrap">
-                <div class="video-placeholder">
-                    <div class="play-circle"><i class="fas fa-play"></i></div>
-                    <p>소개 영상</p>
                 </div>
             </div>
         </div>
@@ -131,13 +125,16 @@
             </div>
         </section>
 
-        <!-- Info Banner -->
-        <section class="info-banner">
-            <div class="info-banner-left">
-                <p class="info-banner-title">Cuong의 커리어</p>
-                <p class="info-banner-desc">2017년~현재 트레이딩 | TradingView Top Author 4년 연속 | Bybit 세계 1위 2회 | 거래소 대회 50회+ 1위</p>
+        <!-- Indicator Section -->
+        <section class="section" id="indicator">
+            <h2 class="sec-heading">지표 등록</h2>
+            <p class="sec-sub">쿠모닉 사용설명서 영상을 확인하고, 지표를 등록해보세요.</p>
+            <div class="indicator-video-wrap">
+                <video class="indicator-video" controls>
+                    <source src="KakaoTalk_Video_2026-03-26-12-06-20.mp4" type="video/mp4">
+                </video>
+                <p class="indicator-video-label">쿠모닉 사용설명서</p>
             </div>
-            <a href="#challenge" class="info-banner-btn">챌린지 보기 <i class="fas fa-arrow-right"></i></a>
         </section>
 
         <!-- Challenge -->
@@ -185,9 +182,9 @@
                     </div>
                     <div class="ch-body">
                         <p class="ch-type">2025년 7월 29일 시작</p>
-                        <p class="ch-amt"><span class="ch-from">$916</span> <i class="fas fa-arrow-right"></i> <span class="ch-to">$10,000</span></p>
+                        <p class="ch-amt"><span class="ch-from">$916</span> <i class="fas fa-arrow-right"></i> <span class="ch-to">$300,000</span></p>
                         <p class="ch-period">18시간 · 승률 92% · +1,200%</p>
-                        <div class="ch-status live"><i class="fas fa-rocket"></i> 진행중: $300,000 목표</div>
+                        <div class="ch-status done"><i class="fas fa-check-circle"></i> $300,000 목표 달성</div>
                     </div>
                 </div>
             </div>
@@ -195,6 +192,25 @@
             <div class="notice-bar">
                 <i class="fas fa-info-circle"></i>
                 <p>소액이면 고배를 쳐야한다는 분들이 많아, 낮은 레버리지로 직접 모든 트레이딩 과정과 수익은 유튜브 라이브를 통해 증명했습니다.</p>
+            </div>
+        </section>
+
+        <!-- Video Section (toggleable) -->
+        <section class="section" id="video-section">
+            <div class="video-toggle-header">
+                <h2 class="sec-heading">소개 영상</h2>
+                <button class="video-toggle-btn" id="videoToggle">
+                    <span class="toggle-text">영상 보기</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="video-collapse" id="videoCollapse">
+                <div class="video-wrap">
+                    <div class="video-placeholder">
+                        <div class="play-circle"><i class="fas fa-play"></i></div>
+                        <p>소개 영상</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -211,14 +227,14 @@
         <!-- CTA -->
         <section class="cta-row">
             <div class="cta-card cta-tg">
-                <h3>거래소 가입을 완료하셨나요?</h3>
-                <p>텔레그램 방에서는 고래입출금과 체결내역 그리고 정보 및 차트 관점을 공유하고 있어요</p>
-                <a href="https://t.me/" target="_blank" class="btn-cta">텔레그램 입장하기</a>
+                <h3>쿠엉 공식 커뮤니티</h3>
+                <p>쿠엉 공식 디스코드에 입장하여 최신 공지사항과 실시간 차트 관점을 확인해 보세요.</p>
+                <a href="https://t.me/cuongmanager" target="_blank" class="btn-cta"><i class="fab fa-telegram"></i> 커뮤니티 입장하기</a>
             </div>
             <div class="cta-card cta-ask">
                 <h3>궁금한점이 있으신가요?</h3>
                 <p>텔레그램을 통해 실시간 문의가 가능합니다<br>몇 분 내 연결이 되니 조금만 기다려주세요!</p>
-                <a href="https://t.me/" target="_blank" class="btn-cta-outline">고객센터 문의하기</a>
+                <a href="https://t.me/cuongmanager" target="_blank" class="btn-cta-outline">고객센터 문의하기</a>
             </div>
         </section>
     </main>
@@ -230,6 +246,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=9"></script>
+    <script src="script.js?v=10"></script>
 </body>
 </html>

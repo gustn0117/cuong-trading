@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Nav active state
     const navLinks = document.querySelectorAll('.nav-link');
-
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             navLinks.forEach(l => l.classList.remove('active'));
@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Scroll spy
     const sections = document.querySelectorAll('section[id]');
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY + 100;
@@ -26,6 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Video toggle
+    const toggleBtn = document.getElementById('videoToggle');
+    const collapse = document.getElementById('videoCollapse');
+    if (toggleBtn && collapse) {
+        toggleBtn.addEventListener('click', () => {
+            const isOpen = collapse.classList.toggle('show');
+            toggleBtn.classList.toggle('open', isOpen);
+            toggleBtn.querySelector('.toggle-text').textContent = isOpen ? '영상 숨기기' : '영상 보기';
+        });
+    }
+
+    // Scroll animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -35,12 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.ch-card, .cta-card, .table-card, .notice-bar, .empty-card, .info-banner').forEach((el, i) => {
+    document.querySelectorAll('.ch-card, .cta-card, .table-card, .notice-bar, .empty-card, .indicator-video-wrap').forEach((el, i) => {
         el.classList.add('animate-ready');
         el.style.transitionDelay = (i * 0.05) + 's';
         observer.observe(el);
     });
 
+    // Hero stats animation
     const statCards = document.querySelectorAll('.hero-stat-card');
     const statsObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
