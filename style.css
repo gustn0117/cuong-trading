@@ -393,6 +393,25 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 .ex-logo.bitget { background: linear-gradient(135deg, #10b981, #34d399); }
 .ex-logo.okx { background: linear-gradient(135deg, #1c1c28, #3a3a4a); }
 
+.ex-logo-img {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    object-fit: contain;
+    flex-shrink: 0;
+    background: var(--bg-tag);
+    padding: 4px;
+}
+.ex-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-tag);
+    border-radius: 6px;
+    margin: 2px 4px 2px 0;
+    white-space: nowrap;
+}
 .ex-type {
     display: inline-flex;
     align-items: center;
@@ -555,7 +574,7 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     .stat-value { font-size: 22px; }
     .cta-row { grid-template-columns: 1fr; }
     .table-card { overflow-x: auto; border-radius: 16px; }
-    .ex-table { min-width: 700px; }
+    .ex-table { min-width: 800px; }
     .cta-card { padding: 36px 28px; }
     .main-content { padding-top: 32px; padding-bottom: 48px; }
     .section { margin-bottom: 40px; }
