@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>쿠엉 트레이딩</title>
-    <link rel="stylesheet" href="style.css?v=14">
+    <link rel="stylesheet" href="style.css?v=15">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,12 +18,13 @@
                 <a href="#" class="nav-link" data-page="intro">소개</a>
                 <a href="#" class="nav-link" data-page="referral">레퍼럴변경</a>
                 <a href="#" class="nav-link" data-page="indicator">지표등록</a>
-                <a href="#" class="nav-link">관점방</a>
-                <a href="#" class="nav-link">교육방</a>
-                <a href="#" class="nav-link">전자책</a>
+                <a href="#" class="nav-link" data-page="viewpoint">관점방</a>
+                <a href="#" class="nav-link" data-page="education">교육방</a>
+                <a href="#" class="nav-link" data-page="ebook">전자책</a>
                 <a href="https://t.me/cuongmanager" target="_blank" class="nav-link">문의하기</a>
             </nav>
             <div class="header-controls">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" title="메뉴"><i class="fas fa-bars"></i></button>
                 <button class="theme-toggle" id="themeToggle" title="다크모드"><i class="fas fa-moon"></i></button>
                 <div class="lang-select">
                     <button class="lang-btn" id="langBtn"><i class="fas fa-globe"></i> <span id="langLabel">한국어</span></button>
@@ -123,7 +124,7 @@
                                 <th data-i18n="th_name">거래소명</th>
                                 <th data-i18n="th_type">종류</th>
                                 <th data-i18n="th_deposit">입출금</th>
-                                <th data-i18n="th_payback">수수료 페이백</th>
+                                <th data-i18n="th_payback">수수료 할인</th>
                                 <th data-i18n="th_maker">지정가</th>
                                 <th data-i18n="th_taker">시장가</th>
                                 <th></th>
@@ -139,7 +140,7 @@
                                 </td>
                                 <td><span class="ex-type">CEX</span></td>
                                 <td><span class="ex-tag">빗썸/코인원 국내 거래소 입출금 가능</span></td>
-                                <td><span class="ex-payback">59%</span></td>
+                                <td><span class="ex-payback">59% 페이백</span></td>
                                 <td class="ex-fee">0.009</td>
                                 <td class="ex-fee">0.0182</td>
                                 <td class="ex-actions"><a href="https://www.deepcoin.com/turbo/en/login?status=reg&inviteCode=9275707" target="_blank" class="btn-table" data-i18n="btn_signup">가입하기</a></td>
@@ -167,7 +168,7 @@
                                 </td>
                                 <td><span class="ex-type">CEX</span></td>
                                 <td><span class="ex-tag">업비트/빗썸 국내 거래소 입출금 가능</span></td>
-                                <td><span class="ex-payback">20%</span></td>
+                                <td><span class="ex-payback">20% 페이백</span></td>
                                 <td class="ex-fee">0.016</td>
                                 <td class="ex-fee">0.04</td>
                                 <td class="ex-actions"><a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="btn-table" data-i18n="btn_signup">가입하기</a></td>
@@ -180,10 +181,17 @@
             <!-- Event -->
             <section class="section">
                 <h2 class="sec-heading" data-i18n="event_title">이벤트에 참여해보세요!</h2>
-                <div class="empty-card">
-                    <i class="fas fa-calendar-alt"></i>
-                    <p data-i18n="event_empty">진행중인 이벤트가 없습니다.</p>
-                    <span data-i18n="event_soon">새로운 이벤트가 곧 업데이트됩니다.</span>
+                <div class="event-card">
+                    <a href="https://www.deepcoin.com/turbo/en/login?status=register&target=/match?id=56&inviteCode=9275707" target="_blank" class="event-link">
+                        <div class="event-content">
+                            <i class="fas fa-trophy"></i>
+                            <div>
+                                <p class="event-title">Deepcoin 트레이딩 대회</p>
+                                <span class="event-desc">지금 바로 참여하세요!</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-arrow-right event-arrow"></i>
+                    </a>
                 </div>
             </section>
 
@@ -227,6 +235,42 @@
         </main>
     </div>
 
+    <!-- ==================== PAGE: VIEWPOINT ==================== -->
+    <div class="page" id="page-viewpoint">
+        <main class="container main-content">
+            <section class="section">
+                <h2 class="sec-heading">관점방</h2>
+                <div class="text-card">
+                    <p style="color:var(--text-secondary);line-height:1.9">관점방 페이지입니다. 콘텐츠가 추가될 예정입니다.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==================== PAGE: EDUCATION ==================== -->
+    <div class="page" id="page-education">
+        <main class="container main-content">
+            <section class="section">
+                <h2 class="sec-heading">교육방</h2>
+                <div class="text-card">
+                    <p style="color:var(--text-secondary);line-height:1.9">교육방 페이지입니다. 콘텐츠가 추가될 예정입니다.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==================== PAGE: EBOOK ==================== -->
+    <div class="page" id="page-ebook">
+        <main class="container main-content">
+            <section class="section">
+                <h2 class="sec-heading">전자책</h2>
+                <div class="text-card">
+                    <p style="color:var(--text-secondary);line-height:1.9">전자책 페이지입니다. 콘텐츠가 추가될 예정입니다.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
     <!-- ==================== PAGE: INDICATOR ==================== -->
     <div class="page" id="page-indicator">
         <main class="container main-content">
@@ -248,6 +292,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=12"></script>
+    <script src="script.js?v=13"></script>
 </body>
 </html>

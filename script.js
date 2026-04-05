@@ -20,6 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ===== MOBILE MENU =====
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mainNav = document.getElementById('mainNav');
+    mobileMenuBtn.addEventListener('click', () => {
+        mainNav.classList.toggle('open');
+        mobileMenuBtn.innerHTML = mainNav.classList.contains('open')
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+    });
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mainNav.classList.remove('open');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+    });
+
     // ===== DARK MODE =====
     const themeToggle = document.getElementById('themeToggle');
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -62,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             challenge_title: '✅ 유튜브 라이브 검증 트레이딩 챌린지 ✅',
             challenge_sub: '유튜브 채널 개설: 2024년 9월',
             exchange_title: '국내 입출금 가능 거래소',
-            th_name: '거래소명', th_type: '종류', th_payback: '수수료 페이백', th_maker: '지정가', th_taker: '시장가',
+            th_name: '거래소명', th_type: '종류', th_payback: '수수료 할인', th_maker: '지정가', th_taker: '시장가',
             btn_signup: '가입하기',
             event_title: '이벤트에 참여해보세요!',
             event_empty: '진행중인 이벤트가 없습니다.',
@@ -88,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             challenge_title: '✅ YouTube Live Verified Trading Challenge ✅',
             challenge_sub: 'YouTube Channel Opened: September 2024',
             exchange_title: 'Supported Exchanges',
-            th_name: 'Exchange', th_type: 'Type', th_payback: 'Fee Payback', th_maker: 'Maker', th_taker: 'Taker',
+            th_name: 'Exchange', th_type: 'Type', th_payback: 'Fee Discount', th_maker: 'Maker', th_taker: 'Taker',
             btn_signup: 'Sign Up',
             event_title: 'Join Our Events!',
             event_empty: 'No ongoing events.',
@@ -114,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             challenge_title: '✅ YouTube直播验证交易挑战 ✅',
             challenge_sub: 'YouTube频道创建: 2024年9月',
             exchange_title: '支持的交易所',
-            th_name: '交易所', th_type: '类型', th_payback: '手续费返还', th_maker: '挂单', th_taker: '吃单',
+            th_name: '交易所', th_type: '类型', th_payback: '手续费折扣', th_maker: '挂单', th_taker: '吃单',
             btn_signup: '注册',
             event_title: '参与活动！',
             event_empty: '没有正在进行的活动。',
