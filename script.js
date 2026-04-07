@@ -188,10 +188,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.text-card, .table-card, .cta-card, .empty-card').forEach((el, i) => {
+    document.querySelectorAll('.text-card, .table-card, .cta-card, .empty-card, .event-card, .indicator-video-wrap').forEach((el, i) => {
         el.classList.add('animate-ready');
-        el.style.transitionDelay = (i * 0.05) + 's';
+        el.style.transitionDelay = (i * 0.06) + 's';
         observer.observe(el);
+    });
+
+    // Stagger children (nav-cards, edu-grid, review-grid)
+    document.querySelectorAll('.stagger-children').forEach(container => {
+        container.classList.add('animate-ready');
+        observer.observe(container);
+    });
+
+    // Stat inline items
+    document.querySelectorAll('.stat-inline-item').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(12px)';
+        el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        obs.observe(el);
+    });
+
+    // Glow badges
+    document.querySelectorAll('.glow-badge').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(-12px)';
+        el.style.transition = `opacity 0.4s ease, transform 0.4s ease`;
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateX(0)';
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        obs.observe(el);
     });
 
     // Hero stats
