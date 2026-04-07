@@ -400,6 +400,12 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     align-items: center;
     justify-content: center;
 }
+.nav-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
 .nav-card-img i {
     font-size: 48px;
     color: rgba(255,255,255,0.2);
@@ -637,6 +643,53 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     border: 1px solid var(--border);
 }
 .btn-cta-outline:hover { opacity: 0.85; }
+
+/* ===== EDUCATION PAGE ===== */
+.edu-notice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.edu-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 20px;
+}
+.edu-notice h3 {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text);
+}
+.edu-info-list {
+    list-style: none;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.edu-info-list li {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    padding-left: 16px;
+    border-left: 3px solid var(--accent);
+}
+.edu-info-list li strong {
+    display: block;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+.edu-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+}
 
 /* ===== FOOTER ===== */
 .footer {
