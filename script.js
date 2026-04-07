@@ -261,4 +261,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.3 });
         obs.observe(el);
     });
+
+    // ===== YOUTUBE FACADE =====
+    document.querySelectorAll('.yt-facade').forEach(facade => {
+        facade.addEventListener('click', () => {
+            const videoId = facade.dataset.videoId;
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&vq=hd1080&hd=1';
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.style.width = '100%';
+            iframe.style.aspectRatio = '16/9';
+            iframe.style.display = 'block';
+            facade.replaceWith(iframe);
+        });
+    });
+
+    // ===== LIGHTBOX =====
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.review-item img').forEach(img => {
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
 });

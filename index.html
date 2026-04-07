@@ -453,7 +453,12 @@
                 </h2>
                 <p class="sec-sub">쿠모닉 사용설명서 영상을 확인하고, 지표를 등록해보세요.</p>
                 <div class="indicator-video-wrap">
-                    <iframe src="https://www.youtube.com/embed/h_3tO66s8IM?vq=hd1080&hd=1" title="쿠모닉 사용설명서" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="yt-facade" data-video-id="h_3tO66s8IM">
+                        <img src="https://img.youtube.com/vi/h_3tO66s8IM/maxresdefault.jpg" alt="쿠모닉 사용설명서" class="yt-facade-thumb">
+                        <button class="yt-facade-play" aria-label="재생">
+                            <svg viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                        </button>
+                    </div>
                     <p class="indicator-video-label">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                         쿠모닉 사용설명서
@@ -461,6 +466,14 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+        </button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
     </div>
 
     <!-- Footer -->
