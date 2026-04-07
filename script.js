@@ -162,7 +162,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = translations[lang];
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (t[key]) el.innerHTML = t[key];
+            if (!t[key]) return;
+            // Preserve leading SVG elements inside headings
+            const svgs = el.querySelectorAll(':scope > svg');
+            if (svgs.length > 0) {
+                const fragment = document.createDocumentFragment();
+                svgs.forEach(svg => fragment.appendChild(svg.cloneNode(true)));
+                el.innerHTML = '';
+                el.appendChild(fragment);
+                el.insertAdjacentHTML('beforeend', ' ' + t[key]);
+            } else {
+                el.innerHTML = t[key];
+            }
         });
         langDropdown.classList.remove('show');
     }
