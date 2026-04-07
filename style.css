@@ -79,7 +79,7 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 }
 .logo {
     font-family: 'Noto Sans KR', sans-serif;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 900;
     color: var(--text);
     flex-shrink: 0;
@@ -365,6 +365,50 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 }
 .accent { color: var(--accent) !important; font-weight: 800; }
 
+/* ===== NAV CARDS (3-column) ===== */
+.nav-cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.nav-card {
+    background: linear-gradient(135deg, #1c1c28, #2d2d3f);
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    position: relative;
+}
+.nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
+.nav-card h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 20px;
+}
+.nav-card-img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-card-img i {
+    font-size: 48px;
+    color: rgba(255,255,255,0.2);
+}
+.nav-card:hover .nav-card-img i {
+    color: var(--accent);
+    transition: color 0.3s;
+}
+
 /* ===== EXCHANGE TABLE ===== */
 .table-card {
     background: var(--bg-card);
@@ -641,6 +685,7 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     .hero-stat-card { padding: 24px 16px; }
     .hero-stat-card:nth-child(2) { border-right: none; }
     .stat-value { font-size: 22px; }
+    .nav-cards-row { grid-template-columns: 1fr; }
     .cta-row { grid-template-columns: 1fr; }
     .table-card { overflow-x: auto; border-radius: 16px; }
     .ex-table { min-width: 800px; }
