@@ -20,6 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Nav cards (3-column) also route pages
+    document.querySelectorAll('.nav-card[data-page]').forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(card.dataset.page);
+        });
+    });
+
     // ===== MOBILE MENU =====
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mainNav = document.getElementById('mainNav');

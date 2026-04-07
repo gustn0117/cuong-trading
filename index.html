@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>쿠엉 트레이딩</title>
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=17">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -260,27 +260,42 @@
     <!-- ==================== PAGE: EDUCATION ==================== -->
     <div class="page" id="page-education">
         <main class="container main-content">
+            <!-- 교육방 히어로 배너 -->
+            <section class="edu-hero">
+                <div class="edu-hero-inner">
+                    <span class="edu-badge">모집중</span>
+                    <h1 class="edu-hero-title">교육방 5기 수강생 모집</h1>
+                    <p class="edu-hero-desc">쿠엉님의 세밀한 케어를 위해 한정된 인원으로 진행됩니다</p>
+                    <div class="edu-hero-period"><i class="fas fa-calendar-alt"></i> 3월 19일 ~ 4월 20일 <span>(인원 마감 시 조기 종료)</span></div>
+                </div>
+            </section>
+
+            <!-- 안내 카드 -->
             <section class="section">
-                <h2 class="sec-heading">교육방</h2>
-                <p class="sec-sub">교육방 5기 수강생 모집</p>
-                <div class="text-card">
-                    <div class="edu-notice">
-                        <span class="edu-badge">모집중</span>
-                        <h3>교육방 5기 수강생 모집 시작</h3>
+                <div class="edu-grid">
+                    <div class="edu-card">
+                        <div class="edu-card-icon"><i class="fas fa-users"></i></div>
+                        <h3>한정 인원 모집</h3>
+                        <p>기다려주시는 분들이 많았던 교육방 5기 모집이 시작되었습니다. 인원 충원 시 조기 마감될 수 있습니다.</p>
                     </div>
-                    <p style="color:var(--text-secondary);line-height:1.9;margin-top:16px">
-                        기다려주시는 분들이 많았던 교육방 5기 모집 소식을 전해드립니다.<br>
-                        이번 기수는 쿠엉님의 세밀한 케어를 위해 <strong style="color:var(--accent)">한정된 인원</strong>으로 진행되며, 인원 충원 시 조기 마감될 수 있습니다.
-                    </p>
-                    <ul class="edu-info-list">
-                        <li><strong>모집 기간</strong> 3월 19일 ~ 4월 20일 (인원 마감 시 조기 종료)</li>
-                        <li><strong>상담 및 문의</strong> 쿠엉님은 교육에 집중하실 수 있도록, 매니저에게 편하게 문의해 주세요.</li>
-                        <li><strong>후기 확인</strong> 실제 수강생분들의 생생한 후기도 준비되어 있으니 언제든 요청해 주세요.</li>
-                    </ul>
-                    <div class="edu-actions">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfDlPvP_qZ_ys8NzLu5crXVX3u0Ksi4nWo261vm_Mn37jz7Iw/viewform?usp=header" target="_blank" class="btn-primary"><i class="fas fa-pen-to-square"></i> 신청서 작성하기</a>
-                        <a href="https://t.me/cuongmanager" target="_blank" class="btn-ghost"><i class="fab fa-telegram"></i> 문의하기</a>
+                    <div class="edu-card">
+                        <div class="edu-card-icon"><i class="fas fa-headset"></i></div>
+                        <h3>상담 및 문의</h3>
+                        <p>쿠엉님은 교육에 집중하실 수 있도록, 매니저에게 편하게 문의해 주세요.</p>
                     </div>
+                    <div class="edu-card">
+                        <div class="edu-card-icon"><i class="fas fa-star"></i></div>
+                        <h3>수강생 후기</h3>
+                        <p>실제 수강생분들의 생생한 후기도 준비되어 있으니 언제든 요청해 주세요.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 신청 버튼 -->
+            <section class="section" style="text-align:center">
+                <div class="edu-actions">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfDlPvP_qZ_ys8NzLu5crXVX3u0Ksi4nWo261vm_Mn37jz7Iw/viewform?usp=header" target="_blank" class="btn-primary" style="font-size:16px;padding:16px 40px"><i class="fas fa-pen-to-square"></i> 신청서 작성하기</a>
+                    <a href="https://t.me/cuongmanager" target="_blank" class="btn-ghost" style="font-size:16px;padding:16px 40px"><i class="fab fa-telegram"></i> 문의하기</a>
                 </div>
             </section>
         </main>
@@ -319,6 +334,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=13"></script>
+    <script src="script.js?v=14"></script>
 </body>
 </html>
