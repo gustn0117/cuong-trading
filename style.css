@@ -393,18 +393,16 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 }
 .nav-card-img {
     width: 100%;
-    background: rgba(255,255,255,0.05);
+    aspect-ratio: 4/3;
     border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
 }
 .nav-card-img img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
     display: block;
-    border-radius: 12px;
 }
 .nav-card-img i {
     font-size: 48px;
