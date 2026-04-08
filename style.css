@@ -697,6 +697,7 @@ a { text-decoration: none; color: inherit; transition: 0.25s ease; }
     display: block;
 }
 .yt-facade {
+    display: block;
     position: relative;
     width: 100%;
     aspect-ratio: 16/9;
