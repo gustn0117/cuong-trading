@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>쿠엉 트레이딩</title>
-    <link rel="stylesheet" href="style.css?v=23">
+    <title>Cuong Trading</title>
+    <link rel="stylesheet" href="style.css?v=25">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -41,6 +41,30 @@
     <!-- ==================== PAGE: HOME ==================== -->
     <div class="page active" id="page-home">
         <main class="container main-content">
+            <!-- 3-Column Navigation Cards (최상단) -->
+            <section class="section">
+                <div class="nav-cards-row stagger-children">
+                    <a href="#" class="nav-card" data-page="viewpoint">
+                        <h3>관점방 신청하기</h3>
+                        <div class="nav-card-img">
+                            <img src="관점방이미지.png" alt="관점방">
+                        </div>
+                    </a>
+                    <a href="#" class="nav-card" data-page="education">
+                        <h3>교육방 신청하기</h3>
+                        <div class="nav-card-img">
+                            <img src="교육방이미지.png" alt="교육방">
+                        </div>
+                    </a>
+                    <a href="#" class="nav-card" data-page="indicator">
+                        <h3>쿠모닉 & 쿠시그널 신청하기</h3>
+                        <div class="nav-card-img">
+                            <img src="쿠모닉 이미지.png" alt="쿠모닉 & 쿠시그널">
+                        </div>
+                    </a>
+                </div>
+            </section>
+
             <!-- Career -->
             <section class="section career-section section-decorated">
                 <div class="glow-badge">
@@ -51,21 +75,6 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     쿠엉의 커리어
                 </h2>
-                <div class="stat-inline">
-                    <div class="stat-inline-item">
-                        <span class="stat-num">8+</span>
-                        <span class="stat-label">트레이딩<br>경력 (년)</span>
-                    </div>
-                    <div class="stat-inline-item">
-                        <span class="stat-num">50+</span>
-                        <span class="stat-label">대회<br>1위 달성</span>
-                    </div>
-                    <div class="stat-inline-item">
-                        <span class="stat-num">$560K+</span>
-                        <span class="stat-label">챌린지<br>총 수익</span>
-                    </div>
-                </div>
-                <div style="height:24px"></div>
                 <div class="text-card">
                     <ul class="career-list">
                         <li><strong data-i18n="career_exp">매매 경력</strong>
@@ -143,30 +152,6 @@
 
             <div class="section-divider"></div>
 
-            <!-- 3-Column Navigation Cards -->
-            <section class="section">
-                <div class="nav-cards-row stagger-children">
-                    <a href="#" class="nav-card" data-page="viewpoint">
-                        <h3>관점방 신청하기</h3>
-                        <div class="nav-card-img">
-                            <img src="관점방이미지.png" alt="관점방">
-                        </div>
-                    </a>
-                    <a href="#" class="nav-card" data-page="education">
-                        <h3>교육방 신청하기</h3>
-                        <div class="nav-card-img">
-                            <img src="교육방이미지.png" alt="교육방">
-                        </div>
-                    </a>
-                    <a href="#" class="nav-card" data-page="ebook">
-                        <h3>쿠모닉 & 쿠시그널 신청하기</h3>
-                        <div class="nav-card-img">
-                            <img src="쿠모닉 이미지.png" alt="쿠모닉 & 쿠시그널">
-                        </div>
-                    </a>
-                </div>
-            </section>
-
             <!-- Exchange Table -->
             <section class="section">
                 <div class="glow-badge">
@@ -220,20 +205,6 @@
                                 <td class="ex-fee">0.04</td>
                                 <td class="ex-actions"><a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="btn-table" data-i18n="btn_signup">가입하기</a></td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="ex-name-cell">
-                                        <img class="ex-logo-img" src="okx.png" alt="OKX">
-                                        <div><strong>OKX</strong><span>OKX Global</span></div>
-                                    </div>
-                                </td>
-                                <td><span class="ex-type">CEX</span></td>
-                                <td><span class="ex-tag">업비트/빗썸 국내 거래소 입출금 가능</span></td>
-                                <td><span class="ex-payback">20% 페이백</span></td>
-                                <td class="ex-fee">0.016</td>
-                                <td class="ex-fee">0.04</td>
-                                <td class="ex-actions"><a href="https://www.bitget.com/asia/expressly?channelCode=br1f&vipCode=byex&languageType=3&groupId=447944" target="_blank" class="btn-table" data-i18n="btn_signup">가입하기</a></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -245,18 +216,39 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
                     이벤트에 참여해보세요!
                 </h2>
-                <div class="event-card">
-                    <a href="https://www.deepcoin.com/turbo/en/login?status=register&target=/match?id=56&inviteCode=9275707" target="_blank" class="event-link">
-                        <div class="event-content">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" style="width:24px;height:24px">
-                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                <p class="sec-sub">현재 진행중인 이벤트</p>
+                <div class="event-grid">
+                    <a href="https://www.deepcoin.com/ps/en/match?id=56" target="_blank" class="event-grid-card">
+                        <div class="event-grid-thumb">
+                            <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                                <rect width="120" height="80" rx="0" fill="#1a1b23"/>
+                                <text x="60" y="28" text-anchor="middle" fill="#f7931a" font-size="10" font-weight="900" font-family="Inter,sans-serif">TRADING</text>
+                                <text x="60" y="44" text-anchor="middle" fill="#fff" font-size="13" font-weight="900" font-family="Inter,sans-serif">COMPETITION</text>
+                                <rect x="25" y="54" width="70" height="14" rx="7" fill="#f7931a" opacity="0.15"/>
+                                <text x="60" y="64" text-anchor="middle" fill="#f7931a" font-size="8" font-weight="700" font-family="Inter,sans-serif">Deepcoin</text>
                             </svg>
-                            <div>
-                                <p class="event-title">Deepcoin 트레이딩 대회</p>
-                                <span class="event-desc">지금 바로 참여하세요!</span>
-                            </div>
                         </div>
-                        <i class="fas fa-arrow-right event-arrow"></i>
+                        <div class="event-grid-info">
+                            <span class="event-grid-badge">Trading Event</span>
+                            <p class="event-grid-title">Deepcoin 트레이딩 대회</p>
+                            <span class="event-grid-detail">지금 바로 참여하세요!</span>
+                        </div>
+                    </a>
+                    <a href="https://www.deepcoin.com/ps/en/activity/rules?id=11" target="_blank" class="event-grid-card">
+                        <div class="event-grid-thumb">
+                            <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                                <rect width="120" height="80" rx="0" fill="#1e2030"/>
+                                <text x="60" y="28" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="900" font-family="Inter,sans-serif">NEW MEMBER</text>
+                                <text x="60" y="44" text-anchor="middle" fill="#fff" font-size="12" font-weight="900" font-family="Inter,sans-serif">EVENT</text>
+                                <rect x="25" y="54" width="70" height="14" rx="7" fill="#fbbf24" opacity="0.15"/>
+                                <text x="60" y="64" text-anchor="middle" fill="#fbbf24" font-size="8" font-weight="700" font-family="Inter,sans-serif">Deepcoin</text>
+                            </svg>
+                        </div>
+                        <div class="event-grid-info">
+                            <span class="event-grid-badge">New Event</span>
+                            <p class="event-grid-title">Deepcoin 이벤트</p>
+                            <span class="event-grid-detail">참여하고 보상을 받아보세요!</span>
+                        </div>
                     </a>
                 </div>
             </section>
@@ -273,7 +265,13 @@
                         쿠엉 공식 커뮤니티
                     </h3>
                     <p data-i18n="cta_community_desc">쿠엉 공식 디스코드에 입장하여 최신 공지사항과 실시간 차트 관점을 확인해 보세요.</p>
-                    <a href="https://discord.com/invite/T3hQr5uwr4" target="_blank" class="btn-cta"><i class="fab fa-discord"></i> <span data-i18n="cta_community_btn">커뮤니티 입장하기</span></a>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <a href="https://discord.com/invite/T3hQr5uwr4" target="_blank" class="btn-cta"><i class="fab fa-discord"></i> <span data-i18n="cta_community_btn">커뮤니티 입장하기</span></a>
+                        <a href="https://open.kakao.com/o/gZAY8Lsh" target="_blank" class="btn-cta" style="background:linear-gradient(135deg,#FEE500,#F5D800);color:#3C1E1E;">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 3C6.5 3 2 6.58 2 11c0 2.83 1.88 5.31 4.71 6.73-.16.57-.58 2.08-.67 2.4-.1.4.15.39.31.28.13-.08 2.04-1.38 2.86-1.94.88.13 1.79.2 2.72.2h.07c5.5 0 10-3.58 10-8s-4.5-8-10-8z"/></svg>
+                            소통방 입장하기
+                        </a>
+                    </div>
                 </div>
                 <div class="cta-card cta-ask">
                     <h3 data-i18n="cta_ask_title">
@@ -292,13 +290,88 @@
     <!-- ==================== PAGE: INTRO ==================== -->
     <div class="page" id="page-intro">
         <main class="container main-content">
-            <section class="section">
+            <!-- Career -->
+            <section class="section career-section">
+                <div class="glow-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    CAREER
+                </div>
                 <h2 class="sec-heading">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    소개
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    쿠엉의 커리어
                 </h2>
                 <div class="text-card">
-                    <p style="color:var(--text-secondary);line-height:1.9">쿠엉 트레이딩 소개 페이지입니다. 콘텐츠가 추가될 예정입니다.</p>
+                    <ul class="career-list">
+                        <li><strong>매매 경력</strong>
+                            <div class="career-detail">
+                                2017년~2019 현물<br>
+                                2020년~현재 선물<br>
+                                2023 EXIT, 24~ 편하게 트레이딩 중
+                            </div>
+                        </li>
+                        <li><strong>TradingView Top Author</strong> : 2021년 ~ 2024년 선정</li>
+                        <li><strong>2021 Bybit 팀 트레이딩 대회</strong> : 수익률(Profit Rate) 부문 세계 1위 2회 달성</li>
+                        <li><strong>메이저 거래소 대회</strong> : 50회+ 이상 1위</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Challenge -->
+            <section class="section">
+                <div class="glow-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                    VERIFIED
+                </div>
+                <h2 class="sec-heading">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                    유튜브 라이브 검증 트레이딩 챌린지
+                </h2>
+                <p class="sec-sub">유튜브 채널 개설: 2024년 9월</p>
+                <div class="text-card">
+                    <div class="challenge-text-item">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+                            1차 저레버리지(5배) 스캘핑 챌린지
+                        </h3>
+                        <ul>
+                            <li>2024년 9월: $2,000 → 2024년 11월: <strong class="accent">$140,000</strong></li>
+                            <li>$110,000 출금 완료 / 챌린지 성공</li>
+                        </ul>
+                    </div>
+                    <div class="challenge-text-item">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+                            2차 저레버리지(5배) 스캘핑 챌린지
+                        </h3>
+                        <ul>
+                            <li>2024년 12월 12일: $30,000 → 2025년 2월 14일: <strong class="accent">$160,000</strong></li>
+                            <li>$150,000 출금 완료 / 챌린지 성공</li>
+                        </ul>
+                    </div>
+                    <div class="challenge-text-item">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+                            3차 저레버리지 스캘핑 챌린지
+                        </h3>
+                        <ul>
+                            <li>2025년 3월 1일: $10,000 → 2025년 7월 16일: <strong class="accent">$110,000</strong></li>
+                            <li>챌린지 성공</li>
+                        </ul>
+                    </div>
+                    <div class="challenge-text-item featured">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            고배 챌린지 — 2025년 7월 29일
+                        </h3>
+                        <ul>
+                            <li>소요 시간: 18시간</li>
+                            <li>목표: $916 → <strong class="accent">$10,000</strong></li>
+                            <li>매매 횟수: 17번의 포지션 진입 | 승률 92%</li>
+                            <li>수익률: +1,200%</li>
+                            <li>진행중: $916 → <strong class="accent">$300,000</strong> (최종 목표: $1,000,000)</li>
+                            <li>전체 라이브 녹화본 및 편집된 영상 유튜브에서 시청 가능</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </main>
@@ -312,30 +385,83 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
                     레퍼럴 변경
                 </h2>
-                <div class="text-card" style="line-height:2; color:var(--text-secondary);">
-                    <h3 style="color:var(--text); font-size:20px; margin-bottom:16px;">[ 계정 탈퇴 안내 및 주의사항 ]</h3>
 
-                    <h4 style="color:var(--accent); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 탈퇴 전 반드시 확인해 주세요!</h4>
-                    <ul style="list-style:none; padding:0; margin-bottom:24px;">
-                        <li style="margin-bottom:12px;"><strong style="color:var(--text);">영구 삭제 및 복구 불가:</strong> 계정 탈퇴 시 모든 이용 기록과 데이터는 즉시 삭제되며, 어떠한 경우에도 복구할 수 없습니다.</li>
-                        <li style="margin-bottom:12px;"><strong style="color:var(--text);">재가입 제한:</strong> 탈퇴 완료 후 동일한 휴대폰 번호, 이메일, ID를 사용해 다시 가입하시려면 30일의 대기 기간이 필요합니다.</li>
-                        <li><strong style="color:var(--text);">자산 및 포지션 정리:</strong> 탈퇴 진행 전, 현재 보유 중인 모든 포지션을 종료(청산/매도)하고 계좌 잔액을 전액 출금해 주세요. 진행 중인 출금 요청이 있다면 완료된 후 탈퇴가 가능합니다.</li>
-                    </ul>
+                <!-- Accordion: 딥코인 -->
+                <div class="accordion">
+                    <button class="accordion-toggle" onclick="this.parentElement.classList.toggle('open')">
+                        <span>딥코인 레퍼럴 변경 방법</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="accordion-arrow"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="text-card" style="line-height:2; color:var(--text-secondary);">
+                            <h3 style="color:var(--text); font-size:18px; margin-bottom:16px;">[ 계정 탈퇴 안내 및 주의사항 ]</h3>
+                            <h4 style="color:var(--accent); margin-bottom:12px;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                탈퇴 전 반드시 확인해 주세요!
+                            </h4>
+                            <ul style="list-style:none; padding:0; margin-bottom:24px;">
+                                <li style="margin-bottom:12px;"><strong style="color:var(--text);">영구 삭제 및 복구 불가:</strong> 계정 탈퇴 시 모든 이용 기록과 데이터는 즉시 삭제되며, 어떠한 경우에도 복구할 수 없습니다.</li>
+                                <li style="margin-bottom:12px;"><strong style="color:var(--text);">재가입 제한:</strong> 탈퇴 완료 후 동일한 휴대폰 번호, 이메일, ID를 사용해 다시 가입하시려면 30일의 대기 기간이 필요합니다.</li>
+                                <li><strong style="color:var(--text);">자산 및 포지션 정리:</strong> 탈퇴 진행 전, 현재 보유 중인 모든 포지션을 종료(청산/매도)하고 계좌 잔액을 전액 출금해 주세요.</li>
+                            </ul>
 
-                    <h4 style="color:var(--accent); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg> 모바일 앱에서 계정 탈퇴하기</h4>
-                    <div style="margin-bottom:20px; text-align:center;">
-                        <img src="레퍼럴변경.png" alt="계정 탈퇴 안내 이미지" style="max-width:100%; border-radius:12px;">
+                            <h4 style="color:var(--accent); margin-bottom:12px;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+                                모바일 앱에서 계정 탈퇴하기 (Deepcoin)
+                            </h4>
+                            <div style="margin-bottom:20px; text-align:center;">
+                                <img src="레퍼럴변경.png" alt="계정 탈퇴 안내 이미지" style="max-width:100%; border-radius:12px;">
+                            </div>
+                            <ol style="padding-left:20px; margin-bottom:24px;">
+                                <li style="margin-bottom:10px;"><strong style="color:var(--text);">보안 설정 진입:</strong> Deepcoin 앱 홈 화면 좌측 상단 아이콘 클릭 후 [보안 | Security] 선택</li>
+                                <li style="margin-bottom:10px;"><strong style="color:var(--text);">계정 관리:</strong> [계정 관리 | Account Management] 클릭</li>
+                                <li style="margin-bottom:10px;"><strong style="color:var(--text);">계정 삭제:</strong> [계정 탈퇴 | Delete Account] 선택</li>
+                                <li><strong style="color:var(--text);">최종 확인:</strong> 두 가지 조건 체크 후 [탈퇴 확인 | Delete Confirmation] 클릭. 탈퇴 완료 시 계정은 영구 삭제됩니다.</li>
+                            </ol>
+
+                            <h4 style="color:var(--accent); margin-bottom:12px;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><path d="M16 3h5v5"/><path d="M4 20L21 3"/></svg>
+                                KYC 이전 절차
+                            </h4>
+                            <ol style="padding-left:20px; margin-bottom:16px;">
+                                <li style="margin-bottom:8px;"><strong style="color:var(--text);">새로운 계정 생성 및 기존계정 삭제</strong></li>
+                                <li style="margin-bottom:8px;"><strong style="color:var(--text);">KYC 이전 신청:</strong> 딥코인 공식 홈페이지 > 온라인 문의 또는 이메일 (<strong style="color:var(--accent);">krcustomersupport@supportkf.com</strong>)</li>
+                                <li><strong style="color:var(--text);">새로운 계정에서 KYC 등록 완료</strong></li>
+                            </ol>
+
+                            <div style="background:var(--bg-hover); border-radius:12px; padding:20px; margin-bottom:20px; border:1px solid var(--border-light);">
+                                <p style="margin-bottom:8px;"><strong style="color:var(--text);">이메일 신청 시 양식:</strong></p>
+                                <p style="font-size:14px;">기존 UID XXX<br>(기억나지 않을 경우, 이전 UID에 바인딩된 이메일 혹은 전화번호 기재)</p>
+                                <p style="font-size:14px; margin-top:8px;">삭제 및 새 계정 UID XXX 로 KYC 이전을 원합니다.<br>또한 KYC 전환은 3개월에 한 번만 가능하며, 전환 완료 후에는 기존 UID로 로그인할 수 없습니다. 전환 전에 기존 UID 내 포지션과 자금을 모두 정리하는 것에 동의하며, 이를 확인했습니다.</p>
+                            </div>
+
+                            <div style="background:rgba(247,147,26,0.08); border-radius:12px; padding:16px; border-left:3px solid var(--accent);">
+                                <p><strong style="color:var(--accent);">유의사항:</strong> 새로운 계정에서 KYC 등록이 완료되는 즉시, 기존 계정은 자동으로 비활성화됩니다. 반드시 기존 계정의 자금을 모두 출금하신 후 진행 부탁드립니다.</p>
+                            </div>
+
+                            <p style="margin-top:16px;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+                                탈퇴가 완료되면 모든 API 키와 연동 기기가 해제되며, 기존에 받으셨던 보너스나 혜택은 모두 소멸됩니다. 특히 은행 송금 기능을 이용하셨던 경우, 추후 새 계정에서 동일한 신분증으로 해당 기능을 재사용하는 것이 제한될 수 있으니 신중히 결정해 주시기 바랍니다.
+                            </p>
+                        </div>
                     </div>
-                    <ol style="padding-left:20px; margin-bottom:24px;">
-                        <li style="margin-bottom:10px;"><strong style="color:var(--text);">프로필 설정 진입:</strong> 홈 화면 좌측 상단의 [메뉴] 아이콘 클릭 후, 상단 [프로필 바]를 선택합니다.</li>
-                        <li style="margin-bottom:10px;"><strong style="color:var(--text);">탈퇴 메뉴 선택:</strong> 하단의 [계정 삭제] 버튼을 누릅니다.</li>
-                        <li style="margin-bottom:10px;"><strong style="color:var(--text);">자산 확인:</strong> Web3 지갑을 포함해 남은 자산이 없음을 확인하는 체크박스에 표시하고 진행합니다.</li>
-                        <li style="margin-bottom:10px;"><strong style="color:var(--text);">최종 확인 및 인증:</strong> 위험 고지 사항을 숙지하신 후, 계정 비밀번호 입력 및 보안 인증을 완료해 주세요.</li>
-                        <li><strong style="color:var(--text);">검토 및 완료:</strong> 탈퇴 요청은 24시간 이내에 검토되며, 이후 계정은 영구적으로 비활성화됩니다.</li>
-                    </ol>
+                </div>
 
-                    <h4 style="color:var(--accent); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> 중요 참고 사항</h4>
-                    <p>탈퇴가 완료되면 모든 API 키와 연동 기기가 해제되며, 기존에 받으셨던 보너스나 혜택은 모두 소멸됩니다. 특히 은행 송금 기능을 이용하셨던 경우, 추후 새 계정에서 동일한 신분증으로 해당 기능을 재사용하는 것이 제한될 수 있으니 신중히 결정해 주시기 바랍니다.</p>
+                <!-- Accordion: 비트겟 -->
+                <div class="accordion" style="margin-top:16px;">
+                    <button class="accordion-toggle" onclick="this.parentElement.classList.toggle('open')">
+                        <span>비트겟 레퍼럴 변경 방법</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="accordion-arrow"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="text-card" style="line-height:2; color:var(--text-secondary);">
+                            <p>비트겟은 레퍼럴 변경이 불가하여, 기존 계정을 탈퇴 후 새로운 계정으로 가입해야 합니다.</p>
+                            <p style="margin-top:12px;">비트겟 계정 탈퇴 방법은 비트겟 앱 또는 웹사이트 내 <strong style="color:var(--text);">[설정] > [계정 보안] > [계정 삭제]</strong>에서 진행할 수 있습니다.</p>
+                            <div style="background:rgba(247,147,26,0.08); border-radius:12px; padding:16px; border-left:3px solid var(--accent); margin-top:16px;">
+                                <p><strong style="color:var(--accent);">유의사항:</strong> 탈퇴 전 반드시 모든 포지션을 정리하고 자금을 출금해 주세요. 탈퇴 후 동일 정보로 재가입 시 대기 기간이 필요할 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
@@ -349,8 +475,58 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                     관점방
                 </h2>
-                <div class="text-card">
-                    <p style="color:var(--text-secondary);line-height:1.9">관점방 페이지입니다. 콘텐츠가 추가될 예정입니다.</p>
+                <p class="sec-sub">쿠엉의 실시간 차트 관점을 확인하세요</p>
+
+                <!-- 영상 -->
+                <div class="indicator-video-wrap" style="margin-bottom:32px;">
+                    <a href="https://www.youtube.com/watch?v=hc4mdex0x9c" target="_blank" class="yt-facade">
+                        <img src="https://img.youtube.com/vi/hc4mdex0x9c/maxresdefault.jpg" alt="관점방 소개" class="yt-facade-thumb">
+                        <span class="yt-facade-play">
+                            <svg viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                        </span>
+                    </a>
+                </div>
+
+                <!-- 신청 -->
+                <div style="text-align:center; margin-bottom:32px;">
+                    <div class="edu-actions">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSddA8O4Wthv43rk6OQxJwh4c0-qLYDqbYK8d5j_YKiItUknSg/viewform?usp=header" target="_blank" class="btn-primary" style="font-size:16px;padding:16px 40px"><i class="fas fa-pen-to-square"></i> 관점방 신청하기</a>
+                        <a href="https://t.me/cuongmanager" target="_blank" class="btn-ghost" style="font-size:16px;padding:16px 40px"><i class="fab fa-telegram"></i> 문의하기</a>
+                    </div>
+                </div>
+
+                <!-- 안내사항 -->
+                <div class="text-card" style="line-height:2; color:var(--text-secondary);">
+                    <p style="margin-bottom:16px;"><strong style="color:var(--text);">*</strong> 계정 실사용 여부 확인을 위해 최소한의 계정 활성 상태가 확인된 후 신청서를 작성해주시기 바랍니다.</p>
+
+                    <div style="background:rgba(247,147,26,0.08); border-radius:12px; padding:16px; border-left:3px solid var(--accent); margin-bottom:24px;">
+                        <p><strong style="color:var(--accent);">필수 안내:</strong> 꼭 신청 후에 디스코드 게시판 <strong style="color:var(--text);">"쿠모닉_관점방 신청"</strong>에 <strong style="color:var(--text);">"관점방 신청 완료 했습니다"</strong> 코멘트 남겨주세요. 안 남기시면 신청하신지 모릅니다. 꼭 남겨주셔야 빠른 처리가 가능합니다.</p>
+                    </div>
+
+                    <h4 style="color:var(--accent); margin-bottom:16px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        [안내/주의사항] - 필독!
+                    </h4>
+
+                    <div style="background:var(--bg-hover); border-radius:12px; padding:20px; margin-bottom:20px; border:1px solid var(--border-light);">
+                        <p style="margin-bottom:12px;"><strong style="color:var(--accent);">0. [제발 필독!]</strong></p>
+                        <p style="font-size:14px;">쿠엉 관점방은 리딩 및 투자유도, 투자 권유가 아닙니다. 참고 용도, 공부 용도로 사용하시란 의미로 지금 방향을 왜 이렇게 생각하는지의 근거들과 2017년부터 지금까지의 쿠엉의 트레이딩 꿀통을 토대로 현재 제가 보이는 관점을 참고 형태로 드리는 것이지, 리딩을 바라고 신청 하신다면 '절대' 사절입니다. 그 어딜 가더라도 리딩을 바라시면 큰 화를 부를겁니다. 이 판에 8년 있으면서 리딩 바라고 돌아다니던 사람 중 살아남은 사람을 본 적이 없습니다. 지금은 제테크 시대이며 차트 공부를 하고 싶고 도박처럼 하는 것이 아닌, 장기적으로 탄탄하게 스스로 우상향을 위한 공부의 목표가 있기 바랍니다.</p>
+                    </div>
+
+                    <ol style="padding-left:20px; margin-bottom:24px; font-size:14px;">
+                        <li style="margin-bottom:8px;">가상 자산 거래는 높은 위험이 따르므로 투자 목적, 재산 상황, 경험을 고려하여 신중히 판단하십시오. 모든 선택과 책임은 본인에게 있습니다.</li>
+                        <li style="margin-bottom:8px;">가상 자산은 법정화폐가 아니며, 급격한 시세 변동 및 원금 손실 가능성이 있으니 유의하시기 바랍니다.</li>
+                        <li style="margin-bottom:8px;">해외 거래소는 미인가 상태로 서비스 이용이 제한되거나 위험(파산, 이용 정지 등)이 있을 수 있습니다.</li>
+                        <li style="margin-bottom:8px;">안전한 보관을 위해 개인 지갑으로 자산을 이동하는 것을 권장합니다.</li>
+                        <li style="margin-bottom:8px;">모든 분석 자료는 참고용으로, 매매 권유나 추천이 아닙니다.</li>
+                        <li style="margin-bottom:8px;">유사수신 행위, 불법 알선, 미성년자 명의 도용 등은 금지되며, 제재 대상이 될 수 있습니다.</li>
+                        <li style="margin-bottom:8px;">쿠엉 커뮤니티에 게시되는 모든 공유 자료의 저작권은 "쿠엉"에게 있으며, 무단 사용 시 법적 책임이 발생할 수 있습니다.</li>
+                        <li style="margin-bottom:8px;">레퍼럴 링크 가입 및 사용은 선택 사항으로, 강요하지 않습니다.</li>
+                        <li>커뮤니티 내 공유 자료의 외부 유출은 금지되며, 위반 시 이용 제한 및 필요한 법적 조치가 이루어질 수 있습니다.</li>
+                    </ol>
+
+                    <p style="font-size:13px; color:var(--text-muted);">쿠엉은 관점방 권한 부여/해제 관리에 일체 관여하지 않습니다. 각종 문의 사항은 <a href="https://t.me/cuongmanager" target="_blank" style="color:var(--accent);">쿠엉 매니저 1:1 문의</a>로 부탁드립니다.</p>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">※ 원할한 커뮤니티 운영을 위해 활동 패턴, 참여 형태와 적합성 등 다양한 요소를 종합적으로 고려할 수 있으며, 이용이 제한될 수 있고, 세부 기준은 공개되지 않습니다. ※</p>
                 </div>
             </section>
         </main>
@@ -478,20 +654,102 @@
                     지표 등록
                 </h2>
                 <p class="sec-sub">쿠모닉 사용설명서 영상을 확인하고, 지표를 등록해보세요.</p>
-                <div class="indicator-video-wrap">
-                    <div class="yt-facade" data-video-id="h_3tO66s8IM">
-                        <img src="https://img.youtube.com/vi/h_3tO66s8IM/maxresdefault.jpg" alt="쿠모닉 사용설명서" class="yt-facade-thumb">
-                        <button class="yt-facade-play" aria-label="재생">
-                            <svg viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
-                        </button>
+
+                <!-- 영상 2개 -->
+                <div class="edu-video-grid" style="margin-bottom:32px;">
+                    <div class="indicator-video-wrap">
+                        <div class="yt-facade" data-video-id="h_3tO66s8IM">
+                            <img src="https://img.youtube.com/vi/h_3tO66s8IM/maxresdefault.jpg" alt="쿠모닉 사용설명서" class="yt-facade-thumb">
+                            <button class="yt-facade-play" aria-label="재생">
+                                <svg viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                            </button>
+                        </div>
+                        <p class="indicator-video-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            쿠모닉 사용설명서
+                        </p>
                     </div>
-                    <p class="indicator-video-label">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                        쿠모닉 사용설명서
-                    </p>
+                    <div class="indicator-video-wrap">
+                        <a href="https://youtu.be/TuaPebFuF0s" target="_blank" class="yt-facade">
+                            <img src="https://img.youtube.com/vi/TuaPebFuF0s/maxresdefault.jpg" alt="지표 등록 안내" class="yt-facade-thumb">
+                            <span class="yt-facade-play">
+                                <svg viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                            </span>
+                        </a>
+                        <p class="indicator-video-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            지표 등록 안내
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 등급별 제공 지표 -->
+                <div class="text-card" style="line-height:2; color:var(--text-secondary); margin-bottom:32px;">
+                    <h3 style="color:var(--text); font-size:18px; margin-bottom:16px;">01. 등급별 제공 지표</h3>
+                    <p>사용 중이신 유튜브 멤버십 등급에 따라 제공되는 지표가 다릅니다.</p>
+                    <ul style="list-style:none; padding:0; margin:16px 0;">
+                        <li style="margin-bottom:10px; padding:12px 16px; background:var(--bg-hover); border-radius:10px; border:1px solid var(--border-light);">
+                            <strong style="color:var(--accent);">쿠엉팬:</strong> <strong style="color:var(--text);">쿠모닉 (Cumonic)</strong> 제공
+                        </li>
+                        <li style="padding:12px 16px; background:var(--bg-hover); border-radius:10px; border:1px solid var(--border-light);">
+                            <strong style="color:var(--accent);">쿠엉단:</strong> <strong style="color:var(--text);">쿠모닉 (Cumonic) + 쿠그널 (Cugnal)</strong> 제공
+                        </li>
+                    </ul>
+
+                    <h4 style="color:var(--accent); margin:24px 0 12px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px;vertical-align:-3px;margin-right:4px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        이용 전 필독 사항 (Disclaimer)
+                    </h4>
+                    <p>본 지표는 투자 결정의 직접적인 도구가 아닌, 시장 흐름 파악을 위한 <strong style="color:var(--text);">보조 도구</strong>입니다.</p>
+                    <ul style="list-style:none; padding:0; margin:12px 0;">
+                        <li style="margin-bottom:6px;"><strong style="color:var(--text);">책임 한계:</strong> 지표에 표시되는 요소는 진입/청산을 지시하거나 수익을 보장하지 않습니다. 모든 매매 판단과 그에 따른 결과에 대한 책임은 사용자 본인에게 있습니다.</li>
+                        <li><strong style="color:var(--text);">사용 목적:</strong> 본 지표는 학습 및 시장 구조 이해를 돕기 위한 참고 목적으로만 사용하시기 바랍니다.</li>
+                    </ul>
+
+                    <h4 style="color:var(--accent); margin:24px 0 12px;">올바른 지표 활용법</h4>
+                    <ul style="list-style:none; padding:0;">
+                        <li style="margin-bottom:6px; color:var(--text);">단독 사용 금지 <span style="color:#ef4444;">X</span></li>
+                        <li style="margin-bottom:6px; color:var(--text);">지표 신호만 보고 뇌동매매 금지 <span style="color:#ef4444;">X</span></li>
+                        <li style="margin-bottom:6px; color:var(--text);">차트 구조 + 추세 + 본인만의 전략과 함께 참고 <span style="color:#22c55e;">O</span></li>
+                        <li style="color:var(--text);">개인적인 관점을 확인하는 보조 자료로 활용 <span style="color:#22c55e;">O</span></li>
+                    </ul>
+                </div>
+
+                <!-- 신청 안내 -->
+                <div class="text-card" style="line-height:2; color:var(--text-secondary);">
+                    <p style="margin-bottom:16px;"><strong style="color:var(--text);">*</strong> 계정 실사용 여부 확인을 위해 최소한의 계정 활성 상태가 확인된 후 신청서를 작성해주시기 바랍니다.</p>
+
+                    <div style="background:rgba(247,147,26,0.08); border-radius:12px; padding:16px; border-left:3px solid var(--accent); margin-bottom:20px;">
+                        <p><strong style="color:var(--accent);">필수 안내:</strong> 꼭 신청 후에 디스코드 게시판 <strong style="color:var(--text);">"쿠모닉_관점방확인"</strong>에 <strong style="color:var(--text);">"지표 신청 완료 했습니다"</strong> 코멘트 남겨주세요. 안 남기시면 신청하신지 모릅니다. 꼭 남겨주셔야 빠른 처리가 가능합니다.</p>
+                    </div>
+
+                    <p style="font-size:13px; color:var(--text-muted);">※쿠엉은 지표 권한 부여/해제 관리에 일체 관여하지 않습니다. 각종 문의 사항은 <a href="https://t.me/cuongmanager" target="_blank" style="color:var(--accent);">쿠엉 매니저 1:1 문의</a>로 부탁드립니다.</p>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">※ 원할한 커뮤니티 운영을 위해 활동 패턴, 참여 형태와 적합성 등 다양한 요소를 종합적으로 고려할 수 있으며, 이용이 제한될 수 있고, 세부 기준은 공개되지 않습니다. ※</p>
+                    <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">위 내용은 보조 지표 접근을 위한 요청 절차 안내이며, 지표 접근 여부는 운영 기준 및 적합성 판단에 따라 제한되거나 허용될 수 있습니다.</p>
+                </div>
+
+                <!-- 신청 버튼 -->
+                <div style="text-align:center; margin-top:32px;">
+                    <div class="edu-actions">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzvjRowrgiZCzbE-W5CfqSUrZG6cPl-s7mma7aVQH_bI53Dw/viewform?usp=header" target="_blank" class="btn-primary" style="font-size:16px;padding:16px 40px"><i class="fas fa-pen-to-square"></i> 지표 신청하기</a>
+                        <a href="https://t.me/cuongmanager" target="_blank" class="btn-ghost" style="font-size:16px;padding:16px 40px"><i class="fab fa-telegram"></i> 문의하기</a>
+                    </div>
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Floating Sidebar (PC only) -->
+    <div class="floating-sidebar" id="floatingSidebar">
+        <a href="https://discord.com/invite/T3hQr5uwr4" target="_blank" class="float-btn float-discord" title="디스코드 커뮤니티">
+            <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://open.kakao.com/o/gZAY8Lsh" target="_blank" class="float-btn float-kakao" title="카카오톡 소통방">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px"><path d="M12 3C6.5 3 2 6.58 2 11c0 2.83 1.88 5.31 4.71 6.73-.16.57-.58 2.08-.67 2.4-.1.4.15.39.31.28.13-.08 2.04-1.38 2.86-1.94.88.13 1.79.2 2.72.2h.07c5.5 0 10-3.58 10-8s-4.5-8-10-8z"/></svg>
+        </a>
+        <a href="https://t.me/cuongmanager" target="_blank" class="float-btn float-telegram" title="텔레그램 문의">
+            <i class="fab fa-telegram"></i>
+        </a>
     </div>
 
     <!-- Lightbox Modal -->
@@ -509,6 +767,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=22"></script>
+    <script src="script.js?v=25"></script>
 </body>
 </html>
