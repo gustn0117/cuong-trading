@@ -683,6 +683,14 @@ a { text-decoration: none; color: inherit; transition: 0.25s ease; }
     box-shadow: var(--shadow);
     border: 1px solid var(--border-light);
 }
+.edu-video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+@media (max-width: 768px) {
+    .edu-video-grid { grid-template-columns: 1fr; }
+}
 .indicator-video-wrap iframe {
     width: 100%;
     aspect-ratio: 16/9;
