@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const langDropdown = document.getElementById('langDropdown');
     const langLabel = document.getElementById('langLabel');
     const langButtons = langDropdown.querySelectorAll('button');
-    let currentLang = localStorage.getItem('lang') || 'ko';
+    let currentLang = localStorage.getItem('lang') || 'en';
 
     const translations = {
         ko: {
