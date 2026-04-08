@@ -159,11 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('lang', lang);
         langLabel.textContent = langNames[lang];
         langButtons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+        document.documentElement.setAttribute('data-lang', lang);
         const t = translations[lang];
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (!t[key]) return;
-            // Preserve leading SVG elements inside headings
             const svgs = el.querySelectorAll(':scope > svg');
             if (svgs.length > 0) {
                 const fragment = document.createDocumentFragment();
