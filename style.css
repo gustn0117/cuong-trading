@@ -1219,6 +1219,47 @@ a { text-decoration: none; color: inherit; transition: 0.25s ease; }
     transition: background 0.3s;
     position: relative;
 }
+.footer-legal {
+    max-width: 700px;
+    margin: 20px auto 0;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    text-align: left;
+}
+.footer-legal > p {
+    margin-bottom: 8px;
+}
+.footer-legal-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 0;
+    transition: color 0.2s;
+}
+.footer-legal-toggle:hover { color: var(--accent); }
+.footer-legal-toggle svg {
+    transition: transform 0.3s;
+}
+.footer-legal.open .footer-legal-toggle svg { transform: rotate(180deg); }
+.footer-legal-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+.footer-legal.open .footer-legal-body {
+    max-height: 1000px;
+}
+.footer-legal-body p {
+    margin-top: 10px;
+}
+.footer-legal-body strong {
+    color: var(--text-muted);
+}
 .footer::before {
     content: '';
     position: absolute;
