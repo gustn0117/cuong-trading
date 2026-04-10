@@ -367,16 +367,6 @@ a { text-decoration: none; color: inherit; transition: 0.25s ease; }
 .section-decorated {
     position: relative;
 }
-.section-decorated::before {
-    content: '';
-    position: absolute;
-    top: -30px; left: -60px;
-    width: 120px; height: 120px;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0.4;
-}
 
 /* ===== TEXT CARD (career/challenge) ===== */
 .text-card {
