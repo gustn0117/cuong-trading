@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ===== ADMIN OVERRIDES =====
+    // Text overrides: replace innerText if value exists
+    document.querySelectorAll('[data-admin]').forEach(el => {
+        const val = localStorage.getItem('admin_' + el.dataset.admin);
+        if (val) el.textContent = val;
+    });
+
+    // Link overrides
+    const linkMap = {
+        link_telegram: 'https://t.me/cuongmanager',
+        link_discord: 'https://discord.com/invite/T3hQr5uwr4',
+        link_kakao: 'https://open.kakao.com/o/gZAY8Lsh',
+        link_edu_form: 'https://docs.google.com/forms/d/e/1FAIpQLSfDlPvP_qZ_ys8NzLu5crXVX3u0Ksi4nWo261vm_Mn37jz7Iw/viewform?usp=header',
+        link_viewpoint_form: 'https://docs.google.com/forms/d/e/1FAIpQLSddA8O4Wthv43rk6OQxJwh4c0-qLYDqbYK8d5j_YKiItUknSg/viewform?usp=header',
+        link_indicator_form: 'https://docs.google.com/forms/d/e/1FAIpQLSfzvjRowrgiZCzbE-W5CfqSUrZG6cPl-s7mma7aVQH_bI53Dw/viewform?usp=header'
+    };
+    Object.keys(linkMap).forEach(key => {
+        const newUrl = localStorage.getItem('admin_' + key);
+        if (!newUrl) return;
+        const oldUrl = linkMap[key];
+        document.querySelectorAll('a[href="' + oldUrl + '"]').forEach(a => { a.href = newUrl; });
+    });
+
     // ===== SPA PAGE ROUTING =====
     const navLinks = document.querySelectorAll('.nav-link[data-page]');
     const pages = document.querySelectorAll('.page');

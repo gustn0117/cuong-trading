@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Cuong Trading</title>
+    <link rel="stylesheet" href="style.css?v=36">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { padding: 40px 0; }
+        .admin-container { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+        .admin-title { font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+        .admin-sub { color: var(--text-muted); margin-bottom: 32px; }
+        .gate-card, .admin-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 40px;
+            box-shadow: var(--shadow);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-group small { color: var(--text-muted); font-size: 12px; display: block; margin-top: 4px; }
+        .admin-actions { display: flex; gap: 12px; margin-top: 24px; }
+        .btn-save {
+            flex: 1;
+            padding: 14px 24px;
+            background: var(--gradient-accent);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-reset {
+            padding: 14px 24px;
+            background: var(--bg-tag);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .section-divider-admin {
+            border-top: 1px solid var(--border-light);
+            margin: 32px 0;
+        }
+        .section-title-admin {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .notice {
+            background: var(--accent-bg);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        .back-link { display: inline-block; margin-bottom: 16px; color: var(--text-muted); font-size: 14px; }
+        .back-link:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <a href="/" class="back-link">← 메인으로 돌아가기</a>
+
+        <!-- Gate -->
+        <div id="gate" class="gate-card">
+            <h1 class="admin-title">관리자 로그인</h1>
+            <p class="admin-sub">관리자 비밀번호를 입력하세요.</p>
+            <div class="form-group">
+                <input type="password" id="pwd" placeholder="비밀번호" autofocus>
+            </div>
+            <button class="btn-save" id="loginBtn">로그인</button>
+            <p id="err" style="color:#ef4444; margin-top:12px; font-size:13px; display:none;">비밀번호가 올바르지 않습니다.</p>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="panel" class="admin-card" style="display:none;">
+            <h1 class="admin-title">사이트 관리</h1>
+            <p class="admin-sub">여기서 편집한 내용은 브라우저에 저장되어 메인 사이트에 반영됩니다.</p>
+
+            <div class="notice">
+                ⚠️ 이 어드민은 브라우저 로컬 저장소(localStorage)에 저장합니다. 같은 브라우저에서만 반영되며, 서버에 저장되지 않습니다.
+            </div>
+
+            <!-- 교육방 -->
+            <h2 class="section-title-admin">교육방</h2>
+            <div class="form-group">
+                <label>교육방 배지 (모집 상태)</label>
+                <input type="text" data-key="edu_badge" placeholder="예: 모집중">
+            </div>
+            <div class="form-group">
+                <label>교육방 제목</label>
+                <input type="text" data-key="edu_title" placeholder="예: 교육방 5기 수강생 모집">
+            </div>
+            <div class="form-group">
+                <label>교육방 설명</label>
+                <input type="text" data-key="edu_desc" placeholder="예: 쿠엉님의 세밀한 케어를 위해 한정된 인원으로 진행됩니다">
+            </div>
+            <div class="form-group">
+                <label>모집 기간</label>
+                <input type="text" data-key="edu_period" placeholder="예: 3월 19일 ~ 4월 20일">
+            </div>
+
+            <div class="section-divider-admin"></div>
+
+            <!-- 챌린지 -->
+            <h2 class="section-title-admin">고배 챌린지 (진행중)</h2>
+            <div class="form-group">
+                <label>고배 챌린지 날짜</label>
+                <input type="text" data-key="challenge_hot_date" placeholder="예: 2025년 7월 29일">
+            </div>
+            <div class="form-group">
+                <label>고배 챌린지 현재 금액</label>
+                <input type="text" data-key="challenge_hot_current" placeholder="예: $300,000">
+            </div>
+            <div class="form-group">
+                <label>고배 챌린지 최종 목표</label>
+                <input type="text" data-key="challenge_hot_goal" placeholder="예: $1,000,000">
+            </div>
+
+            <div class="section-divider-admin"></div>
+
+            <!-- 링크 -->
+            <h2 class="section-title-admin">주요 링크</h2>
+            <div class="form-group">
+                <label>텔레그램 매니저 링크</label>
+                <input type="text" data-key="link_telegram" placeholder="https://t.me/cuongmanager">
+            </div>
+            <div class="form-group">
+                <label>디스코드 커뮤니티 링크</label>
+                <input type="text" data-key="link_discord" placeholder="https://discord.com/invite/...">
+            </div>
+            <div class="form-group">
+                <label>카카오톡 소통방 링크</label>
+                <input type="text" data-key="link_kakao" placeholder="https://open.kakao.com/o/...">
+            </div>
+            <div class="form-group">
+                <label>교육방 신청 폼</label>
+                <input type="text" data-key="link_edu_form" placeholder="https://docs.google.com/forms/...">
+            </div>
+            <div class="form-group">
+                <label>관점방 신청 폼</label>
+                <input type="text" data-key="link_viewpoint_form" placeholder="https://docs.google.com/forms/...">
+            </div>
+            <div class="form-group">
+                <label>지표 신청 폼</label>
+                <input type="text" data-key="link_indicator_form" placeholder="https://docs.google.com/forms/...">
+            </div>
+
+            <div class="admin-actions">
+                <button class="btn-save" id="saveBtn">저장</button>
+                <button class="btn-reset" id="resetBtn">초기화</button>
+            </div>
+
+            <p id="saved" style="color:#10b981; margin-top:12px; font-size:14px; display:none; font-weight:700;">✓ 저장되었습니다. 메인 페이지에서 새로고침(Cmd/Ctrl+Shift+R)하세요.</p>
+        </div>
+    </div>
+
+    <script>
+        const PWD = '1234';
+        const gate = document.getElementById('gate');
+        const panel = document.getElementById('panel');
+        const pwdInput = document.getElementById('pwd');
+        const err = document.getElementById('err');
+        const saved = document.getElementById('saved');
+
+        function login() {
+            if (pwdInput.value === PWD) {
+                sessionStorage.setItem('admin_ok', '1');
+                gate.style.display = 'none';
+                panel.style.display = 'block';
+                loadValues();
+            } else {
+                err.style.display = 'block';
+                pwdInput.value = '';
+            }
+        }
+
+        document.getElementById('loginBtn').addEventListener('click', login);
+        pwdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') login();
+        });
+
+        if (sessionStorage.getItem('admin_ok') === '1') {
+            gate.style.display = 'none';
+            panel.style.display = 'block';
+            loadValues();
+        }
+
+        function loadValues() {
+            document.querySelectorAll('[data-key]').forEach(input => {
+                const key = input.dataset.key;
+                const val = localStorage.getItem('admin_' + key);
+                if (val !== null) input.value = val;
+            });
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            document.querySelectorAll('[data-key]').forEach(input => {
+                const key = input.dataset.key;
+                const val = input.value.trim();
+                if (val) {
+                    localStorage.setItem('admin_' + key, val);
+                } else {
+                    localStorage.removeItem('admin_' + key);
+                }
+            });
+            saved.style.display = 'block';
+            setTimeout(() => { saved.style.display = 'none'; }, 4000);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (!confirm('모든 관리자 설정을 초기화하시겠습니까?')) return;
+            document.querySelectorAll('[data-key]').forEach(input => {
+                localStorage.removeItem('admin_' + input.dataset.key);
+                input.value = '';
+            });
+            saved.textContent = '✓ 초기화되었습니다.';
+            saved.style.display = 'block';
+            setTimeout(() => {
+                saved.style.display = 'none';
+                saved.textContent = '✓ 저장되었습니다. 메인 페이지에서 새로고침(Cmd/Ctrl+Shift+R)하세요.';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
