@@ -301,6 +301,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ===== REVIEW CAROUSEL =====
+    document.querySelectorAll('.review-carousel').forEach(carousel => {
+        const grid = carousel.querySelector('.review-grid');
+        const prevBtn = carousel.querySelector('.carousel-prev');
+        const nextBtn = carousel.querySelector('.carousel-next');
+        if (!grid || !prevBtn || !nextBtn) return;
+
+        const updateArrows = () => {
+            const atStart = grid.scrollLeft <= 4;
+            const atEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 4;
+            prevBtn.disabled = atStart;
+            nextBtn.disabled = atEnd;
+        };
+
+        const scrollByAmount = (dir) => {
+            const step = grid.clientWidth * 0.8;
+            grid.scrollBy({ left: dir * step, behavior: 'smooth' });
+        };
+
+        prevBtn.addEventListener('click', () => scrollByAmount(-1));
+        nextBtn.addEventListener('click', () => scrollByAmount(1));
+        grid.addEventListener('scroll', updateArrows, { passive: true });
+        window.addEventListener('resize', updateArrows);
+        updateArrows();
+    });
+
     // ===== LIGHTBOX =====
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
