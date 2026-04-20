@@ -6,6 +6,7 @@
     <title>Admin Dashboard - Cuong Trading</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg: #0a0b10;
@@ -23,6 +24,7 @@
             --accent-glow: rgba(247,147,26,0.4);
             --success: #10b981;
             --danger: #ef4444;
+            --info: #3b82f6;
             --gradient: linear-gradient(135deg, #f7931a, #fbbf24);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,8 +37,9 @@
             -webkit-font-smoothing: antialiased;
         }
         a { text-decoration: none; color: inherit; }
+        code { background: var(--bg); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
 
-        /* Login Gate */
+        /* Gate */
         .gate-wrap {
             min-height: 100vh;
             display: flex;
@@ -101,11 +104,9 @@
         .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
         .gate-error { display: none; color: var(--danger); margin-top: 14px; font-size: 13px; text-align: center; }
 
-        /* Dashboard Layout */
         .dashboard { display: none; min-height: 100vh; grid-template-columns: 260px 1fr; }
         .dashboard.active { display: grid; }
 
-        /* Sidebar */
         .sidebar {
             background: var(--bg-panel);
             border-right: 1px solid var(--border);
@@ -166,10 +167,18 @@
             font-size: 12px;
             color: var(--text-muted);
         }
-        .sidebar-footer a { color: var(--accent); font-weight: 600; }
+        .sidebar-footer a { color: var(--accent); font-weight: 600; display: block; margin-bottom: 6px; }
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 11px;
+        }
+        .connection-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--danger); }
+        .connection-status.ok .dot { background: var(--success); box-shadow: 0 0 6px var(--success); }
 
-        /* Main */
-        .main { padding: 32px 40px 64px; max-width: 920px; }
+        .main { padding: 32px 40px 64px; max-width: 1080px; }
         .page-header {
             display: flex;
             align-items: center;
@@ -214,26 +223,25 @@
             gap: 6px;
         }
         .btn-solid:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-solid:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .btn-danger {
-            padding: 9px 16px;
+            padding: 7px 12px;
             background: transparent;
             border: 1px solid rgba(239,68,68,0.3);
             color: var(--danger);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            border-radius: 8px;
+            border-radius: 7px;
             cursor: pointer;
             font-family: inherit;
             transition: 0.15s;
         }
         .btn-danger:hover { background: rgba(239,68,68,0.08); border-color: var(--danger); }
 
-        /* Tabs */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; animation: fade 0.25s ease; }
         @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
 
-        /* Cards */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -242,7 +250,6 @@
             margin-bottom: 20px;
             transition: 0.2s;
         }
-        .card:hover { border-color: rgba(247,147,26,0.2); }
         .card-title {
             font-size: 16px;
             font-weight: 800;
@@ -254,7 +261,6 @@
         .card-title i { color: var(--accent); }
         .card-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
 
-        /* Form */
         .field { margin-bottom: 18px; }
         .field:last-child { margin-bottom: 0; }
         .field-label {
@@ -264,7 +270,7 @@
             color: var(--text);
             margin-bottom: 7px;
         }
-        .field-input {
+        .field-input, .field-textarea, .field-select {
             width: 100%;
             padding: 10px 14px;
             background: var(--bg);
@@ -275,7 +281,8 @@
             font-family: inherit;
             transition: 0.15s;
         }
-        .field-input:focus {
+        .field-textarea { min-height: 72px; resize: vertical; }
+        .field-input:focus, .field-textarea:focus, .field-select:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--accent-bg);
@@ -283,6 +290,7 @@
         .field-input::placeholder { color: var(--text-muted); }
         .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
         .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
 
         /* Toast */
         .status-bar { position: fixed; bottom: 24px; right: 24px; z-index: 100; }
@@ -305,45 +313,13 @@
         .toast.success i { color: var(--success); }
         .toast.error { border-color: rgba(239,68,68,0.3); }
         .toast.error i { color: var(--danger); }
-
-        /* Badge */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 9px;
-            background: var(--accent-bg);
-            color: var(--accent);
-            font-size: 11px;
-            font-weight: 700;
-            border-radius: 12px;
-            border: 1px solid rgba(247,147,26,0.25);
-            margin-left: 8px;
-        }
-        .badge.success {
-            background: rgba(16,185,129,0.1);
-            color: var(--success);
-            border-color: rgba(16,185,129,0.25);
-        }
-
-        /* Info */
-        .info-box {
-            background: var(--accent-bg);
-            border: 1px solid rgba(247,147,26,0.2);
-            border-radius: 10px;
-            padding: 14px 18px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        .info-box i { color: var(--accent); margin-top: 2px; }
+        .toast.info { border-color: rgba(59,130,246,0.3); }
+        .toast.info i { color: var(--info); }
 
         /* Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
             margin-bottom: 24px;
         }
@@ -364,6 +340,125 @@
         .stat-value { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
         .stat-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
+        /* Info box */
+        .info-box {
+            background: var(--accent-bg);
+            border: 1px solid rgba(247,147,26,0.2);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .info-box i { color: var(--accent); margin-top: 2px; }
+
+        /* List items */
+        .list-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 16px;
+            align-items: center;
+            padding: 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .list-thumb {
+            width: 80px; height: 54px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+        .list-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .list-content { min-width: 0; }
+        .list-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .list-meta { font-size: 12px; color: var(--text-muted); }
+        .list-actions { display: flex; gap: 6px; }
+
+        /* Upload */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            background: var(--bg);
+        }
+        .upload-zone:hover { border-color: var(--accent); background: var(--accent-bg); }
+        .upload-zone.dragover { border-color: var(--accent); background: var(--accent-bg); }
+        .upload-zone i { font-size: 32px; color: var(--text-muted); margin-bottom: 8px; }
+        .upload-zone p { color: var(--text-secondary); font-size: 13px; }
+
+        .review-grid-admin {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .review-thumb-admin {
+            aspect-ratio: 9/16;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg);
+            border: 1px solid var(--border);
+        }
+        .review-thumb-admin img { width: 100%; height: 100%; object-fit: cover; }
+        .review-thumb-admin .del {
+            position: absolute;
+            top: 4px; right: 4px;
+            width: 24px; height: 24px;
+            background: rgba(239,68,68,0.9);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .review-thumb-admin:hover .del { opacity: 1; }
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+        }
+        .empty-state i { font-size: 32px; margin-bottom: 12px; color: var(--text-dim); }
+
+        .form-group-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 20px 0 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .form-group-title:first-child { margin-top: 0; }
+
+        .loader {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         @media (max-width: 900px) {
             .dashboard.active { grid-template-columns: 1fr; }
             .sidebar {
@@ -373,8 +468,8 @@
                 border-bottom: 1px solid var(--border);
             }
             .main { padding: 24px 20px 48px; }
-            .field-row { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr; }
+            .field-row, .field-row-3 { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
             .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
         }
     </style>
@@ -400,7 +495,7 @@
                 <div class="sidebar-logo-icon">C</div>
                 <div>
                     <div class="sidebar-logo-text">Cuong Admin</div>
-                    <div class="sidebar-logo-sub">v2.0 Dashboard</div>
+                    <div class="sidebar-logo-sub">v3.0 · Supabase</div>
                 </div>
             </div>
 
@@ -408,15 +503,17 @@
             <div class="sidebar-item active" data-tab="dashboard"><i class="fas fa-chart-line"></i> 대시보드</div>
 
             <div class="sidebar-section">Content</div>
-            <div class="sidebar-item" data-tab="education"><i class="fas fa-graduation-cap"></i> 교육방</div>
-            <div class="sidebar-item" data-tab="challenge"><i class="fas fa-trophy"></i> 챌린지</div>
-            <div class="sidebar-item" data-tab="links"><i class="fas fa-link"></i> 링크 관리</div>
+            <div class="sidebar-item" data-tab="events"><i class="fas fa-calendar-star"></i> 이벤트</div>
+            <div class="sidebar-item" data-tab="reviews"><i class="fas fa-comments"></i> 후기 관리</div>
+            <div class="sidebar-item" data-tab="texts"><i class="fas fa-pen-to-square"></i> 텍스트 수정</div>
 
             <div class="sidebar-section">System</div>
             <div class="sidebar-item" data-tab="settings"><i class="fas fa-gear"></i> 설정</div>
 
             <div class="sidebar-footer">
-                <a href="/" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i> 메인 사이트 열기</a>
+                <a href="/" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i> 메인 사이트</a>
+                <a href="/events/" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i> 이벤트 페이지</a>
+                <div class="connection-status" id="connStatus"><span class="dot"></span><span>연결 확인 중...</span></div>
             </div>
         </aside>
 
@@ -425,8 +522,8 @@
             <div class="tab-panel active" data-panel="dashboard">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">대시보드 <span class="badge success"><i class="fas fa-circle" style="font-size:6px"></i> 연결됨</span></h1>
-                        <p class="page-sub">사이트 현황과 빠른 작업을 한눈에 확인하세요</p>
+                        <h1 class="page-title">대시보드</h1>
+                        <p class="page-sub">사이트 현황을 한눈에 확인하세요</p>
                     </div>
                     <div class="header-actions">
                         <a href="/" target="_blank" class="btn-ghost"><i class="fas fa-eye"></i> 사이트 보기</a>
@@ -435,168 +532,217 @@
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-label">설정된 항목</div>
-                        <div class="stat-value" id="statCount">0</div>
-                        <div class="stat-meta">/ 총 13개 필드</div>
+                        <div class="stat-label">활성 이벤트</div>
+                        <div class="stat-value" id="statEvents">—</div>
+                        <div class="stat-meta">공개 표시 중</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">마지막 저장</div>
-                        <div class="stat-value" id="lastSaved" style="font-size:18px;">—</div>
-                        <div class="stat-meta">로컬 저장소 기준</div>
+                        <div class="stat-label">후기 이미지</div>
+                        <div class="stat-value" id="statReviews">—</div>
+                        <div class="stat-meta">업로드됨</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">저장소 크기</div>
-                        <div class="stat-value" id="storageSize">0 <span style="font-size:14px;color:var(--text-muted)">KB</span></div>
-                        <div class="stat-meta">localStorage</div>
+                        <div class="stat-label">텍스트 설정</div>
+                        <div class="stat-value" id="statTexts">—</div>
+                        <div class="stat-meta">커스텀 저장됨</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Supabase</div>
+                        <div class="stat-value" id="statConn" style="font-size:16px">확인 중...</div>
+                        <div class="stat-meta">DB 상태</div>
                     </div>
                 </div>
 
                 <div class="info-box">
                     <i class="fas fa-circle-info"></i>
                     <div>
-                        이 어드민은 브라우저 <strong>localStorage</strong>에 설정을 저장합니다. 같은 도메인에서 메인 사이트와 데이터를 공유하며, 메인 페이지 새로고침 시 변경사항이 반영됩니다.
+                        모든 데이터는 <strong>Supabase</strong>(api.hsweb.pics)에 저장됩니다. 어디서 접속하든 동일하게 보입니다. 이미지는 Supabase Storage에 저장되며 공개 URL로 제공됩니다.
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-title"><i class="fas fa-bolt"></i> 빠른 작업</div>
-                    <div class="card-sub">자주 사용하는 작업을 바로 실행할 수 있습니다</div>
+                    <div class="card-sub">자주 사용하는 작업을 바로 실행하세요</div>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <button class="btn-ghost" onclick="showTab('education')"><i class="fas fa-graduation-cap"></i> 교육방 수정</button>
-                        <button class="btn-ghost" onclick="showTab('challenge')"><i class="fas fa-trophy"></i> 챌린지 수정</button>
-                        <button class="btn-ghost" onclick="showTab('links')"><i class="fas fa-link"></i> 링크 관리</button>
-                        <button class="btn-ghost" onclick="exportConfig()"><i class="fas fa-download"></i> 설정 내보내기</button>
-                        <button class="btn-ghost" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> 설정 불러오기</button>
-                        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importConfig(event)">
+                        <button class="btn-ghost" onclick="showTab('events')"><i class="fas fa-calendar-star"></i> 이벤트 관리</button>
+                        <button class="btn-ghost" onclick="showTab('reviews')"><i class="fas fa-image"></i> 후기 업로드</button>
+                        <button class="btn-ghost" onclick="showTab('texts')"><i class="fas fa-pen"></i> 텍스트 수정</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Education -->
-            <div class="tab-panel" data-panel="education">
+            <!-- Events -->
+            <div class="tab-panel" data-panel="events">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">교육방 관리</h1>
-                        <p class="page-sub">교육방 페이지의 히어로 배너 내용을 수정합니다</p>
+                        <h1 class="page-title">이벤트 관리</h1>
+                        <p class="page-sub">홈과 이벤트 페이지에 표시될 이벤트를 관리합니다</p>
                     </div>
                     <div class="header-actions">
-                        <button class="btn-ghost" onclick="resetSection(['edu_badge','edu_title','edu_desc','edu_period'])"><i class="fas fa-rotate-left"></i> 초기화</button>
-                        <button class="btn-solid" onclick="saveAll()"><i class="fas fa-check"></i> 저장</button>
+                        <button class="btn-solid" onclick="openEventModal()"><i class="fas fa-plus"></i> 새 이벤트</button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-bullhorn"></i> 히어로 배너</div>
-                    <div class="card-sub">교육방 페이지 상단의 모집 공고 영역</div>
+                <div id="eventsList"></div>
+            </div>
 
-                    <div class="field">
-                        <label class="field-label">모집 상태 배지</label>
-                        <input type="text" class="field-input" data-key="edu_badge" placeholder="예: 모집중, 마감임박, 마감">
-                        <div class="field-hint">배너 상단에 표시되는 상태 배지 텍스트</div>
-                    </div>
+            <!-- Event Modal (inline form) -->
+            <div class="card" id="eventForm" style="display:none;">
+                <div class="card-title"><i class="fas fa-calendar-plus"></i> <span id="eventFormTitle">새 이벤트</span></div>
+                <div class="card-sub">3개 언어로 모두 입력하거나, 일부만 입력 가능합니다</div>
 
+                <div class="form-group-title">제목</div>
+                <div class="field-row-3">
                     <div class="field">
-                        <label class="field-label">메인 제목</label>
-                        <input type="text" class="field-input" data-key="edu_title" placeholder="예: 교육방 5기 수강생 모집">
+                        <label class="field-label">한국어</label>
+                        <input type="text" class="field-input" id="evTitleKo" placeholder="예: Bitget 트레이딩 대회">
                     </div>
+                    <div class="field">
+                        <label class="field-label">English</label>
+                        <input type="text" class="field-input" id="evTitleEn" placeholder="Bitget Trading Competition">
+                    </div>
+                    <div class="field">
+                        <label class="field-label">中文</label>
+                        <input type="text" class="field-input" id="evTitleZh" placeholder="Bitget 交易大赛">
+                    </div>
+                </div>
 
+                <div class="form-group-title">상세 설명</div>
+                <div class="field-row-3">
                     <div class="field">
-                        <label class="field-label">부제 설명</label>
-                        <input type="text" class="field-input" data-key="edu_desc" placeholder="예: 쿠엉님의 세밀한 케어를 위해 한정된 인원으로 진행됩니다">
+                        <label class="field-label">한국어</label>
+                        <input type="text" class="field-input" id="evDetailKo" placeholder="예: 지금 바로 참여하세요!">
                     </div>
+                    <div class="field">
+                        <label class="field-label">English</label>
+                        <input type="text" class="field-input" id="evDetailEn" placeholder="Join now!">
+                    </div>
+                    <div class="field">
+                        <label class="field-label">中文</label>
+                        <input type="text" class="field-input" id="evDetailZh" placeholder="立即参与！">
+                    </div>
+                </div>
 
+                <div class="form-group-title">링크 & 설정</div>
+                <div class="field">
+                    <label class="field-label">이벤트 링크 *</label>
+                    <input type="url" class="field-input" id="evLink" placeholder="https://...">
+                </div>
+                <div class="field-row-3">
                     <div class="field">
-                        <label class="field-label">모집 기간</label>
-                        <input type="text" class="field-input" data-key="edu_period" placeholder="예: 3월 19일 ~ 4월 20일 (인원 마감 시 조기 종료)">
+                        <label class="field-label">배지</label>
+                        <input type="text" class="field-input" id="evBadge" placeholder="Trading Event">
                     </div>
+                    <div class="field">
+                        <label class="field-label">색상 테마</label>
+                        <select class="field-select" id="evColor">
+                            <option value="orange">주황 (Deepcoin Trading)</option>
+                            <option value="yellow">노랑 (Deepcoin New Member)</option>
+                            <option value="green">초록 (Bitget Trading)</option>
+                            <option value="blue">파랑 (Bitget VIP)</option>
+                            <option value="purple">보라 (Bitget New User)</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label">순서</label>
+                        <input type="number" class="field-input" id="evOrder" value="0">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label">썸네일 이미지 (선택)</label>
+                    <div class="upload-zone" id="evThumbZone">
+                        <i class="fas fa-image"></i>
+                        <p>클릭 또는 드래그하여 이미지 업로드</p>
+                        <p style="font-size:11px; margin-top:4px;">없으면 자동으로 테마 썸네일 생성됨</p>
+                    </div>
+                    <input type="file" id="evThumbFile" accept="image/*" style="display:none">
+                    <img id="evThumbPreview" style="max-width:240px; border-radius:8px; margin-top:10px; display:none;">
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button class="btn-solid" id="saveEventBtn" onclick="saveEvent()"><i class="fas fa-check"></i> 저장</button>
+                    <button class="btn-ghost" onclick="closeEventForm()"><i class="fas fa-xmark"></i> 취소</button>
                 </div>
             </div>
 
-            <!-- Challenge -->
-            <div class="tab-panel" data-panel="challenge">
+            <!-- Reviews -->
+            <div class="tab-panel" data-panel="reviews">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">챌린지 관리</h1>
-                        <p class="page-sub">고배 챌린지 진행 상황을 업데이트합니다</p>
+                        <h1 class="page-title">후기 관리</h1>
+                        <p class="page-sub">교육방 페이지에 표시될 수강생 후기 이미지를 관리합니다</p>
                     </div>
                     <div class="header-actions">
-                        <button class="btn-ghost" onclick="resetSection(['challenge_hot_date','challenge_hot_current','challenge_hot_goal'])"><i class="fas fa-rotate-left"></i> 초기화</button>
-                        <button class="btn-solid" onclick="saveAll()"><i class="fas fa-check"></i> 저장</button>
+                        <button class="btn-ghost" onclick="loadReviews()"><i class="fas fa-rotate"></i> 새로고침</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fas fa-fire"></i> 고배 챌린지 <span class="badge">진행중</span></div>
-                    <div class="card-sub">홈 페이지 챌린지 섹션의 하이라이트 카드</div>
+                    <div class="card-title"><i class="fas fa-upload"></i> 후기 이미지 업로드</div>
+                    <div class="card-sub">여러 장을 한 번에 업로드할 수 있습니다 (최대 10MB, PNG/JPG)</div>
 
-                    <div class="field">
-                        <label class="field-label">챌린지 시작일</label>
-                        <input type="text" class="field-input" data-key="challenge_hot_date" placeholder="예: 2025년 7월 29일">
+                    <div class="upload-zone" id="reviewDropZone">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        <p>클릭하거나 이미지 파일을 드래그해서 업로드</p>
                     </div>
+                    <input type="file" id="reviewFileInput" accept="image/*" multiple style="display:none">
+                    <div id="uploadProgress" style="margin-top:12px;"></div>
+                </div>
 
-                    <div class="field-row">
-                        <div class="field">
-                            <label class="field-label">현재 금액</label>
-                            <input type="text" class="field-input" data-key="challenge_hot_current" placeholder="예: $300,000">
-                        </div>
-                        <div class="field">
-                            <label class="field-label">최종 목표</label>
-                            <input type="text" class="field-input" data-key="challenge_hot_goal" placeholder="예: $1,000,000">
-                        </div>
-                    </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-images"></i> 업로드된 후기 <span id="reviewCount" style="font-weight:500; color:var(--text-muted); margin-left:4px;"></span></div>
+                    <div class="card-sub">썸네일 위에 마우스를 올리면 삭제 버튼이 나타납니다</div>
+                    <div class="review-grid-admin" id="reviewsGrid"></div>
                 </div>
             </div>
 
-            <!-- Links -->
-            <div class="tab-panel" data-panel="links">
+            <!-- Texts -->
+            <div class="tab-panel" data-panel="texts">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">링크 관리</h1>
-                        <p class="page-sub">외부 서비스와 신청 폼의 URL을 관리합니다</p>
+                        <h1 class="page-title">텍스트 수정</h1>
+                        <p class="page-sub">주요 텍스트를 3개 국어로 수정합니다. 빈 값은 기본값 유지.</p>
                     </div>
                     <div class="header-actions">
-                        <button class="btn-ghost" onclick="resetSection(['link_telegram','link_discord','link_kakao','link_edu_form','link_viewpoint_form','link_indicator_form'])"><i class="fas fa-rotate-left"></i> 초기화</button>
-                        <button class="btn-solid" onclick="saveAll()"><i class="fas fa-check"></i> 저장</button>
+                        <button class="btn-solid" id="saveTextsBtn" onclick="saveAllTexts()"><i class="fas fa-check"></i> 전체 저장</button>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <i class="fas fa-circle-info"></i>
+                    <div>각 언어별로 값을 비워두면 해당 언어에서는 원본 HTML 텍스트가 유지됩니다. 필요한 언어만 덮어쓰세요.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-graduation-cap"></i> 교육방 배너</div>
+                    <div data-text-group="edu">
+                        <div data-text-key="edu_badge" data-label="모집 상태 배지"></div>
+                        <div data-text-key="edu_title" data-label="메인 제목"></div>
+                        <div data-text-key="edu_desc" data-label="부제 설명"></div>
+                        <div data-text-key="edu_period" data-label="모집 기간"></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fas fa-comments"></i> 커뮤니티</div>
-                    <div class="card-sub">문의 및 커뮤니티 채널</div>
-
-                    <div class="field">
-                        <label class="field-label"><i class="fab fa-telegram" style="color:#26A5E4"></i> 텔레그램 매니저</label>
-                        <input type="url" class="field-input" data-key="link_telegram" placeholder="https://t.me/cuongmanager">
-                    </div>
-
-                    <div class="field">
-                        <label class="field-label"><i class="fab fa-discord" style="color:#5865F2"></i> 디스코드 커뮤니티</label>
-                        <input type="url" class="field-input" data-key="link_discord" placeholder="https://discord.com/invite/...">
-                    </div>
-
-                    <div class="field">
-                        <label class="field-label"><i class="fas fa-comment" style="color:#FEE500"></i> 카카오톡 소통방</label>
-                        <input type="url" class="field-input" data-key="link_kakao" placeholder="https://open.kakao.com/o/...">
+                    <div class="card-title"><i class="fas fa-fire"></i> 고배 챌린지</div>
+                    <div data-text-group="challenge">
+                        <div data-text-key="challenge_hot_date" data-label="챌린지 시작일"></div>
+                        <div data-text-key="challenge_hot_current" data-label="현재 금액"></div>
+                        <div data-text-key="challenge_hot_goal" data-label="최종 목표"></div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fas fa-file-pen"></i> 신청 폼</div>
-                    <div class="card-sub">구글 폼 또는 외부 신청 링크</div>
-
-                    <div class="field">
-                        <label class="field-label">교육방 신청 폼</label>
-                        <input type="url" class="field-input" data-key="link_edu_form" placeholder="https://docs.google.com/forms/...">
-                    </div>
-
-                    <div class="field">
-                        <label class="field-label">관점방 신청 폼</label>
-                        <input type="url" class="field-input" data-key="link_viewpoint_form" placeholder="https://docs.google.com/forms/...">
-                    </div>
-
-                    <div class="field">
-                        <label class="field-label">지표 신청 폼</label>
-                        <input type="url" class="field-input" data-key="link_indicator_form" placeholder="https://docs.google.com/forms/...">
+                    <div class="card-title"><i class="fas fa-link"></i> 주요 링크</div>
+                    <div class="card-sub">URL은 한국어 필드만 채우세요 (모든 언어 공통)</div>
+                    <div data-text-group="links">
+                        <div data-text-key="link_telegram" data-label="텔레그램" data-single="true"></div>
+                        <div data-text-key="link_discord" data-label="디스코드" data-single="true"></div>
+                        <div data-text-key="link_kakao" data-label="카카오톡" data-single="true"></div>
+                        <div data-text-key="link_edu_form" data-label="교육방 신청폼" data-single="true"></div>
+                        <div data-text-key="link_viewpoint_form" data-label="관점방 신청폼" data-single="true"></div>
+                        <div data-text-key="link_indicator_form" data-label="지표 신청폼" data-single="true"></div>
                     </div>
                 </div>
             </div>
@@ -606,38 +752,26 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">설정</h1>
-                        <p class="page-sub">시스템 설정 및 데이터 관리</p>
+                        <p class="page-sub">시스템 정보 및 세션</p>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fas fa-database"></i> 데이터 관리</div>
-                    <div class="card-sub">설정값을 파일로 내보내거나 불러올 수 있습니다</div>
-
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <button class="btn-ghost" onclick="exportConfig()"><i class="fas fa-download"></i> JSON으로 내보내기</button>
-                        <button class="btn-ghost" onclick="document.getElementById('importFile2').click()"><i class="fas fa-upload"></i> JSON 불러오기</button>
-                        <input type="file" id="importFile2" accept=".json" style="display:none" onchange="importConfig(event)">
+                    <div class="card-title"><i class="fas fa-info-circle"></i> 연결 정보</div>
+                    <div style="color:var(--text-secondary); line-height:1.9;">
+                        <p><strong>Admin Dashboard</strong> v3.0 (Supabase)</p>
+                        <p>저장소: <code>Supabase PostgreSQL + Storage</code></p>
+                        <p>API: <code>api.hsweb.pics</code></p>
+                        <p>Schema: <code>cuong_trading</code></p>
+                        <p>Bucket: <code>cuong-trading</code></p>
+                        <p style="margin-top:12px; color:var(--text-muted);">도메인: <span id="domainInfo"></span></p>
+                        <p style="color:var(--text-muted);">단축키: <code>Ctrl/Cmd + S</code> (텍스트 탭에서 저장)</p>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger)"></i> 위험 구역</div>
-                    <div class="card-sub">아래 작업은 되돌릴 수 없습니다</div>
-
-                    <button class="btn-danger" onclick="resetAll()"><i class="fas fa-trash"></i> 모든 설정 초기화</button>
-                    <button class="btn-danger" onclick="logout()" style="margin-left:8px;"><i class="fas fa-right-from-bracket"></i> 로그아웃</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-info-circle"></i> 정보</div>
-                    <div style="color:var(--text-secondary); font-size:13px; line-height:1.8;">
-                        <p><strong style="color:var(--text)">Admin Dashboard v2.0</strong></p>
-                        <p>Cuong Trading 관리자 페이지</p>
-                        <p style="margin-top:10px; color:var(--text-muted);">저장소: <code style="background:var(--bg); padding:2px 6px; border-radius:4px;">localStorage</code></p>
-                        <p style="color:var(--text-muted);">도메인: <span id="domainInfo"></span></p>
-                        <p style="color:var(--text-muted);">단축키: <code style="background:var(--bg); padding:2px 6px; border-radius:4px;">Ctrl/Cmd + S</code>로 저장</p>
-                    </div>
+                    <div class="card-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger)"></i> 세션</div>
+                    <button class="btn-danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> 로그아웃</button>
                 </div>
             </div>
         </main>
@@ -646,8 +780,20 @@
     <div class="status-bar" id="toastArea"></div>
 
     <script>
-        const PWD = '1234';
-        const FIELDS = ['edu_badge','edu_title','edu_desc','edu_period','challenge_hot_date','challenge_hot_current','challenge_hot_goal','link_telegram','link_discord','link_kakao','link_edu_form','link_viewpoint_form','link_indicator_form'];
+        // === Supabase ===
+        const SUPABASE_URL = 'https://api.hsweb.pics';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNjQxNzY5MjAwLCJleHAiOjE3OTk1MzU2MDB9.pei5Gx1wqEkbcDs1CiHFuTWNuVRlcrG5dPmYdrAqDdY';
+        const BUCKET = 'cuong-trading';
+        const SCHEMA = 'cuong_trading';
+        const PWD = '0008';
+
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+            db: { schema: SCHEMA }
+        });
+        // Storage client uses default schema
+        const sbStorage = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        const TEXT_KEYS = ['edu_badge','edu_title','edu_desc','edu_period','challenge_hot_date','challenge_hot_current','challenge_hot_goal','link_telegram','link_discord','link_kakao','link_edu_form','link_viewpoint_form','link_indicator_form'];
 
         const gate = document.getElementById('gateWrap');
         const dashboard = document.getElementById('dashboard');
@@ -665,147 +811,362 @@
             }
         }
 
-        function enterDashboard() {
-            gate.style.display = 'none';
-            dashboard.classList.add('active');
-            loadValues();
-            updateStats();
-            document.getElementById('domainInfo').textContent = location.host || 'local';
-        }
-
         function logout() {
             if (!confirm('로그아웃 하시겠습니까?')) return;
             sessionStorage.removeItem('admin_ok');
             location.reload();
         }
 
+        async function enterDashboard() {
+            gate.style.display = 'none';
+            dashboard.classList.add('active');
+            document.getElementById('domainInfo').textContent = location.host || 'local';
+            await testConnection();
+            buildTextFields();
+            await Promise.all([loadEvents(), loadReviews(), loadTexts(), updateStats()]);
+        }
+
         document.getElementById('loginBtn').addEventListener('click', login);
         pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
-
         if (sessionStorage.getItem('admin_ok') === '1') enterDashboard();
 
         function showTab(tab) {
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.toggle('active', i.dataset.tab === tab));
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
+            closeEventForm();
         }
         document.querySelectorAll('.sidebar-item').forEach(item => {
             item.addEventListener('click', () => showTab(item.dataset.tab));
         });
 
-        function loadValues() {
-            document.querySelectorAll('[data-key]').forEach(input => {
-                const val = localStorage.getItem('admin_' + input.dataset.key);
-                if (val !== null) input.value = val;
-            });
+        async function testConnection() {
+            try {
+                const { error } = await sb.from('events').select('id').limit(1);
+                const status = document.getElementById('connStatus');
+                const statConn = document.getElementById('statConn');
+                if (error) throw error;
+                status.classList.add('ok');
+                status.querySelector('span:last-child').textContent = 'Supabase 연결됨';
+                statConn.innerHTML = '<span style="color:var(--success)">● 온라인</span>';
+            } catch (e) {
+                document.getElementById('connStatus').querySelector('span:last-child').textContent = '연결 실패';
+                document.getElementById('statConn').innerHTML = '<span style="color:var(--danger)">● 오프라인</span>';
+                toast('error', 'Supabase 연결 실패: ' + e.message);
+            }
         }
 
-        function saveAll() {
-            let count = 0;
-            document.querySelectorAll('[data-key]').forEach(input => {
-                const key = input.dataset.key;
-                const val = input.value.trim();
-                if (val) { localStorage.setItem('admin_' + key, val); count++; }
-                else { localStorage.removeItem('admin_' + key); }
-            });
-            localStorage.setItem('admin_last_saved', new Date().toISOString());
-            updateStats();
-            toast('success', `저장되었습니다 (${count}개 항목)`);
+        async function updateStats() {
+            const { data: events } = await sb.from('events').select('id, active');
+            const { data: reviews } = await sb.from('reviews').select('id');
+            const { data: texts } = await sb.from('site_texts').select('key');
+            document.getElementById('statEvents').textContent = (events || []).filter(e => e.active).length;
+            document.getElementById('statReviews').textContent = (reviews || []).length;
+            document.getElementById('statTexts').textContent = (texts || []).length;
         }
 
-        function resetSection(keys) {
-            if (!confirm('이 섹션의 값들을 초기화하시겠습니까?')) return;
-            keys.forEach(k => {
-                localStorage.removeItem('admin_' + k);
-                const el = document.querySelector(`[data-key="${k}"]`);
-                if (el) el.value = '';
-            });
-            updateStats();
-            toast('success', '초기화되었습니다');
-        }
-
-        function resetAll() {
-            if (!confirm('⚠️ 모든 설정을 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
-            FIELDS.forEach(k => localStorage.removeItem('admin_' + k));
-            localStorage.removeItem('admin_last_saved');
-            loadValues();
-            updateStats();
-            toast('success', '모든 설정이 초기화되었습니다');
-        }
-
-        function updateStats() {
-            let count = 0, size = 0;
-            FIELDS.forEach(k => {
-                const v = localStorage.getItem('admin_' + k);
-                if (v) { count++; size += v.length; }
-            });
-            document.getElementById('statCount').textContent = count;
-            document.getElementById('storageSize').innerHTML = (size / 1024).toFixed(1) + ' <span style="font-size:14px;color:var(--text-muted)">KB</span>';
-            const last = localStorage.getItem('admin_last_saved');
-            document.getElementById('lastSaved').textContent = last ? formatDate(last) : '—';
-        }
-
-        function formatDate(iso) {
-            const d = new Date(iso);
-            const diff = (new Date() - d) / 1000;
-            if (diff < 60) return '방금 전';
-            if (diff < 3600) return Math.floor(diff / 60) + '분 전';
-            if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
-            return d.toLocaleDateString('ko-KR');
-        }
-
+        // === Toast ===
         function toast(type, msg) {
             const area = document.getElementById('toastArea');
             const el = document.createElement('div');
             el.className = 'toast ' + type;
-            el.innerHTML = `<i class="fas fa-${type === 'success' ? 'circle-check' : 'circle-xmark'}"></i> ${msg}`;
+            const icon = type === 'success' ? 'circle-check' : type === 'error' ? 'circle-xmark' : 'circle-info';
+            el.innerHTML = `<i class="fas fa-${icon}"></i> ${msg}`;
             area.appendChild(el);
             setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(12px)'; }, 2600);
             setTimeout(() => el.remove(), 3000);
         }
 
-        function exportConfig() {
-            const config = {};
-            FIELDS.forEach(k => {
-                const v = localStorage.getItem('admin_' + k);
-                if (v) config[k] = v;
-            });
-            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `cuong-admin-${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            toast('success', '설정을 파일로 내보냈습니다');
+        // === EVENTS ===
+        let editingEventId = null;
+        let editingThumbUrl = null;
+
+        function openEventModal(event = null) {
+            const form = document.getElementById('eventForm');
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('eventFormTitle').textContent = event ? '이벤트 수정' : '새 이벤트';
+            editingEventId = event?.id || null;
+            editingThumbUrl = event?.thumb_url || null;
+            document.getElementById('evTitleKo').value = event?.title_ko || '';
+            document.getElementById('evTitleEn').value = event?.title_en || '';
+            document.getElementById('evTitleZh').value = event?.title_zh || '';
+            document.getElementById('evDetailKo').value = event?.detail_ko || '';
+            document.getElementById('evDetailEn').value = event?.detail_en || '';
+            document.getElementById('evDetailZh').value = event?.detail_zh || '';
+            document.getElementById('evLink').value = event?.link || '';
+            document.getElementById('evBadge').value = event?.badge || '';
+            document.getElementById('evColor').value = event?.color_theme || 'orange';
+            document.getElementById('evOrder').value = event?.display_order || 0;
+            const preview = document.getElementById('evThumbPreview');
+            if (event?.thumb_url) { preview.src = event.thumb_url; preview.style.display = 'block'; }
+            else { preview.style.display = 'none'; preview.src = ''; }
         }
 
-        function importConfig(e) {
+        function closeEventForm() {
+            document.getElementById('eventForm').style.display = 'none';
+            editingEventId = null;
+            editingThumbUrl = null;
+        }
+
+        document.getElementById('evThumbZone').addEventListener('click', () => document.getElementById('evThumbFile').click());
+        document.getElementById('evThumbFile').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = ev => {
-                try {
-                    const config = JSON.parse(ev.target.result);
-                    Object.keys(config).forEach(k => {
-                        if (FIELDS.includes(k)) localStorage.setItem('admin_' + k, config[k]);
-                    });
-                    loadValues();
-                    updateStats();
-                    toast('success', '설정을 불러왔습니다');
-                } catch {
-                    toast('error', '파일을 읽을 수 없습니다');
-                }
-                e.target.value = '';
+            toast('info', '썸네일 업로드 중...');
+            const url = await uploadImage(file, 'events');
+            if (url) {
+                editingThumbUrl = url;
+                const preview = document.getElementById('evThumbPreview');
+                preview.src = url;
+                preview.style.display = 'block';
+                toast('success', '썸네일 업로드 완료');
+            }
+            e.target.value = '';
+        });
+
+        async function saveEvent() {
+            const btn = document.getElementById('saveEventBtn');
+            const link = document.getElementById('evLink').value.trim();
+            if (!link) { toast('error', '링크를 입력하세요'); return; }
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> 저장 중...';
+            const payload = {
+                title_ko: document.getElementById('evTitleKo').value.trim() || null,
+                title_en: document.getElementById('evTitleEn').value.trim() || null,
+                title_zh: document.getElementById('evTitleZh').value.trim() || null,
+                detail_ko: document.getElementById('evDetailKo').value.trim() || null,
+                detail_en: document.getElementById('evDetailEn').value.trim() || null,
+                detail_zh: document.getElementById('evDetailZh').value.trim() || null,
+                link,
+                badge: document.getElementById('evBadge').value.trim() || null,
+                color_theme: document.getElementById('evColor').value,
+                display_order: parseInt(document.getElementById('evOrder').value) || 0,
+                thumb_url: editingThumbUrl || null,
+                active: true
             };
-            reader.readAsText(file);
+            try {
+                if (editingEventId) {
+                    const { error } = await sb.from('events').update(payload).eq('id', editingEventId);
+                    if (error) throw error;
+                    toast('success', '이벤트 수정 완료');
+                } else {
+                    const { error } = await sb.from('events').insert(payload);
+                    if (error) throw error;
+                    toast('success', '이벤트 추가 완료');
+                }
+                closeEventForm();
+                await loadEvents();
+                await updateStats();
+            } catch (e) {
+                toast('error', '저장 실패: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> 저장';
+            }
+        }
+
+        async function deleteEvent(id) {
+            if (!confirm('이 이벤트를 삭제하시겠습니까?')) return;
+            try {
+                const { error } = await sb.from('events').delete().eq('id', id);
+                if (error) throw error;
+                toast('success', '이벤트 삭제 완료');
+                await loadEvents();
+                await updateStats();
+            } catch (e) {
+                toast('error', '삭제 실패: ' + e.message);
+            }
+        }
+
+        async function toggleEventActive(id, active) {
+            try {
+                const { error } = await sb.from('events').update({ active: !active }).eq('id', id);
+                if (error) throw error;
+                toast('success', !active ? '활성화됨' : '비활성화됨');
+                await loadEvents();
+                await updateStats();
+            } catch (e) {
+                toast('error', '변경 실패: ' + e.message);
+            }
+        }
+
+        async function loadEvents() {
+            const { data, error } = await sb.from('events').select('*').order('display_order').order('created_at');
+            const list = document.getElementById('eventsList');
+            if (error) { list.innerHTML = '<div class="empty-state"><i class="fas fa-circle-exclamation"></i><p>로드 실패: ' + error.message + '</p></div>'; return; }
+            if (!data?.length) { list.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-xmark"></i><p>등록된 이벤트가 없습니다</p></div>'; return; }
+            list.innerHTML = data.map(ev => `
+                <div class="list-item" style="${ev.active ? '' : 'opacity:0.5;'}">
+                    <div class="list-thumb">${ev.thumb_url ? `<img src="${ev.thumb_url}">` : `<i class="fas fa-image"></i>`}</div>
+                    <div class="list-content">
+                        <div class="list-title">${escapeHtml(ev.title_ko || ev.title_en || '(제목 없음)')}</div>
+                        <div class="list-meta">${ev.badge ? `<strong>${escapeHtml(ev.badge)}</strong> · ` : ''}${ev.color_theme} · ${escapeHtml(ev.link)}</div>
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn-ghost" onclick='openEventModal(${JSON.stringify(ev).replace(/'/g, "&#39;")})'><i class="fas fa-pen"></i></button>
+                        <button class="btn-ghost" onclick="toggleEventActive('${ev.id}', ${ev.active})"><i class="fas fa-eye${ev.active ? '' : '-slash'}"></i></button>
+                        <button class="btn-danger" onclick="deleteEvent('${ev.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // === REVIEWS ===
+        const reviewDropZone = document.getElementById('reviewDropZone');
+        const reviewFileInput = document.getElementById('reviewFileInput');
+        reviewDropZone.addEventListener('click', () => reviewFileInput.click());
+        reviewDropZone.addEventListener('dragover', (e) => { e.preventDefault(); reviewDropZone.classList.add('dragover'); });
+        reviewDropZone.addEventListener('dragleave', () => reviewDropZone.classList.remove('dragover'));
+        reviewDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            reviewDropZone.classList.remove('dragover');
+            handleReviewFiles(e.dataTransfer.files);
+        });
+        reviewFileInput.addEventListener('change', (e) => {
+            handleReviewFiles(e.target.files);
+            e.target.value = '';
+        });
+
+        async function handleReviewFiles(files) {
+            if (!files.length) return;
+            const progress = document.getElementById('uploadProgress');
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                progress.innerHTML = `<div style="padding:8px 12px; background:var(--bg); border-radius:8px; font-size:12px;"><span class="loader"></span> 업로드 중: ${i+1}/${files.length} — ${escapeHtml(file.name)}</div>`;
+                const url = await uploadImage(file, 'reviews');
+                if (url) {
+                    await sb.from('reviews').insert({ image_url: url, display_order: Date.now() });
+                }
+            }
+            progress.innerHTML = `<div style="padding:8px 12px; background:rgba(16,185,129,0.1); color:var(--success); border-radius:8px; font-size:12px;"><i class="fas fa-circle-check"></i> ${files.length}개 업로드 완료</div>`;
+            setTimeout(() => progress.innerHTML = '', 3000);
+            await loadReviews();
+            await updateStats();
+        }
+
+        async function uploadImage(file, folder) {
+            try {
+                const ext = file.name.split('.').pop();
+                const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+                const { error } = await sbStorage.storage.from(BUCKET).upload(fileName, file, { cacheControl: '3600', upsert: false });
+                if (error) throw error;
+                const { data } = sbStorage.storage.from(BUCKET).getPublicUrl(fileName);
+                return data.publicUrl;
+            } catch (e) {
+                toast('error', '업로드 실패: ' + e.message);
+                return null;
+            }
+        }
+
+        async function loadReviews() {
+            const { data, error } = await sb.from('reviews').select('*').order('display_order');
+            const grid = document.getElementById('reviewsGrid');
+            const count = document.getElementById('reviewCount');
+            if (error) { grid.innerHTML = ''; return; }
+            count.textContent = `(${data.length}장)`;
+            if (!data?.length) { grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><p>업로드된 후기가 없습니다</p></div>'; return; }
+            grid.innerHTML = data.map(r => `
+                <div class="review-thumb-admin">
+                    <img src="${r.image_url}" loading="lazy">
+                    <button class="del" onclick="deleteReview('${r.id}', '${escapeAttr(r.image_url)}')" title="삭제"><i class="fas fa-xmark"></i></button>
+                </div>
+            `).join('');
+        }
+
+        async function deleteReview(id, url) {
+            if (!confirm('이 후기를 삭제하시겠습니까?')) return;
+            try {
+                await sb.from('reviews').delete().eq('id', id);
+                // Delete from storage
+                const path = url.split(`${BUCKET}/`)[1];
+                if (path) await sbStorage.storage.from(BUCKET).remove([path]);
+                toast('success', '후기 삭제 완료');
+                await loadReviews();
+                await updateStats();
+            } catch (e) {
+                toast('error', '삭제 실패: ' + e.message);
+            }
+        }
+
+        // === TEXTS ===
+        function buildTextFields() {
+            document.querySelectorAll('[data-text-key]').forEach(container => {
+                const key = container.dataset.textKey;
+                const label = container.dataset.label;
+                const single = container.dataset.single === 'true';
+                if (single) {
+                    container.innerHTML = `
+                        <div class="field">
+                            <label class="field-label">${label}</label>
+                            <input type="text" class="field-input" data-key="${key}" data-lang="ko" placeholder="URL">
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="form-group-title" style="border:none; padding:0; margin:14px 0 8px; color:var(--text); font-size:13px;">${label}</div>
+                        <div class="field-row-3">
+                            <div class="field"><label class="field-label">한국어</label><input type="text" class="field-input" data-key="${key}" data-lang="ko"></div>
+                            <div class="field"><label class="field-label">English</label><input type="text" class="field-input" data-key="${key}" data-lang="en"></div>
+                            <div class="field"><label class="field-label">中文</label><input type="text" class="field-input" data-key="${key}" data-lang="zh"></div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        async function loadTexts() {
+            const { data } = await sb.from('site_texts').select('*');
+            (data || []).forEach(row => {
+                const fields = document.querySelectorAll(`[data-key="${row.key}"]`);
+                fields.forEach(f => {
+                    const lang = f.dataset.lang;
+                    if (lang === 'ko') f.value = row.value_ko || '';
+                    else if (lang === 'en') f.value = row.value_en || '';
+                    else if (lang === 'zh') f.value = row.value_zh || '';
+                });
+            });
+        }
+
+        async function saveAllTexts() {
+            const btn = document.getElementById('saveTextsBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> 저장 중...';
+            const rows = {};
+            document.querySelectorAll('[data-key][data-lang]').forEach(el => {
+                const key = el.dataset.key;
+                const lang = el.dataset.lang;
+                if (!rows[key]) rows[key] = { key };
+                rows[key][`value_${lang}`] = el.value.trim() || null;
+            });
+            const payload = Object.values(rows);
+            try {
+                const { error } = await sb.from('site_texts').upsert(payload, { onConflict: 'key' });
+                if (error) throw error;
+                toast('success', `${payload.length}개 항목 저장 완료`);
+                await updateStats();
+            } catch (e) {
+                toast('error', '저장 실패: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> 전체 저장';
+            }
         }
 
         document.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                 e.preventDefault();
-                if (dashboard.classList.contains('active')) saveAll();
+                const active = document.querySelector('.tab-panel.active');
+                if (active?.dataset.panel === 'texts') saveAllTexts();
             }
         });
+
+        function escapeHtml(s) {
+            if (s == null) return '';
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function escapeAttr(s) {
+            return String(s || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
     </script>
 </body>
 </html>

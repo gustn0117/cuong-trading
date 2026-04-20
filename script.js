@@ -1,27 +1,139 @@
+const SUPABASE_URL = 'https://api.hsweb.pics';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNjQxNzY5MjAwLCJleHAiOjE3OTk1MzU2MDB9.pei5Gx1wqEkbcDs1CiHFuTWNuVRlcrG5dPmYdrAqDdY';
+const SUPABASE_SCHEMA = 'cuong_trading';
+let supaClient = null;
+function getSupa() {
+    if (!supaClient && window.supabase) {
+        supaClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { db: { schema: SUPABASE_SCHEMA } });
+    }
+    return supaClient;
+}
+
+const DEFAULT_LINKS = {
+    link_telegram: 'https://t.me/cuongmanager',
+    link_discord: 'https://discord.com/invite/T3hQr5uwr4',
+    link_kakao: 'https://open.kakao.com/o/gZAY8Lsh',
+    link_edu_form: 'https://docs.google.com/forms/d/e/1FAIpQLSfDlPvP_qZ_ys8NzLu5crXVX3u0Ksi4nWo261vm_Mn37jz7Iw/viewform?usp=header',
+    link_viewpoint_form: 'https://docs.google.com/forms/d/e/1FAIpQLSddA8O4Wthv43rk6OQxJwh4c0-qLYDqbYK8d5j_YKiItUknSg/viewform?usp=header',
+    link_indicator_form: 'https://docs.google.com/forms/d/e/1FAIpQLSfzvjRowrgiZCzbE-W5CfqSUrZG6cPl-s7mma7aVQH_bI53Dw/viewform?usp=header'
+};
+
+async function applySupabaseOverrides() {
+    const sb = getSupa();
+    if (!sb) return;
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+
+    try {
+        const { data: texts } = await sb.from('site_texts').select('*');
+        (texts || []).forEach(row => {
+            const val = row[`value_${lang}`] || row.value_ko || row.value_en || '';
+            if (!val) return;
+            // Apply to text elements
+            document.querySelectorAll(`[data-admin="${row.key}"]`).forEach(el => {
+                // If this is a link (URL), update href instead
+                if (row.key.startsWith('link_') || /^https?:/i.test(val)) return;
+                // Preserve child SVGs if any
+                const svgs = el.querySelectorAll(':scope > svg');
+                if (svgs.length > 0) {
+                    const frag = document.createDocumentFragment();
+                    svgs.forEach(svg => frag.appendChild(svg.cloneNode(true)));
+                    el.innerHTML = '';
+                    el.appendChild(frag);
+                    el.insertAdjacentHTML('beforeend', ' ' + val);
+                } else {
+                    el.textContent = val;
+                }
+            });
+            // Apply link overrides
+            if (row.key.startsWith('link_') && DEFAULT_LINKS[row.key]) {
+                const newUrl = row.value_ko || row.value_en || row.value_zh;
+                if (newUrl) {
+                    document.querySelectorAll(`a[href="${DEFAULT_LINKS[row.key]}"]`).forEach(a => { a.href = newUrl; });
+                }
+            }
+        });
+    } catch (e) {
+        console.warn('Supabase text override failed:', e);
+    }
+}
+
+async function loadDynamicEvents() {
+    const sb = getSupa();
+    if (!sb) return;
+    const grid = document.querySelector('.event-grid');
+    if (!grid) return;
+    try {
+        const { data, error } = await sb.from('events').select('*').eq('active', true).order('display_order').order('created_at');
+        if (error || !data?.length) return;
+        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+        const getText = (row, field) => row[`${field}_${lang}`] || row[`${field}_ko`] || row[`${field}_en`] || '';
+        const colorMap = {
+            orange: { bg: '#1a1b23', accent: '#f7931a' },
+            yellow: { bg: '#1e2030', accent: '#fbbf24' },
+            green: { bg: '#0f2e20', accent: '#10b981' },
+            blue: { bg: '#1a2e4a', accent: '#60a5fa' },
+            purple: { bg: '#2e1a4a', accent: '#a78bfa' }
+        };
+        grid.innerHTML = data.map(ev => {
+            const c = colorMap[ev.color_theme] || colorMap.orange;
+            const title = getText(ev, 'title') || '(no title)';
+            const detail = getText(ev, 'detail') || '';
+            const badge = ev.badge || 'Event';
+            const thumb = ev.thumb_url
+                ? `<img src="${ev.thumb_url}" alt="${escape(title)}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+                : `<svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                       <rect width="120" height="80" fill="${c.bg}"/>
+                       <text x="60" y="32" text-anchor="middle" fill="${c.accent}" font-size="11" font-weight="900" font-family="Inter,sans-serif">${escape(badge.toUpperCase())}</text>
+                       <text x="60" y="50" text-anchor="middle" fill="#fff" font-size="12" font-weight="900" font-family="Inter,sans-serif">EVENT</text>
+                   </svg>`;
+            const badgeStyle = `background:rgba(255,255,255,0.04); color:${c.accent}; border:1px solid ${c.accent}40;`;
+            return `<a href="${escape(ev.link)}" target="_blank" class="event-grid-card">
+                <div class="event-grid-thumb">${thumb}</div>
+                <div class="event-grid-info">
+                    <span class="event-grid-badge" style="${badgeStyle}">${escape(badge)}</span>
+                    <p class="event-grid-title">${escape(title)}</p>
+                    <span class="event-grid-detail">${escape(detail)}</span>
+                </div>
+            </a>`;
+        }).join('');
+    } catch (e) {
+        console.warn('Event load failed:', e);
+    }
+    function escape(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+}
+
+async function loadDynamicReviews() {
+    const sb = getSupa();
+    if (!sb) return;
+    const grid = document.querySelector('.review-grid');
+    if (!grid) return;
+    try {
+        const { data, error } = await sb.from('reviews').select('*').eq('active', true).order('display_order');
+        if (error || !data?.length) return;
+        grid.innerHTML = data.map((r, i) => `
+            <div class="review-item"><img src="${r.image_url}" alt="수강생 후기 ${i + 1}" loading="lazy"></div>
+        `).join('');
+    } catch (e) {
+        console.warn('Review load failed:', e);
+    }
+}
+
+async function initSupabaseData() {
+    await Promise.all([
+        applySupabaseOverrides(),
+        loadDynamicEvents(),
+        loadDynamicReviews()
+    ]);
+    // After reviews are loaded, rebuild lightbox list and carousel
+    reinitReviewFeatures();
+}
+
+function reinitReviewFeatures() {
+    // Update lightbox image list
+    if (typeof window.__reviewInit === 'function') window.__reviewInit();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-
-    // ===== ADMIN OVERRIDES =====
-    // Text overrides: replace innerText if value exists
-    document.querySelectorAll('[data-admin]').forEach(el => {
-        const val = localStorage.getItem('admin_' + el.dataset.admin);
-        if (val) el.textContent = val;
-    });
-
-    // Link overrides
-    const linkMap = {
-        link_telegram: 'https://t.me/cuongmanager',
-        link_discord: 'https://discord.com/invite/T3hQr5uwr4',
-        link_kakao: 'https://open.kakao.com/o/gZAY8Lsh',
-        link_edu_form: 'https://docs.google.com/forms/d/e/1FAIpQLSfDlPvP_qZ_ys8NzLu5crXVX3u0Ksi4nWo261vm_Mn37jz7Iw/viewform?usp=header',
-        link_viewpoint_form: 'https://docs.google.com/forms/d/e/1FAIpQLSddA8O4Wthv43rk6OQxJwh4c0-qLYDqbYK8d5j_YKiItUknSg/viewform?usp=header',
-        link_indicator_form: 'https://docs.google.com/forms/d/e/1FAIpQLSfzvjRowrgiZCzbE-W5CfqSUrZG6cPl-s7mma7aVQH_bI53Dw/viewform?usp=header'
-    };
-    Object.keys(linkMap).forEach(key => {
-        const newUrl = localStorage.getItem('admin_' + key);
-        if (!newUrl) return;
-        const oldUrl = linkMap[key];
-        document.querySelectorAll('a[href="' + oldUrl + '"]').forEach(a => { a.href = newUrl; });
-    });
 
     // ===== SPA PAGE ROUTING =====
     const navLinks = document.querySelectorAll('.nav-link[data-page]');
@@ -301,33 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ===== REVIEW CAROUSEL =====
-    document.querySelectorAll('.review-carousel').forEach(carousel => {
-        const grid = carousel.querySelector('.review-grid');
-        const prevBtn = carousel.querySelector('.carousel-prev');
-        const nextBtn = carousel.querySelector('.carousel-next');
-        if (!grid || !prevBtn || !nextBtn) return;
-
-        const updateArrows = () => {
-            const atStart = grid.scrollLeft <= 4;
-            const atEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 4;
-            prevBtn.disabled = atStart;
-            nextBtn.disabled = atEnd;
-        };
-
-        const scrollByAmount = (dir) => {
-            const step = grid.clientWidth * 0.8;
-            grid.scrollBy({ left: dir * step, behavior: 'smooth' });
-        };
-
-        prevBtn.addEventListener('click', () => scrollByAmount(-1));
-        nextBtn.addEventListener('click', () => scrollByAmount(1));
-        grid.addEventListener('scroll', updateArrows, { passive: true });
-        window.addEventListener('resize', updateArrows);
-        updateArrows();
-    });
-
-    // ===== LIGHTBOX =====
+    // ===== REVIEW CAROUSEL + LIGHTBOX (re-initializable) =====
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
     const lightboxClose = document.getElementById('lightboxClose');
@@ -335,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxNext = document.getElementById('lightboxNext');
     const lightboxCounter = document.getElementById('lightboxCounter');
 
-    const reviewImgs = Array.from(document.querySelectorAll('.review-item img'));
+    let reviewImgs = [];
     let currentIdx = 0;
 
     function updateLightboxContent() {
@@ -347,52 +433,80 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lightboxPrev) lightboxPrev.disabled = currentIdx === 0;
         if (lightboxNext) lightboxNext.disabled = currentIdx === reviewImgs.length - 1;
     }
-
     function openLightbox(idx) {
         currentIdx = idx;
         updateLightboxContent();
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-
     function closeLightbox() {
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
     }
+    function lbPrev() { if (currentIdx > 0) { currentIdx--; updateLightboxContent(); } }
+    function lbNext() { if (currentIdx < reviewImgs.length - 1) { currentIdx++; updateLightboxContent(); } }
 
-    function prev() {
-        if (currentIdx > 0) { currentIdx--; updateLightboxContent(); }
+    // One-time listener bindings on lightbox chrome
+    if (lightboxPrev) lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); lbPrev(); });
+    if (lightboxNext) lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); lbNext(); });
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightbox) {
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        let touchStartX = 0;
+        lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        lightbox.addEventListener('touchend', (e) => {
+            const diff = e.changedTouches[0].screenX - touchStartX;
+            if (Math.abs(diff) < 40) return;
+            if (diff > 0) lbPrev(); else lbNext();
+        }, { passive: true });
     }
-    function next() {
-        if (currentIdx < reviewImgs.length - 1) { currentIdx++; updateLightboxContent(); }
-    }
-
-    reviewImgs.forEach((img, idx) => {
-        img.addEventListener('click', () => openLightbox(idx));
-    });
-
-    if (lightboxPrev) lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
-    if (lightboxNext) lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); next(); });
-
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-    });
     document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('active')) return;
+        if (!lightbox?.classList.contains('active')) return;
         if (e.key === 'Escape') closeLightbox();
-        else if (e.key === 'ArrowLeft') prev();
-        else if (e.key === 'ArrowRight') next();
+        else if (e.key === 'ArrowLeft') lbPrev();
+        else if (e.key === 'ArrowRight') lbNext();
     });
 
-    // Touch swipe on lightbox image
-    let touchStartX = 0;
-    lightbox.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    lightbox.addEventListener('touchend', (e) => {
-        const diff = e.changedTouches[0].screenX - touchStartX;
-        if (Math.abs(diff) < 40) return;
-        if (diff > 0) prev(); else next();
-    }, { passive: true });
+    // Carousel setup (re-runnable)
+    function initReviewFeatures() {
+        reviewImgs = Array.from(document.querySelectorAll('.review-item img'));
+        reviewImgs.forEach((img, idx) => {
+            if (img.dataset.lightboxBound) return;
+            img.dataset.lightboxBound = '1';
+            img.addEventListener('click', () => {
+                reviewImgs = Array.from(document.querySelectorAll('.review-item img'));
+                const currentIndex = reviewImgs.indexOf(img);
+                openLightbox(currentIndex >= 0 ? currentIndex : 0);
+            });
+        });
+
+        document.querySelectorAll('.review-carousel').forEach(carousel => {
+            if (carousel.dataset.carouselBound) return;
+            carousel.dataset.carouselBound = '1';
+            const grid = carousel.querySelector('.review-grid');
+            const prevBtn = carousel.querySelector('.carousel-prev');
+            const nextBtn = carousel.querySelector('.carousel-next');
+            if (!grid || !prevBtn || !nextBtn) return;
+            const updateArrows = () => {
+                const atStart = grid.scrollLeft <= 4;
+                const atEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 4;
+                prevBtn.disabled = atStart;
+                nextBtn.disabled = atEnd;
+            };
+            const scrollByAmount = (dir) => {
+                const step = grid.clientWidth * 0.8;
+                grid.scrollBy({ left: dir * step, behavior: 'smooth' });
+            };
+            prevBtn.addEventListener('click', () => scrollByAmount(-1));
+            nextBtn.addEventListener('click', () => scrollByAmount(1));
+            grid.addEventListener('scroll', updateArrows, { passive: true });
+            window.addEventListener('resize', updateArrows);
+            updateArrows();
+        });
+    }
+    window.__reviewInit = initReviewFeatures;
+    initReviewFeatures();
+
+    // Kick off Supabase data load
+    initSupabaseData();
 });
