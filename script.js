@@ -481,26 +481,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.querySelectorAll('.review-carousel').forEach(carousel => {
-            if (carousel.dataset.carouselBound) return;
-            carousel.dataset.carouselBound = '1';
             const grid = carousel.querySelector('.review-grid');
             const prevBtn = carousel.querySelector('.carousel-prev');
             const nextBtn = carousel.querySelector('.carousel-next');
             if (!grid || !prevBtn || !nextBtn) return;
+
             const updateArrows = () => {
+                const scrollable = grid.scrollWidth > grid.clientWidth + 4;
+                if (!scrollable) {
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = true;
+                    return;
+                }
                 const atStart = grid.scrollLeft <= 4;
                 const atEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 4;
                 prevBtn.disabled = atStart;
                 nextBtn.disabled = atEnd;
             };
-            const scrollByAmount = (dir) => {
-                const step = grid.clientWidth * 0.8;
-                grid.scrollBy({ left: dir * step, behavior: 'smooth' });
-            };
-            prevBtn.addEventListener('click', () => scrollByAmount(-1));
-            nextBtn.addEventListener('click', () => scrollByAmount(1));
-            grid.addEventListener('scroll', updateArrows, { passive: true });
-            window.addEventListener('resize', updateArrows);
+
+            if (!carousel.dataset.carouselBound) {
+                carousel.dataset.carouselBound = '1';
+                const scrollByAmount = (dir) => {
+                    const step = grid.clientWidth * 0.8;
+                    grid.scrollBy({ left: dir * step, behavior: 'smooth' });
+                };
+                prevBtn.addEventListener('click', () => scrollByAmount(-1));
+                nextBtn.addEventListener('click', () => scrollByAmount(1));
+                grid.addEventListener('scroll', updateArrows, { passive: true });
+                window.addEventListener('resize', updateArrows);
+            }
+            // Always re-check arrow state (handles dynamic content)
             updateArrows();
         });
     }
