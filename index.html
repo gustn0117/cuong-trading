@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuong Trading</title>
-    <link rel="stylesheet" href="style.css?v=42">
+    <link rel="stylesheet" href="style.css?v=44">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -1031,9 +1031,16 @@
 
     <!-- Lightbox Modal -->
     <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" id="lightboxClose">
+        <button class="lightbox-close" id="lightboxClose" aria-label="닫기">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
         </button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="이전">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="다음">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
         <img class="lightbox-img" id="lightboxImg" src="" alt="">
     </div>
 
@@ -1079,6 +1086,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=42"></script>
+    <script src="script.js?v=44"></script>
 </body>
 </html>
