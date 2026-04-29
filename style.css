@@ -117,6 +117,7 @@ a { text-decoration: none; color: inherit; transition: 0.25s ease; }
     color: var(--text);
     flex-shrink: 0;
     letter-spacing: -0.5px;
+    white-space: nowrap;
 }
 .logo span {
     font-family: 'Inter', sans-serif;
@@ -1467,6 +1468,10 @@ a { text-decoration: none; color: inherit; transition: 0.25s ease; }
     .nav-link { padding: 8px 10px; font-size: 13px; }
 }
 @media (max-width: 768px) {
+    .header-inner { grid-template-columns: 1fr auto; }
+    .logo { font-size: 19px; }
+    .header-controls { gap: 6px; }
+    .container { padding: 0 20px; }
     .mobile-menu-btn { display: flex; }
     .nav {
         display: none;
