@@ -118,11 +118,47 @@ async function loadDynamicReviews() {
     }
 }
 
+async function loadDynamicExchanges() {
+    const sb = getSupa();
+    if (!sb) return;
+    const tbody = document.querySelector('.ex-table tbody');
+    if (!tbody) return;
+    try {
+        const { data, error } = await sb.from('exchanges').select('*').eq('active', true).order('display_order').order('created_at');
+        if (error || !data?.length) return;
+        const lang = document.documentElement.getAttribute('data-lang') || 'en';
+        const get = (row, field) => row[`${field}_${lang}`] || row[`${field}_ko`] || row[`${field}_en`] || '';
+        const escape = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const signupLabels = { ko: '가입하기', en: 'Sign Up', zh: '注册' };
+        const signupLabel = signupLabels[lang] || signupLabels.en;
+
+        tbody.innerHTML = data.map(ex => `
+            <tr>
+                <td>
+                    <div class="ex-name-cell">
+                        ${ex.logo_url ? `<img class="ex-logo-img" src="${escape(ex.logo_url)}" alt="${escape(ex.name)}">` : `<div class="ex-logo">${escape((ex.name||'?')[0])}</div>`}
+                        <div><strong>${escape(ex.name)}</strong><span>${escape(get(ex, 'name_local'))}</span></div>
+                    </div>
+                </td>
+                <td><span class="ex-type">${escape(ex.type || 'CEX')}</span></td>
+                <td><span class="ex-tag">${escape(get(ex, 'deposit'))}</span></td>
+                <td><span class="ex-payback">${escape(get(ex, 'payback'))}</span></td>
+                <td class="ex-fee">${escape(ex.maker_fee || '')}</td>
+                <td class="ex-fee">${escape(ex.taker_fee || '')}</td>
+                <td class="ex-actions"><a href="${escape(ex.signup_link)}" target="_blank" class="btn-table">${signupLabel}</a></td>
+            </tr>
+        `).join('');
+    } catch (e) {
+        console.warn('Exchange load failed:', e);
+    }
+}
+
 async function initSupabaseData() {
     await Promise.all([
         applySupabaseOverrides(),
         loadDynamicEvents(),
-        loadDynamicReviews()
+        loadDynamicReviews(),
+        loadDynamicExchanges()
     ]);
     // After reviews are loaded, rebuild lightbox list and carousel
     reinitReviewFeatures();

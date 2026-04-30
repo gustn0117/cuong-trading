@@ -462,6 +462,8 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        .btn-label { display: inline; }
+
         @media (max-width: 900px) {
             .dashboard.active { grid-template-columns: 1fr; }
             .sidebar {
@@ -474,6 +476,15 @@
             .field-row, .field-row-3 { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .list-item {
+                grid-template-columns: 60px 1fr;
+                grid-template-rows: auto auto;
+                gap: 10px;
+            }
+            .list-thumb { width: 60px; height: 40px; grid-row: 1; }
+            .list-content { grid-column: 2; grid-row: 1; }
+            .list-actions { grid-column: 1 / -1; grid-row: 2; justify-content: flex-end; flex-wrap: wrap; }
+            .btn-label { display: none; }
         }
     </style>
 </head>
@@ -507,6 +518,7 @@
 
             <div class="sidebar-section">Content</div>
             <div class="sidebar-item" data-tab="events"><i class="fas fa-calendar-star"></i> 이벤트</div>
+            <div class="sidebar-item" data-tab="exchanges"><i class="fas fa-building-columns"></i> 거래소</div>
             <div class="sidebar-item" data-tab="reviews"><i class="fas fa-comments"></i> 후기 관리</div>
             <div class="sidebar-item" data-tab="texts"><i class="fas fa-pen-to-square"></i> 텍스트 수정</div>
 
@@ -568,6 +580,7 @@
                     <div class="card-sub">자주 사용하는 작업을 바로 실행하세요</div>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
                         <button class="btn-ghost" onclick="showTab('events')"><i class="fas fa-calendar-star"></i> 이벤트 관리</button>
+                        <button class="btn-ghost" onclick="showTab('exchanges')"><i class="fas fa-building-columns"></i> 거래소 관리</button>
                         <button class="btn-ghost" onclick="showTab('reviews')"><i class="fas fa-image"></i> 후기 업로드</button>
                         <button class="btn-ghost" onclick="showTab('texts')"><i class="fas fa-pen"></i> 텍스트 수정</button>
                     </div>
@@ -666,6 +679,90 @@
                 <div style="display:flex; gap:10px; margin-top:16px;">
                     <button class="btn-solid" id="saveEventBtn" onclick="saveEvent()"><i class="fas fa-check"></i> 저장</button>
                     <button class="btn-ghost" onclick="closeEventForm()"><i class="fas fa-xmark"></i> 취소</button>
+                </div>
+            </div>
+
+            <!-- Exchanges -->
+            <div class="tab-panel" data-panel="exchanges">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">거래소 관리</h1>
+                        <p class="page-sub">홈 페이지의 "국내 입출금 가능 거래소" 표를 관리합니다</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-solid" onclick="openExchangeModal()"><i class="fas fa-plus"></i> 새 거래소</button>
+                    </div>
+                </div>
+
+                <div id="exchangesList"></div>
+            </div>
+
+            <!-- Exchange form (inline) -->
+            <div class="card" id="exchangeForm" style="display:none;">
+                <div class="card-title"><i class="fas fa-building-columns"></i> <span id="exchangeFormTitle">새 거래소</span></div>
+                <div class="card-sub">한국어 위주로 입력해도 되며, 영어/중국어가 비어있으면 한국어 값으로 자동 사용됩니다.</div>
+
+                <div class="form-group-title">거래소 기본 정보</div>
+                <div class="field-row">
+                    <div class="field">
+                        <label class="field-label">영문/공식명 *</label>
+                        <input type="text" class="field-input" id="exName" placeholder="예: Deepcoin">
+                    </div>
+                    <div class="field">
+                        <label class="field-label">유형</label>
+                        <select class="field-select" id="exType">
+                            <option value="CEX">CEX</option>
+                            <option value="DEX">DEX</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group-title">한글/현지 명칭 (각 언어용 부제)</div>
+                <div class="field-row-3">
+                    <div class="field"><label class="field-label">한국어</label><input type="text" class="field-input" id="exNameKo" placeholder="딥코인"></div>
+                    <div class="field"><label class="field-label">English</label><input type="text" class="field-input" id="exNameEn" placeholder="Deepcoin"></div>
+                    <div class="field"><label class="field-label">中文</label><input type="text" class="field-input" id="exNameZh" placeholder="Deepcoin"></div>
+                </div>
+
+                <div class="form-group-title">입출금 안내 (3개 국어)</div>
+                <div class="field-row-3">
+                    <div class="field"><label class="field-label">한국어</label><input type="text" class="field-input" id="exDepositKo" placeholder="빗썸/코인원 국내 거래소 입출금 가능"></div>
+                    <div class="field"><label class="field-label">English</label><input type="text" class="field-input" id="exDepositEn" placeholder="Bithumb/Coinone deposit/withdrawal supported"></div>
+                    <div class="field"><label class="field-label">中文</label><input type="text" class="field-input" id="exDepositZh" placeholder="Bithumb/Coinone 韩国交易所充提可用"></div>
+                </div>
+
+                <div class="form-group-title">수수료 할인 (3개 국어)</div>
+                <div class="field-row-3">
+                    <div class="field"><label class="field-label">한국어</label><input type="text" class="field-input" id="exPaybackKo" placeholder="59% 페이백"></div>
+                    <div class="field"><label class="field-label">English</label><input type="text" class="field-input" id="exPaybackEn" placeholder="59% Payback"></div>
+                    <div class="field"><label class="field-label">中文</label><input type="text" class="field-input" id="exPaybackZh" placeholder="59% 返佣"></div>
+                </div>
+
+                <div class="form-group-title">수수료 & 링크</div>
+                <div class="field-row-3">
+                    <div class="field"><label class="field-label">지정가 (Maker)</label><input type="text" class="field-input" id="exMaker" placeholder="0.009"></div>
+                    <div class="field"><label class="field-label">시장가 (Taker)</label><input type="text" class="field-input" id="exTaker" placeholder="0.0182"></div>
+                    <div class="field"><label class="field-label">순서</label><input type="number" class="field-input" id="exOrder" value="0"></div>
+                </div>
+                <div class="field">
+                    <label class="field-label">가입 링크 *</label>
+                    <input type="url" class="field-input" id="exLink" placeholder="https://...">
+                </div>
+
+                <div class="field">
+                    <label class="field-label">거래소 로고 (선택)</label>
+                    <div class="upload-zone" id="exLogoZone">
+                        <i class="fas fa-image"></i>
+                        <p>클릭 또는 드래그하여 로고 업로드</p>
+                        <p style="font-size:11px; margin-top:4px;">정사각형 PNG 권장 (없으면 첫 글자 표시)</p>
+                    </div>
+                    <input type="file" id="exLogoFile" accept="image/*" style="display:none">
+                    <img id="exLogoPreview" style="max-width:80px; border-radius:8px; margin-top:10px; display:none;">
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button class="btn-solid" id="saveExchangeBtn" onclick="saveExchange()"><i class="fas fa-check"></i> 저장</button>
+                    <button class="btn-ghost" onclick="closeExchangeForm()"><i class="fas fa-xmark"></i> 취소</button>
                 </div>
             </div>
 
@@ -826,7 +923,7 @@
             document.getElementById('domainInfo').textContent = location.host || 'local';
             await testConnection();
             buildTextFields();
-            await Promise.all([loadEvents(), loadReviews(), loadTexts(), updateStats()]);
+            await Promise.all([loadEvents(), loadExchanges(), loadReviews(), loadTexts(), updateStats()]);
         }
 
         document.getElementById('loginBtn').addEventListener('click', login);
@@ -837,6 +934,7 @@
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.toggle('active', i.dataset.tab === tab));
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
             closeEventForm();
+            closeExchangeForm();
         }
         document.querySelectorAll('.sidebar-item').forEach(item => {
             item.addEventListener('click', () => showTab(item.dataset.tab));
@@ -993,25 +1091,207 @@
             }
         }
 
+        let eventsCache = [];
+
         async function loadEvents() {
             const { data, error } = await sb.from('events').select('*').order('display_order').order('created_at');
             const list = document.getElementById('eventsList');
             if (error) { list.innerHTML = '<div class="empty-state"><i class="fas fa-circle-exclamation"></i><p>로드 실패: ' + error.message + '</p></div>'; return; }
-            if (!data?.length) { list.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-xmark"></i><p>등록된 이벤트가 없습니다</p></div>'; return; }
+            if (!data?.length) {
+                eventsCache = [];
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-xmark"></i><p>등록된 이벤트가 없습니다</p></div>';
+                return;
+            }
+            eventsCache = data;
             list.innerHTML = data.map(ev => `
-                <div class="list-item" style="${ev.active ? '' : 'opacity:0.5;'}">
-                    <div class="list-thumb">${ev.thumb_url ? `<img src="${ev.thumb_url}">` : `<i class="fas fa-image"></i>`}</div>
+                <div class="list-item" style="${ev.active ? '' : 'opacity:0.55;'}" data-event-id="${escapeAttr(ev.id)}">
+                    <div class="list-thumb">${ev.thumb_url ? `<img src="${escapeAttr(ev.thumb_url)}">` : `<i class="fas fa-image"></i>`}</div>
                     <div class="list-content">
-                        <div class="list-title">${escapeHtml(ev.title_ko || ev.title_en || '(제목 없음)')}</div>
-                        <div class="list-meta">${ev.badge ? `<strong>${escapeHtml(ev.badge)}</strong> · ` : ''}${ev.color_theme} · ${escapeHtml(ev.link)}</div>
+                        <div class="list-title">${escapeHtml(ev.title_ko || ev.title_en || '(제목 없음)')}${ev.active ? '' : ' <span style="color:var(--text-muted); font-weight:500; font-size:11px;">(비활성)</span>'}</div>
+                        <div class="list-meta">${ev.badge ? `<strong>${escapeHtml(ev.badge)}</strong> · ` : ''}${ev.color_theme} · <span style="color:var(--text-muted)">${escapeHtml(ev.link)}</span></div>
                     </div>
                     <div class="list-actions">
-                        <button class="btn-ghost" onclick='openEventModal(${JSON.stringify(ev).replace(/'/g, "&#39;")})'><i class="fas fa-pen"></i></button>
-                        <button class="btn-ghost" onclick="toggleEventActive('${ev.id}', ${ev.active})"><i class="fas fa-eye${ev.active ? '' : '-slash'}"></i></button>
-                        <button class="btn-danger" onclick="deleteEvent('${ev.id}')"><i class="fas fa-trash"></i></button>
+                        <button class="btn-ghost btn-edit" data-id="${escapeAttr(ev.id)}" title="수정"><i class="fas fa-pen"></i> <span class="btn-label">수정</span></button>
+                        <button class="btn-ghost btn-toggle" data-id="${escapeAttr(ev.id)}" data-active="${ev.active}" title="${ev.active ? '비활성화' : '활성화'}"><i class="fas fa-eye${ev.active ? '' : '-slash'}"></i></button>
+                        <button class="btn-danger btn-del" data-id="${escapeAttr(ev.id)}" title="삭제"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
+
+            // Bind delegated handlers
+            list.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => {
+                const ev = eventsCache.find(e => e.id === b.dataset.id);
+                if (ev) openEventModal(ev);
+                else toast('error', '이벤트를 찾을 수 없습니다');
+            }));
+            list.querySelectorAll('.btn-toggle').forEach(b => b.addEventListener('click', () => {
+                toggleEventActive(b.dataset.id, b.dataset.active === 'true');
+            }));
+            list.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', () => {
+                deleteEvent(b.dataset.id);
+            }));
+        }
+
+        // === EXCHANGES ===
+        let editingExchangeId = null;
+        let editingExchangeLogo = null;
+        let exchangesCache = [];
+
+        function openExchangeModal(ex = null) {
+            const form = document.getElementById('exchangeForm');
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('exchangeFormTitle').textContent = ex ? '거래소 수정' : '새 거래소';
+            editingExchangeId = ex?.id || null;
+            editingExchangeLogo = ex?.logo_url || null;
+            document.getElementById('exName').value = ex?.name || '';
+            document.getElementById('exType').value = ex?.type || 'CEX';
+            document.getElementById('exNameKo').value = ex?.name_local_ko || '';
+            document.getElementById('exNameEn').value = ex?.name_local_en || '';
+            document.getElementById('exNameZh').value = ex?.name_local_zh || '';
+            document.getElementById('exDepositKo').value = ex?.deposit_ko || '';
+            document.getElementById('exDepositEn').value = ex?.deposit_en || '';
+            document.getElementById('exDepositZh').value = ex?.deposit_zh || '';
+            document.getElementById('exPaybackKo').value = ex?.payback_ko || '';
+            document.getElementById('exPaybackEn').value = ex?.payback_en || '';
+            document.getElementById('exPaybackZh').value = ex?.payback_zh || '';
+            document.getElementById('exMaker').value = ex?.maker_fee || '';
+            document.getElementById('exTaker').value = ex?.taker_fee || '';
+            document.getElementById('exLink').value = ex?.signup_link || '';
+            document.getElementById('exOrder').value = ex?.display_order || 0;
+            const preview = document.getElementById('exLogoPreview');
+            if (ex?.logo_url) { preview.src = ex.logo_url; preview.style.display = 'block'; }
+            else { preview.style.display = 'none'; preview.src = ''; }
+        }
+
+        function closeExchangeForm() {
+            document.getElementById('exchangeForm').style.display = 'none';
+            editingExchangeId = null;
+            editingExchangeLogo = null;
+        }
+
+        document.getElementById('exLogoZone').addEventListener('click', () => document.getElementById('exLogoFile').click());
+        document.getElementById('exLogoFile').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            toast('info', '로고 업로드 중...');
+            const url = await uploadImage(file, 'exchanges');
+            if (url) {
+                editingExchangeLogo = url;
+                const preview = document.getElementById('exLogoPreview');
+                preview.src = url;
+                preview.style.display = 'block';
+                toast('success', '로고 업로드 완료');
+            }
+            e.target.value = '';
+        });
+
+        async function saveExchange() {
+            const btn = document.getElementById('saveExchangeBtn');
+            const name = document.getElementById('exName').value.trim();
+            const link = document.getElementById('exLink').value.trim();
+            if (!name) { toast('error', '거래소 이름을 입력하세요'); return; }
+            if (!link) { toast('error', '가입 링크를 입력하세요'); return; }
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> 저장 중...';
+            const payload = {
+                name,
+                name_local_ko: document.getElementById('exNameKo').value.trim() || null,
+                name_local_en: document.getElementById('exNameEn').value.trim() || null,
+                name_local_zh: document.getElementById('exNameZh').value.trim() || null,
+                type: document.getElementById('exType').value || 'CEX',
+                deposit_ko: document.getElementById('exDepositKo').value.trim() || null,
+                deposit_en: document.getElementById('exDepositEn').value.trim() || null,
+                deposit_zh: document.getElementById('exDepositZh').value.trim() || null,
+                payback_ko: document.getElementById('exPaybackKo').value.trim() || null,
+                payback_en: document.getElementById('exPaybackEn').value.trim() || null,
+                payback_zh: document.getElementById('exPaybackZh').value.trim() || null,
+                maker_fee: document.getElementById('exMaker').value.trim() || null,
+                taker_fee: document.getElementById('exTaker').value.trim() || null,
+                signup_link: link,
+                display_order: parseInt(document.getElementById('exOrder').value) || 0,
+                logo_url: editingExchangeLogo || null,
+                active: true
+            };
+            try {
+                if (editingExchangeId) {
+                    const { error } = await sb.from('exchanges').update(payload).eq('id', editingExchangeId);
+                    if (error) throw error;
+                    toast('success', '거래소 수정 완료');
+                } else {
+                    const { error } = await sb.from('exchanges').insert(payload);
+                    if (error) throw error;
+                    toast('success', '거래소 추가 완료');
+                }
+                closeExchangeForm();
+                await loadExchanges();
+                await updateStats();
+            } catch (e) {
+                toast('error', '저장 실패: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> 저장';
+            }
+        }
+
+        async function deleteExchange(id) {
+            if (!confirm('이 거래소를 삭제하시겠습니까?')) return;
+            try {
+                const { error } = await sb.from('exchanges').delete().eq('id', id);
+                if (error) throw error;
+                toast('success', '거래소 삭제 완료');
+                await loadExchanges();
+            } catch (e) {
+                toast('error', '삭제 실패: ' + e.message);
+            }
+        }
+
+        async function toggleExchangeActive(id, active) {
+            try {
+                const { error } = await sb.from('exchanges').update({ active: !active }).eq('id', id);
+                if (error) throw error;
+                toast('success', !active ? '활성화됨' : '비활성화됨');
+                await loadExchanges();
+            } catch (e) {
+                toast('error', '변경 실패: ' + e.message);
+            }
+        }
+
+        async function loadExchanges() {
+            const { data, error } = await sb.from('exchanges').select('*').order('display_order').order('created_at');
+            const list = document.getElementById('exchangesList');
+            if (!list) return;
+            if (error) { list.innerHTML = '<div class="empty-state"><i class="fas fa-circle-exclamation"></i><p>로드 실패: ' + error.message + '</p></div>'; return; }
+            if (!data?.length) {
+                exchangesCache = [];
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-building-columns"></i><p>등록된 거래소가 없습니다</p></div>';
+                return;
+            }
+            exchangesCache = data;
+            list.innerHTML = data.map(ex => `
+                <div class="list-item" style="${ex.active ? '' : 'opacity:0.55;'}">
+                    <div class="list-thumb">${ex.logo_url ? `<img src="${escapeAttr(ex.logo_url)}">` : `<i class="fas fa-building-columns"></i>`}</div>
+                    <div class="list-content">
+                        <div class="list-title">${escapeHtml(ex.name)} <span style="font-weight:500; color:var(--text-muted); font-size:12px;">${escapeHtml(ex.name_local_ko || '')}</span>${ex.active ? '' : ' <span style="color:var(--text-muted); font-weight:500; font-size:11px;">(비활성)</span>'}</div>
+                        <div class="list-meta">${escapeHtml(ex.type || 'CEX')} · ${escapeHtml(ex.payback_ko || '')} · ${escapeHtml(ex.maker_fee || '')}/${escapeHtml(ex.taker_fee || '')}</div>
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn-ghost btn-ex-edit" data-id="${escapeAttr(ex.id)}" title="수정"><i class="fas fa-pen"></i> <span class="btn-label">수정</span></button>
+                        <button class="btn-ghost btn-ex-toggle" data-id="${escapeAttr(ex.id)}" data-active="${ex.active}" title="${ex.active ? '비활성화' : '활성화'}"><i class="fas fa-eye${ex.active ? '' : '-slash'}"></i></button>
+                        <button class="btn-danger btn-ex-del" data-id="${escapeAttr(ex.id)}" title="삭제"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            list.querySelectorAll('.btn-ex-edit').forEach(b => b.addEventListener('click', () => {
+                const ex = exchangesCache.find(e => e.id === b.dataset.id);
+                if (ex) openExchangeModal(ex);
+            }));
+            list.querySelectorAll('.btn-ex-toggle').forEach(b => b.addEventListener('click', () => {
+                toggleExchangeActive(b.dataset.id, b.dataset.active === 'true');
+            }));
+            list.querySelectorAll('.btn-ex-del').forEach(b => b.addEventListener('click', () => {
+                deleteExchange(b.dataset.id);
+            }));
         }
 
         // === REVIEWS ===
@@ -1168,7 +1448,7 @@
             return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
         function escapeAttr(s) {
-            return String(s || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+            return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
     </script>
 </body>
