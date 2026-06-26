@@ -371,6 +371,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     applyLang(currentLang);
 
+    // ===== SITE VISIBILITY SETTINGS (admin-controlled ON/OFF via site_texts) =====
+    (async function applySiteSettings() {
+        const sb = getSupa();
+        if (!sb) return;
+        const settings = {};
+        try {
+            const { data } = await sb.from('site_texts').select('key, value_en').like('key', 'setting_%');
+            (data || []).forEach(r => { settings[r.key] = (r.value_en || '').toLowerCase(); });
+        } catch (e) { console.warn('Site settings load failed:', e); return; }
+        const isOff = key => settings[key] === 'off';
+
+        // 한국어 OFF → 언어 선택에서 한국어 숨기고, 한국어로 보던 방문자는 영어로 전환
+        if (isOff('setting_lang_ko')) {
+            langButtons.forEach(b => { if (b.dataset.lang === 'ko') b.style.display = 'none'; });
+            if (currentLang === 'ko') applyLang('en');
+        }
+
+        // 메뉴 OFF → 해당 메뉴 링크/카드 숨기고, 그 페이지가 열려 있으면 홈으로
+        ['intro', 'referral', 'indicator', 'viewpoint', 'education', 'ebook'].forEach(page => {
+            if (!isOff('setting_nav_' + page)) return;
+            document.querySelectorAll('[data-page="' + page + '"]').forEach(el => { el.style.display = 'none'; });
+            if (document.getElementById('page-' + page)?.classList.contains('active')) showPage('home');
+        });
+    })();
+
     // ===== SCROLL ANIMATIONS =====
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {

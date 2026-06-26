@@ -244,6 +244,17 @@
         .tab-panel { display: none; }
         .tab-panel.active { display: block; animation: fade 0.25s ease; }
         @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+        .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 2px; border-bottom: 1px solid var(--border); }
+        .setting-row:last-child { border-bottom: none; }
+        .setting-label { font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 11px; font-size: 14px; }
+        .setting-label i { width: 18px; text-align: center; color: var(--text-muted); }
+        .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background: var(--border); border-radius: 26px; transition: .2s; }
+        .slider:before { content: ''; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+        .switch input:checked + .slider { background: var(--accent); }
+        .switch input:checked + .slider:before { transform: translateX(20px); }
+        .switch input:disabled + .slider { opacity: .5; cursor: wait; }
 
         .card {
             background: var(--bg-card);
@@ -870,6 +881,18 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-title"><i class="fas fa-eye"></i> 표시 설정</div>
+                    <p class="page-sub" style="margin:-4px 0 16px;">홈페이지에 노출할 항목을 켜고 끕니다. 변경 즉시 사이트에 반영됩니다.</p>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-globe"></i> 한국어 언어</span><label class="switch"><input type="checkbox" data-setting="setting_lang_ko" checked><span class="slider"></span></label></div>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-circle-info"></i> 소개 메뉴</span><label class="switch"><input type="checkbox" data-setting="setting_nav_intro" checked><span class="slider"></span></label></div>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-arrows-rotate"></i> 레퍼럴변경 메뉴</span><label class="switch"><input type="checkbox" data-setting="setting_nav_referral" checked><span class="slider"></span></label></div>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-chart-line"></i> 지표등록 메뉴</span><label class="switch"><input type="checkbox" data-setting="setting_nav_indicator" checked><span class="slider"></span></label></div>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-eye"></i> 관점방 메뉴</span><label class="switch"><input type="checkbox" data-setting="setting_nav_viewpoint" checked><span class="slider"></span></label></div>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-graduation-cap"></i> 교육방 메뉴</span><label class="switch"><input type="checkbox" data-setting="setting_nav_education" checked><span class="slider"></span></label></div>
+                    <div class="setting-row"><span class="setting-label"><i class="fas fa-book"></i> 전자책 메뉴</span><label class="switch"><input type="checkbox" data-setting="setting_nav_ebook" checked><span class="slider"></span></label></div>
+                </div>
+
+                <div class="card">
                     <div class="card-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger)"></i> 세션</div>
                     <button class="btn-danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> 로그아웃</button>
                 </div>
@@ -923,7 +946,7 @@
             document.getElementById('domainInfo').textContent = location.host || 'local';
             await testConnection();
             buildTextFields();
-            await Promise.all([loadEvents(), loadExchanges(), loadReviews(), loadTexts(), updateStats()]);
+            await Promise.all([loadEvents(), loadExchanges(), loadReviews(), loadTexts(), loadSettings(), updateStats()]);
         }
 
         document.getElementById('loginBtn').addEventListener('click', login);
@@ -1434,6 +1457,34 @@
                 btn.innerHTML = '<i class="fas fa-check"></i> 전체 저장';
             }
         }
+
+        // === SITE VISIBILITY SETTINGS (홈페이지 표시 ON/OFF) ===
+        async function loadSettings() {
+            const { data } = await sb.from('site_texts').select('key, value_en').like('key', 'setting_%');
+            const map = {};
+            (data || []).forEach(r => { map[r.key] = (r.value_en || '').toLowerCase(); });
+            document.querySelectorAll('[data-setting]').forEach(cb => {
+                cb.checked = map[cb.dataset.setting] !== 'off'; // 설정값 없으면 기본 ON
+            });
+        }
+
+        async function saveSetting(cb) {
+            const key = cb.dataset.setting;
+            const val = cb.checked ? 'on' : 'off';
+            cb.disabled = true;
+            try {
+                const { error } = await sb.from('site_texts').upsert({ key, value_en: val }, { onConflict: 'key' });
+                if (error) throw error;
+                toast('success', cb.checked ? '켜짐 · 홈페이지에 표시됩니다' : '꺼짐 · 홈페이지에서 숨겨집니다');
+            } catch (e) {
+                cb.checked = !cb.checked; // 저장 실패 시 원래대로 되돌림
+                toast('error', '저장 실패: ' + e.message);
+            } finally {
+                cb.disabled = false;
+            }
+        }
+
+        document.querySelectorAll('[data-setting]').forEach(cb => cb.addEventListener('change', () => saveSetting(cb)));
 
         document.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && e.key === 's') {
