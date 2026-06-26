@@ -62,9 +62,14 @@ async function loadDynamicEvents() {
     if (!sb) return;
     const grid = document.querySelector('.event-grid');
     if (!grid) return;
+    const section = grid.closest('.section');
     try {
         const { data, error } = await sb.from('events').select('*').eq('active', true).order('display_order').order('created_at');
-        if (error || !data?.length) return;
+        if (error || !data.length) { // 활성 이벤트 0개(또는 로드 실패) → 이벤트 섹션 숨김
+            if (section) section.style.display = 'none';
+            return;
+        }
+        if (section) section.style.display = ''; // 활성 이벤트 있음 → 섹션 표시
         const lang = document.documentElement.getAttribute('data-lang') || 'en';
         const getText = (row, field) => row[`${field}_${lang}`] || row[`${field}_ko`] || row[`${field}_en`] || '';
         const colorMap = {
@@ -123,9 +128,15 @@ async function loadDynamicExchanges() {
     if (!sb) return;
     const tbody = document.querySelector('.ex-table tbody');
     if (!tbody) return;
+    const section = tbody.closest('.section');
     try {
         const { data, error } = await sb.from('exchanges').select('*').eq('active', true).order('display_order').order('created_at');
-        if (error || !data?.length) return;
+        if (error) return; // Supabase 연결 실패 → 정적 폴백 행 유지
+        if (!data.length) { // 활성 거래소가 0개(모두 비활성/삭제) → 섹션 전체 숨김
+            if (section) section.style.display = 'none';
+            return;
+        }
+        if (section) section.style.display = ''; // 활성 거래소 있음 → 섹션 표시
         const lang = document.documentElement.getAttribute('data-lang') || 'en';
         const get = (row, field) => row[`${field}_${lang}`] || row[`${field}_ko`] || row[`${field}_en`] || '';
         const escape = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
