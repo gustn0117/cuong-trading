@@ -48,7 +48,11 @@ async function applySupabaseOverrides() {
             if (row.key.startsWith('link_') && DEFAULT_LINKS[row.key]) {
                 const newUrl = row.value_ko || row.value_en || row.value_zh;
                 if (newUrl) {
-                    document.querySelectorAll(`a[href="${DEFAULT_LINKS[row.key]}"]`).forEach(a => { a.href = newUrl; });
+                    // Tagged anchors match by key regardless of their current href
+                    document.querySelectorAll(`a[data-link-key="${row.key}"]`).forEach(a => { a.href = newUrl; });
+                    // Untagged anchors match by default href; skip tagged ones so
+                    // e.g. link_telegram can't clobber the apply buttons
+                    document.querySelectorAll(`a[href="${DEFAULT_LINKS[row.key]}"]:not([data-link-key])`).forEach(a => { a.href = newUrl; });
                 }
             }
         });
