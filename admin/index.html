@@ -109,6 +109,8 @@
             box-shadow: 0 4px 16px var(--accent-glow);
         }
         .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.6; cursor: wait; transform: none; }
+        .gate-form .input-field + .input-field { margin-top: 10px; }
         .gate-error { display: none; color: var(--danger); margin-top: 14px; font-size: 13px; text-align: center; }
 
         .dashboard { display: none; min-height: 100vh; grid-template-columns: 260px 1fr; }
@@ -510,10 +512,13 @@
         <div class="gate-card">
             <div class="gate-logo"><i class="fas fa-shield-halved"></i></div>
             <h1 class="gate-title">Admin Dashboard</h1>
-            <p class="gate-sub">관리자 비밀번호를 입력하세요</p>
-            <input type="password" id="pwd" class="input-field" placeholder="Password" autofocus>
-            <button class="btn-primary" id="loginBtn">로그인</button>
-            <p class="gate-error" id="err">비밀번호가 올바르지 않습니다</p>
+            <p class="gate-sub">관리자 계정으로 로그인하세요</p>
+            <form class="gate-form" id="loginForm" novalidate>
+                <input type="email" id="email" class="input-field" placeholder="이메일" autocomplete="username" autofocus>
+                <input type="password" id="pwd" class="input-field" placeholder="비밀번호" autocomplete="current-password">
+                <button type="submit" class="btn-primary" id="loginBtn">로그인</button>
+            </form>
+            <p class="gate-error" id="err"></p>
         </div>
     </div>
 
@@ -897,7 +902,20 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-title"><i class="fas fa-key"></i> 비밀번호 변경</div>
+                    <p class="card-sub">8자 이상으로 정하세요. 바꾼 뒤에는 새 비밀번호로 로그인합니다.</p>
+                    <form id="pwdForm" novalidate>
+                        <div class="field-row">
+                            <div class="field"><label class="field-label" for="newPwd">새 비밀번호</label><input type="password" class="field-input" id="newPwd" autocomplete="new-password"></div>
+                            <div class="field"><label class="field-label" for="newPwd2">새 비밀번호 확인</label><input type="password" class="field-input" id="newPwd2" autocomplete="new-password"></div>
+                        </div>
+                        <button type="submit" class="btn-solid" id="changePwdBtn" style="margin-top:16px;"><i class="fas fa-check"></i> 비밀번호 변경</button>
+                    </form>
+                </div>
+
+                <div class="card">
                     <div class="card-title"><i class="fas fa-triangle-exclamation" style="color:var(--danger)"></i> 세션</div>
+                    <p class="card-sub">로그인 계정: <strong id="sessionEmail"></strong></p>
                     <button class="btn-danger" onclick="logout()"><i class="fas fa-right-from-bracket"></i> 로그아웃</button>
                 </div>
             </div>
@@ -912,35 +930,72 @@
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNjQxNzY5MjAwLCJleHAiOjE3OTk1MzU2MDB9.pei5Gx1wqEkbcDs1CiHFuTWNuVRlcrG5dPmYdrAqDdY';
         const BUCKET = 'cuong-trading';
         const SCHEMA = 'cuong_trading';
-        const PWD = '0008';
 
+        // 저장·업로드 권한은 서버가 로그인한 계정으로 확인합니다 (관리자 명단: cuong_trading.admins).
+        // 로그인 상태는 이 탭에만 보관되어, 탭이나 브라우저를 닫으면 로그아웃됩니다.
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-            db: { schema: SCHEMA }
+            db: { schema: SCHEMA },
+            auth: { storage: window.sessionStorage }
         });
-        // Storage client uses default schema
-        const sbStorage = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
         const TEXT_KEYS = ['edu_badge','edu_title','edu_desc','edu_period','challenge_hot_date','challenge_hot_current','challenge_hot_goal','link_telegram','link_discord','link_kakao','link_edu_form','link_viewpoint_form','link_indicator_form'];
 
         const gate = document.getElementById('gateWrap');
         const dashboard = document.getElementById('dashboard');
+        const emailInput = document.getElementById('email');
         const pwdInput = document.getElementById('pwd');
+        const loginBtn = document.getElementById('loginBtn');
         const err = document.getElementById('err');
 
-        function login() {
-            if (pwdInput.value === PWD) {
-                sessionStorage.setItem('admin_ok', '1');
-                enterDashboard();
-            } else {
-                err.style.display = 'block';
+        function showGateError(msg) {
+            err.textContent = msg;
+            err.style.display = 'block';
+        }
+
+        // 관리자 명단에 있는 계정인지 서버에 확인 (연결 실패 시 예외)
+        async function checkAdmin() {
+            const { data, error } = await sb.rpc('is_admin');
+            if (error) throw error;
+            return data === true;
+        }
+
+        async function login() {
+            const email = emailInput.value.trim();
+            const password = pwdInput.value;
+            if (!email || !password) { showGateError('이메일과 비밀번호를 입력하세요'); return; }
+            loginBtn.disabled = true;
+            loginBtn.textContent = '로그인 중...';
+            try {
+                const { error } = await sb.auth.signInWithPassword({ email, password });
+                if (error) {
+                    if (/invalid login credentials/i.test(error.message)) showGateError('이메일 또는 비밀번호가 올바르지 않습니다');
+                    else if (!error.status || /fetch|network/i.test(error.message)) showGateError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요');
+                    else showGateError('로그인 실패: ' + error.message);
+                    pwdInput.value = '';
+                    pwdInput.focus();
+                    return;
+                }
+                if (!(await checkAdmin())) {
+                    await sb.auth.signOut({ scope: 'local' });
+                    showGateError('관리자 권한이 없는 계정입니다');
+                    pwdInput.value = '';
+                    return;
+                }
+                err.style.display = 'none';
                 pwdInput.value = '';
-                pwdInput.focus();
+                enterDashboard();
+            } catch (e) {
+                showGateError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = '로그인';
             }
         }
 
-        function logout() {
+        async function logout() {
             if (!confirm('로그아웃 하시겠습니까?')) return;
-            sessionStorage.removeItem('admin_ok');
+            const { error } = await sb.auth.signOut();
+            if (error) await sb.auth.signOut({ scope: 'local' });
             location.reload();
         }
 
@@ -948,14 +1003,27 @@
             gate.style.display = 'none';
             dashboard.classList.add('active');
             document.getElementById('domainInfo').textContent = location.host || 'local';
+            const { data: { session } } = await sb.auth.getSession();
+            document.getElementById('sessionEmail').textContent = session?.user?.email || '';
             await testConnection();
             buildTextFields();
             await Promise.all([loadEvents(), loadExchanges(), loadReviews(), loadTexts(), loadSettings(), updateStats()]);
         }
 
-        document.getElementById('loginBtn').addEventListener('click', login);
-        pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
-        if (sessionStorage.getItem('admin_ok') === '1') enterDashboard();
+        document.getElementById('loginForm').addEventListener('submit', e => { e.preventDefault(); login(); });
+
+        // 새로고침해도 이 탭에 로그인 상태가 남아 있으면 바로 대시보드로
+        (async () => {
+            try {
+                const { data: { session } } = await sb.auth.getSession();
+                if (session && await checkAdmin()) enterDashboard();
+            } catch (e) { /* 서버 연결 실패: 로그인 화면 유지 */ }
+        })();
+
+        // 세션이 만료되거나 로그아웃되면 로그인 화면으로
+        sb.auth.onAuthStateChange(event => {
+            if (event === 'SIGNED_OUT' && dashboard.classList.contains('active')) location.reload();
+        });
 
         function showTab(tab) {
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.toggle('active', i.dataset.tab === tab));
@@ -1383,9 +1451,9 @@
             try {
                 const ext = file.name.split('.').pop();
                 const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-                const { error } = await sbStorage.storage.from(BUCKET).upload(fileName, file, { cacheControl: '3600', upsert: false });
+                const { error } = await sb.storage.from(BUCKET).upload(fileName, file, { cacheControl: '3600', upsert: false });
                 if (error) throw error;
-                const { data } = sbStorage.storage.from(BUCKET).getPublicUrl(fileName);
+                const { data } = sb.storage.from(BUCKET).getPublicUrl(fileName);
                 return data.publicUrl;
             } catch (e) {
                 let msg = e.message || String(e);
@@ -1417,7 +1485,7 @@
                 await sb.from('reviews').delete().eq('id', id);
                 // Delete from storage
                 const path = url.split(`${BUCKET}/`)[1];
-                if (path) await sbStorage.storage.from(BUCKET).remove([path]);
+                if (path) await sb.storage.from(BUCKET).remove([path]);
                 toast('success', '후기 삭제 완료');
                 await loadReviews();
                 await updateStats();
@@ -1517,6 +1585,33 @@
         }
 
         document.querySelectorAll('[data-setting]').forEach(cb => cb.addEventListener('change', () => saveSetting(cb)));
+
+        // === 비밀번호 변경 ===
+        async function changePassword() {
+            const newPwd = document.getElementById('newPwd');
+            const newPwd2 = document.getElementById('newPwd2');
+            if (newPwd.value.length < 8) { toast('error', '비밀번호는 8자 이상이어야 합니다'); return; }
+            if (newPwd.value !== newPwd2.value) { toast('error', '두 비밀번호가 일치하지 않습니다'); return; }
+            const btn = document.getElementById('changePwdBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> 변경 중...';
+            try {
+                const { error } = await sb.auth.updateUser({ password: newPwd.value });
+                if (error) throw error;
+                newPwd.value = '';
+                newPwd2.value = '';
+                toast('success', '비밀번호가 변경되었습니다. 다음 로그인부터 새 비밀번호를 사용하세요');
+            } catch (e) {
+                toast('error', /different from the old/i.test(e.message || '')
+                    ? '지금 쓰는 비밀번호와 다른 비밀번호를 입력하세요'
+                    : '변경 실패: ' + escapeHtml(e.message));
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> 비밀번호 변경';
+            }
+        }
+
+        document.getElementById('pwdForm').addEventListener('submit', e => { e.preventDefault(); changePassword(); });
 
         document.addEventListener('keydown', e => {
             if ((e.ctrlKey || e.metaKey) && e.key === 's') {
