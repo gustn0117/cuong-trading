@@ -994,8 +994,10 @@
 
         async function logout() {
             if (!confirm('로그아웃 하시겠습니까?')) return;
-            const { error } = await sb.auth.signOut();
-            if (error) await sb.auth.signOut({ scope: 'local' });
+            // 이 기기만 로그아웃 (같은 계정으로 접속 중인 다른 기기는 그대로 유지)
+            await sb.auth.signOut({ scope: 'local' }).catch(() => {});
+            // 서버 연결이 끊겨 있어도 이 탭의 로그인 정보는 확실히 지움
+            Object.keys(sessionStorage).filter(k => k.startsWith('sb-')).forEach(k => sessionStorage.removeItem(k));
             location.reload();
         }
 

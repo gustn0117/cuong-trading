@@ -18,27 +18,27 @@ A third party reported that the `/admin` login can be bypassed by reading the pa
 
 ## Non-goals
 
-- Other sites on `api.hsweb.pics` (several have similarly open policies): separate follow-up.
+- Other sites hosted on the same Supabase server: out of scope here.
 - Re-issuing the anon/service keys before they expire (2027-01-10 08:00 KST): separate follow-up.
 - Hiding the admin page itself: no value once the server enforces permissions.
 
 ## Anti-goals
 
-- Gating writes on "is logged in" (`authenticated`): signup on this shared instance is open with email autoconfirm, so anyone can obtain an authenticated session.
+- Gating writes on "is logged in" (`authenticated`): on a shared Supabase server, accounts can be created by people other than the site owner, so a login alone must never grant write access.
 - Downtime for visitors, or a window where the admin cannot save.
 
 ## Approaches
 
 1. Hide, hash or change the password in JS, or put HTTP basic auth on `/admin`. Rejected: the database stays writable with the public anon key.
 2. A separate backend that holds the service key. Rejected: one more server to run, and Supabase already provides auth and row-level security.
-3. **Chosen:** Supabase Auth (email + password) plus RLS limited to an allowlist (`cuong_trading.admins`) through `cuong_trading.is_admin()`. The same pattern already exists on this instance (`marie_wedding.is_admin()`).
+3. **Chosen:** Supabase Auth (email + password) plus RLS limited to an allowlist (`cuong_trading.admins`) through `cuong_trading.is_admin()`.
 
 ## Design
 
-Server (idempotent SQL in `supabase/security.sql`, applied with the service key through pg-meta):
+Server (idempotent SQL in `supabase/01-admin-auth.sql` and `supabase/02-lockdown.sql`, applied with the service key through pg-meta):
 
 - `cuong_trading.admins (user_id uuid primary key references auth.users on delete cascade)`: RLS on, no policies, no grants to `anon`/`authenticated`.
-- `cuong_trading.is_admin()`: `security definer`, `set search_path = ''`, true when `auth.uid()` is in `admins`; execute granted to `authenticated` only.
+- `cuong_trading.is_admin()`: `security definer`, `set search_path = ''`, true when `auth.uid()` is in `admins`; execute granted to `authenticated` and `service_role`, never `anon`.
 - Tables `events`, `exchanges`, `reviews`, `site_texts`: drop `public_write`; keep public SELECT; add INSERT/UPDATE/DELETE policies `to authenticated` gated on `is_admin()`; `anon` keeps SELECT only; `authenticated` loses TRUNCATE/REFERENCES/TRIGGER.
 - Bucket `cuong-trading`: drop the public INSERT/UPDATE/DELETE policies; add the same three `to authenticated` with `bucket_id = 'cuong-trading' and cuong_trading.is_admin()`. Keep the public SELECT policy (public URLs keep working).
 - One admin account created with the GoTrue admin API (email pre-confirmed). The initial random password goes to the site owner, who changes it in the admin.

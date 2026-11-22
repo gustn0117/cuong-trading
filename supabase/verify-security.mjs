@@ -77,12 +77,36 @@ async function probeRowValue(key) {
     return Array.isArray(r.json) && r.json.length ? r.json[0].value_en : null;
 }
 
+// Same request the admin page's saveAllTexts()/saveSetting() send (upsert on key).
+const upsertText = (token, key, value) => rest('POST', 'site_texts?on_conflict=key', token, {
+    body: { key, value_en: value },
+    prefer: 'resolution=merge-duplicates,return=representation',
+});
+
+// An existing file (like a review image) must survive delete and overwrite attempts.
+async function tamperBlocked(label, token) {
+    const victim = `zz-probe/victim-${label}-${TAG}.txt`;
+    await upload(victim, SERVICE);
+    const del = await call('storage/v1', 'DELETE', `object/${BUCKET}`, token, { body: { prefixes: [victim] } });
+    const over = await call('storage/v1', 'POST', `object/${BUCKET}/${victim}`, token, {
+        body: 'tampered',
+        headers: { 'Content-Type': 'text/plain', 'x-upsert': 'true' },
+    });
+    const res = await fetch(`${API}/storage/v1/object/${BUCKET}/${victim}`, { headers: { apikey: SERVICE, Authorization: `Bearer ${SERVICE}` } });
+    const content = await res.text();
+    check(`${label} delete/overwrite of existing file blocked`, res.status === 200 && content === 'security probe',
+        `delete ${del.status} ${JSON.stringify(del.json)}, overwrite ${over.status}, file now ${res.status === 200 ? JSON.stringify(content) : 'missing'}`);
+}
+
 let probeUserId = null;
 try {
-    // Visitors must still read everything the site shows.
+    // Visitors must still read every row (the page itself filters by active).
     for (const table of ['events', 'exchanges', 'reviews', 'site_texts']) {
-        const r = await rest('GET', `${table}?select=*`, ANON);
-        check(`anon read ${table}`, r.status === 200 && Array.isArray(r.json), `${r.status}, ${Array.isArray(r.json) ? r.json.length + ' rows' : JSON.stringify(r.json)}`);
+        const asVisitor = await rest('GET', `${table}?select=*`, ANON);
+        const asServer = await rest('GET', `${table}?select=*`, SERVICE);
+        const seen = Array.isArray(asVisitor.json) ? asVisitor.json.length : -1;
+        const total = Array.isArray(asServer.json) ? asServer.json.length : -2;
+        check(`anon read ${table}`, asVisitor.status === 200 && seen === total, `${asVisitor.status}, ${seen} of ${total} rows`);
     }
 
     // The public key alone must not write anything.
@@ -95,8 +119,9 @@ try {
     r = await upload(`zz-probe/anon-${TAG}.txt`, ANON);
     let stored = (await probeFiles()).includes(`zz-probe/anon-${TAG}.txt`);
     check('anon upload blocked', r.status >= 400 && !stored, `${r.status}${stored ? ', file was stored' : ''}`);
+    await tamperBlocked('anon', ANON);
 
-    // Anyone can sign up on this shared server, so a logged-in non-admin must be refused too.
+    // A signed-up account that is not on the allowlist must be refused too.
     const probeRow = `zz_probe_row_${TAG}`;
     await rest('POST', 'site_texts', SERVICE, { body: { key: probeRow, value_en: 'original' } });
     const probeEmail = `zz-probe-${TAG}@example.com`;
@@ -113,12 +138,16 @@ try {
     r = await rest('PATCH', `site_texts?key=eq.${probeRow}`, userToken, { body: { value_en: 'changed' }, prefer: 'return=representation' });
     let value = await probeRowValue(probeRow);
     check('non-admin update blocked', (isDenied(r.status) || (r.status === 200 && r.json.length === 0)) && value === 'original', `${r.status}, value now ${JSON.stringify(value)}`);
+    r = await upsertText(userToken, probeRow, 'changed-by-upsert');
+    value = await probeRowValue(probeRow);
+    check('non-admin upsert blocked', value === 'original', `${r.status}, value now ${JSON.stringify(value)}`);
     r = await rest('DELETE', `site_texts?key=eq.${probeRow}`, userToken, { prefer: 'return=representation' });
     value = await probeRowValue(probeRow);
     check('non-admin delete blocked', (isDenied(r.status) || (r.status === 200 && r.json.length === 0)) && value !== null, `${r.status}, row ${value === null ? 'deleted' : 'kept'}`);
     r = await upload(`zz-probe/user-${TAG}.txt`, userToken);
     stored = (await probeFiles()).includes(`zz-probe/user-${TAG}.txt`);
     check('non-admin upload blocked', r.status >= 400 && !stored, `${r.status}${stored ? ', file was stored' : ''}`);
+    await tamperBlocked('non-admin', userToken);
 
     // Allowlisted admins can still do everything the admin page does.
     if (ADMIN_EMAIL && ADMIN_PASSWORD) {
@@ -132,6 +161,12 @@ try {
         check('admin update', r.status === 200 && r.json.length === 1 && r.json[0].value_en === 'b', String(r.status));
         r = await rest('DELETE', `site_texts?key=eq.${adminRow}`, adminToken, { prefer: 'return=representation' });
         check('admin delete', r.status === 200 && r.json.length === 1 && (await probeRowValue(adminRow)) === null, String(r.status));
+        const upsertRow = `zz_probe_upsert_${TAG}`;
+        r = await upsertText(adminToken, upsertRow, 'first');
+        const inserted = (await probeRowValue(upsertRow)) === 'first';
+        const second = await upsertText(adminToken, upsertRow, 'second');
+        check('admin upsert (new key, then existing key)', inserted && second.status < 300 && (await probeRowValue(upsertRow)) === 'second',
+            `${r.status} then ${second.status}`);
         const adminFile = `zz-probe/admin-${TAG}.txt`;
         r = await upload(adminFile, adminToken);
         check('admin upload', r.status === 200 && (await probeFiles()).includes(adminFile), String(r.status));

@@ -23,7 +23,7 @@
 
 ## Review Focus
 
-- Anyone can sign up on this shared instance → a non-admin account must be rejected by the page ("관리자 권한이 없는 계정입니다") and by the server (verify check `non-admin *`).
+- A signed-up account that is not on the allowlist → must be rejected by the page ("관리자 권한이 없는 계정입니다") and by the server (verify check `non-admin *`).
 - Wrong password or stray spaces in the email → clear Korean error, password cleared, no stuck button (browser smoke `wrong password`).
 - Reload while logged in → dashboard comes back without logging in again; logout → gate (browser smoke `reload keeps session`, `logout`).
 - Image uploads must carry the login session once the second client is removed (browser smoke `page storage upload/remove`, verify `admin upload`).
