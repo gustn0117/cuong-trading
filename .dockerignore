@@ -2,3 +2,6 @@
 .claude
 .dockerignore
 docker-compose.yml
+docs
+supabase
+.superpowers
